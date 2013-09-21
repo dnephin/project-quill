@@ -14,7 +14,7 @@ To get started follow these steps:
 1. [Install vagrant](http://docs.vagrantup.com/v2/installation/index.html)
 
 2. Start vagrant which will add a VirtualBox image of Ubuntu 13.04 64 bit.
-   See [./VagrantFile](VagrantFile)
+   See [Vagrantfile](./Vagrantfile)
 
     vagrant up
 
