@@ -5,16 +5,18 @@
 
 set -e
 
-
-wget http://nodejs.org/dist/v0.10.18/node-v0.10.18.tar.gz
-tar -xf node-v0.10.18.tar.gz
-cd  node-v0.10.18; ./configure; make; sudo make install
-
-npm install grunt-cli grunt-contrib-coffee jasmine-node
-npm install grunt-contrib-watch grunt-contrib-less
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install -y nodejs
 
 
+cd /vagrant/
+npm install grunt --save-dev
+npm install grunt-contrib-coffee --save-dev
+npm install jasmine-node --save-dev
+npm install grunt-contrib-watch --save-dev
+npm install grunt-contrib-less --save-dev
+npm install grunt-contrib-copy --save-dev
 
 
-
-
+npm install -g grunt-cli

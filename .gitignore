@@ -19,3 +19,6 @@ test-result
 server.pid
 *.iml
 *.eml
+
+dist/
+node_modules/

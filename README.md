@@ -13,10 +13,17 @@ To get started follow these steps:
 
 1. [Install vagrant](http://docs.vagrantup.com/v2/installation/index.html)
 
-2. Run, which will add a VirtualBox image of Ubuntu 13.04 64 bit. See (VagrantFile)[./VagrantFile]
+2. Start vagrant which will add a VirtualBox image of Ubuntu 13.04 64 bit.
+   See (VagrantFile)[./VagrantFile]
 
     vagrant up
 
+3. Log into the box
+
+    vagrant ssh
 
 # TODO: debugging problems here, /etc/hosts problem
-    
+
+4. Build + Start
+
+# TODO: cd to /vagrant and start grunt/web server
