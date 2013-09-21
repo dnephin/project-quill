@@ -9,7 +9,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current" +
                       "/raring-server-cloudimg-amd64-vagrant-disk1.box"
 
+  # Install project dependencies
   config.vm.provision "shell", path: "dev/bootstrap.sh"
+
+  # Port forwarding for grunt livereload server
+  config.vm.network "forwarded_port", guest: 35729, host: 8081
+
 
   # TODO: stalls on first provision
 
