@@ -7,7 +7,10 @@ module.exports = (grunt) ->
             compile:
                 files: [
                     {
-                        src: ['web/src/coffee/*.coffee']
+                        src: [
+                            'web/src/coffee/*.coffee'
+                            'web/src/coffee/models/*.coffee'
+                        ]
                         dest: 'dist/web/js/quill.js'
                     }
                 ]
@@ -38,7 +41,7 @@ module.exports = (grunt) ->
                 spawn: false
                 livereload: true
             coffee:
-                files: 'web/src/coffee/*.coffee'
+                files: 'web/src/coffee/**'
                 tasks: ['coffee']
 
             less:
