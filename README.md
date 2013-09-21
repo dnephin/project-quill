@@ -6,7 +6,7 @@ project-quill
 
 One of the many goals of Project Quill is to allow a new developer to get up
 and running in just a few minutes. To accomplish this
-[vangrant](http://www.vagrantup.com/) is used to construct a development
+[vagrant](http://www.vagrantup.com/) is used to construct a development
 environment from a configuration.
 
 To get started follow these steps:
@@ -14,7 +14,7 @@ To get started follow these steps:
 1. [Install vagrant](http://docs.vagrantup.com/v2/installation/index.html)
 
 2. Start vagrant which will add a VirtualBox image of Ubuntu 13.04 64 bit.
-   See (VagrantFile)[./VagrantFile]
+   See [./VagrantFile](VagrantFile)
 
     vagrant up
 
@@ -22,8 +22,8 @@ To get started follow these steps:
 
     vagrant ssh
 
-# TODO: debugging problems here, /etc/hosts problem
 
-4. Build + Start
+4. Build + Start (TODO)
 
-# TODO: cd to /vagrant and start grunt/web server
+
+TODO: debugging problems with vagrant up, /etc/hosts problem
