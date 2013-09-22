@@ -23,12 +23,12 @@
   <div>
 
   <script type="text/x-handlebars" id="home">
-  Things
-  {{outlet}}
   </script>
 
-  <script type="text/x-handlebars" id="about">
-    Something
+  <script type="text/x-handlebars" id="statement">
+    <h2>{{title}}</h2>
+    <p><em>{{version}}</em></p>
+    <p>{{summary}}</p>
   </script>
 
   <script src="js/jquery-1.9.1.js"></script>
@@ -37,6 +37,7 @@
   <script src="js/ember-data.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/quill.js"></script>
+  <script src="js/templates.js"></script>
   <script src="http://localhost:8081/livereload.js"></script>
 </body>
 </html>

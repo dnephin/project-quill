@@ -15,6 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Port forwarding for grunt livereload server
   config.vm.network "forwarded_port", guest: 35729, host: 8081
 
+  config.vm.hostname = "quill-dev"
 
   # TODO: stalls on first provision
 

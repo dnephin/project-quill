@@ -18,6 +18,6 @@ npm install jasmine-node --save-dev
 npm install grunt-contrib-watch --save-dev
 npm install grunt-contrib-less --save-dev
 npm install grunt-contrib-copy --save-dev
-
+npm install grunt-ember-handlebars --save-dev
 
 npm install -g grunt-cli

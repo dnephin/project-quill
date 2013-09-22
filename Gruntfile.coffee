@@ -36,6 +36,17 @@ module.exports = (grunt) ->
                     }
                 ]
 
+        ember_handlebars:
+            compile:
+                options:
+                    namespace: "QuillApp.Templates"
+                files: [
+                    {
+                        src: ['web/src/handlebars/*.hbs']
+                        dest: 'dist/web/js/templates.js'
+                    }
+                ]
+
         watch:
             options:
                 spawn: false
@@ -52,14 +63,20 @@ module.exports = (grunt) ->
                 files: 'web/static/**'
                 tasks: ['copy']
 
+            handlebars:
+                files: 'web/src/handlebars/*.hbs'
+                tasks: ['ember_handlebars']
+
 
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-less'
     grunt.loadNpmTasks 'grunt-contrib-watch'
+    grunt.loadNpmTasks 'grunt-ember-handlebars'
 
     grunt.registerTask 'default',   [
                                      'copy'
                                      'coffee'
                                      'less'
+                                     'ember_handlebars'
                                     ]
