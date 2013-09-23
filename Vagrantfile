@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "project-quill"
-  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/current" +
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/20130917" +
                       "/raring-server-cloudimg-amd64-vagrant-disk1.box"
 
   # Install project dependencies
@@ -20,9 +20,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # TODO: stalls on first provision
 
   # Debug problems with gui mode
-  #config.vm.provider "virtualbox" do |vbox|
-  #    vbox.gui = true
-  #end
+  config.vm.provider "virtualbox" do |vbox|
+      vbox.gui = true
+  end
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,

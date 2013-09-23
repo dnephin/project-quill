@@ -9,15 +9,16 @@ sudo add-apt-repository ppa:chris-lea/node.js
 sudo apt-get update
 sudo apt-get install -y nodejs
 
-# TODO: sym link to /vagrant
+# Create a link from the users home directory to the shared folder
+ln -s /vagrant project-quill
 
 cd /vagrant/
-npm install grunt --save-dev
-npm install grunt-contrib-coffee --save-dev
-npm install jasmine-node --save-dev
-npm install grunt-contrib-watch --save-dev
-npm install grunt-contrib-less --save-dev
-npm install grunt-contrib-copy --save-dev
-npm install grunt-ember-handlebars --save-dev
+npm install grunt
+npm install grunt-contrib-coffee
+npm install jasmine-node
+npm install grunt-contrib-watch
+npm install grunt-contrib-less
+npm install grunt-contrib-copy
+npm install grunt-ember-handlebars
 
 npm install -g grunt-cli
