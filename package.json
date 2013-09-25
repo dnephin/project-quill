@@ -1,0 +1,27 @@
+{
+  "name": "project-quill",
+  "version": "0.1.0",
+  "description": "See README",
+  "dependencies": {
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt": "~0.4.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-less": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-ember-handlebars": "~0.7.0",
+    "jasmine-node": "~1.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dnephin/project-quill"
+  },
+  "author": "",
+  "license": "Apache-2",
+  "bugs": {
+    "url": "https://github.com/dnephin/project-quill/issues"
+  }
+}
