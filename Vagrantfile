@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "project-quill"
-  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/20130924/" +
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/raring/20130928/" +
                       "raring-server-cloudimg-amd64-vagrant-disk1.box"
 
   # Install project dependencies
@@ -17,13 +17,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.hostname = "quill-dev"
 
+
   # TODO: stalls on first provision because of ubuntu bug
   # See http://askubuntu.com/questions/324574/cannot-ssh-into-new-vagrant-install-of-13-04
   # and https://bugs.launchpad.net/ubuntu/+source/cloud-init/+bug/1217950
 
-  # Debug problems using gui mode
   config.vm.provider "virtualbox" do |vbox|
-      vbox.gui = true
+    # TODO: create a debug flag to enable this
+    # Debug problems using gui mode
+    vbox.gui = true
   end
 
   # Create a private network, which allows host-only access to the machine
