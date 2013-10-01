@@ -2,11 +2,34 @@
 
 QuillApp.Router.map ->
 
-    @resource 'home',           path: '/'
-    @resource 'statement',      path: '/statement/:id'
+    @resource 'statement', ->
+        @route 'new'
+        @route 'view',  path: ':id'
 
 
-QuillApp.StatementRoute = Ember.Route.extend
+QuillApp.StatementNewRoute = Ember.Route.extend
+
+    setupController: (controller, model) ->
+        controller.set 'content', {}
+
+
+QuillApp.StatementViewRoute = Ember.Route.extend
 
     model: (params) -> @store.find('statement', params.id)
 
+
+# TODO: move to controllers
+QuillApp.StatementNewController = Ember.ObjectController.extend
+
+    isEditMode: true
+
+    actions:
+        save: ->
+            console.log "save #{@content}"
+            console.log @content
+            @toggleProperty 'isEditMode'
+
+        publish: ->
+            console.log "publish"
+            @store.createRecord 'statement', @content
+            @toggleProperty 'isEditMode'

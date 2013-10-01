@@ -1,0 +1,26 @@
+
+
+<div class="container">
+
+  <div class="col-md-12 statement-edit">
+    {{input name="title" value=title}}
+    {{input name="version" value=version}}
+    {{textarea name="problem" value=problem}}
+    {{textarea name="summary" value=summary}}
+    {{textarea name="full-document" value=fullDocument}}
+  </div>
+
+  <div class="col-md-3 pull-right">
+    
+    {{#if isEditMode}}
+        <button {{action save}}>Save</button>
+    {{else}}
+        <button {{action toggleProperty 'isEditMode'}}>Edit</button>
+    {{/if}}
+    
+    {{#unless active}}
+      <button {{action publish}}>Publish</button>
+    {{/unless}}
+  </div>
+
+</div>

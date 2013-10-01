@@ -14,6 +14,20 @@ module.exports = (grunt) ->
                         dest: 'dist/web/js/quill.js'
                     }
                 ]
+            compileSpec:
+               files: [
+                    {
+                        src: [ 'web/spec/coffee/*.coffee' ]
+                        dest: 'web/spec/js/quillSpec.js'
+                    }
+               ]
+
+        jasmine:
+            coffee_test:
+                src: 'dist/web/js/quill/js'
+                options:
+                    specs: 'web/spec/js/*.js'
+
         copy:
             main:
                 files: [
@@ -44,8 +58,7 @@ module.exports = (grunt) ->
                 files: [
                     {
                         src: [
-                            'web/src/handlebars/*.hbs'
-                            'web/src/handlebars/components/*.hbs'
+                            'web/src/handlebars/**/*.hbs'
                         ]
                         dest: 'dist/web/js/templates.js'
                     }
@@ -55,9 +68,10 @@ module.exports = (grunt) ->
             options:
                 spawn: false
                 livereload: true
+
             coffee:
                 files: 'web/src/coffee/**'
-                tasks: ['coffee']
+                tasks: ['coffee', 'jasmine']
 
             less:
                 files: 'web/src/less/*.less'
@@ -69,8 +83,7 @@ module.exports = (grunt) ->
 
             handlebars:
                 files: [
-                        'web/src/handlebars/*.hbs'
-                        'web/src/handlebars/components/*.hbs'
+                        'web/src/handlebars/**/*.hbs'
                 ]
                 tasks: ['emberTemplates']
 
@@ -80,10 +93,16 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-less'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-ember-templates'
+    grunt.loadNpmTasks 'grunt-contrib-jasmine'
 
     grunt.registerTask 'default',   [
                                      'copy'
-                                     'coffee'
+                                     'coffee:compile'
                                      'less'
                                      'emberTemplates'
+                                    ]
+
+    grunt.registerTask 'test',      [
+                                     'coffee'
+                                     'jasmine'
                                     ]
