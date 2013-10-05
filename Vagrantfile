@@ -14,6 +14,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Port forwarding for grunt livereload server
   config.vm.network "forwarded_port", guest: 35729, host: 8081
+  # TODO: not working
+  # Port forward for couchdb server
+  config.vm.network "forwarded_port", guest: 5984,  host: 8082
 
   config.vm.hostname = "quill-dev"
 
