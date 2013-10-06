@@ -1,0 +1,54 @@
+project-quill
+=============
+
+
+Development
+-----------
+
+
+Getting Started
+~~~~~~~~~~~~~~~
+
+One of the many goals of Project Quill is to allow a new developer to get up
+and running in just a few minutes. To accomplish this
+`vagrant <http://www.vagrantup.com>`_ is used to construct a development
+environment from a configuration.
+
+To get started follow these steps:
+
+1. `Install vagrant <http://docs.vagrantup.com/v2/installation/index.html>`_
+
+2. Start vagrant which will add a VirtualBox image of Ubuntu 13.04 64 bit.
+   See `Vagrantfile <./Vagrantfile>`_)
+
+.. code-block:: shell
+
+    vagrant up
+
+3. Log into the box
+
+
+.. code-block:: shell
+
+    vagrant ssh
+
+
+4. Build + Start (TODO)
+
+
+TODO: debugging problems with vagrant up, /etc/hosts problem
+
+
+Project Structure
+~~~~~~~~~~~~~~~~~
+
+dev
+    tools and resources for development
+docs
+    project documentation
+project-quill-app
+    scala backend source
+web
+    web front-end source
+
+

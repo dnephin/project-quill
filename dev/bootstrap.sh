@@ -21,21 +21,25 @@ sudo /etc/init.d/couchdb restart
 
 # TODO: install jre instead
 # Java
-#sudo add-apt-repository ppa:webupd8team/java
-#sudo apt-get update
-# TODO: install with prompt?
-#sudo apt-get install -y oracle-java6-installer
+echo debconf shared/accepted-oracle-license-v1-1 select true | \
+    sudo debconf-set-selections &&
+    echo debconf shared/accepted-oracle-license-v1-1 seen true | \
+    sudo debconf-set-selections
+sudo add-apt-repository -y ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install -y oracle-java6-installer
 
 # Scala and Play
 if [[ ! -d scala-2.10.3 ]]; then
-    curl http://www.scala-lang.org/files/archive/scala-2.10.3.tgz | tar -xz
+    curl http://www.scala-lang.org/files/archive/scala-2.10.3.tgz | \
+    sudo -u vagrant tar -xz
 fi
 
 sudo apt-get install unzip
 
 if [[ ! -d play-2.2.0 ]]; then
     wget -q http://downloads.typesafe.com/play/2.2.0/play-2.2.0.zip
-    unzip -q play-2.2.0.zip
+    sudo -u vagrant unzip -q play-2.2.0.zip
 fi
 
 
@@ -52,3 +56,5 @@ echo "Installing node packages from package.json"
 npm install -q --no-bin-link
 # TODO: resolve linking errors, and remove --no-bin-link
 
+
+echo "source ~/project-quill/dev/bash_env.sh" >> ~/.bashrc

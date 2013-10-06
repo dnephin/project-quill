@@ -4,21 +4,19 @@
 !.gitignore
 
 # Ignore Play! working directory #
-db
-eclipse
-lib
-log
-logs
-modules
-precompiled
-project/project
-project/target
-target
-tmp
-test-result
-server.pid
-*.iml
-*.eml
+project-quill-app/logs
+project-quill-app/project/project
+project-quill-app/project/target
+project-quill-app/target
+project-quill-app/.history
+project-quill-app/.idea
+project-quill-app/*.iml
+project-quill-app/out
+project-quill-app/.idea_modules
+project-quill-app/.classpath
+project-quill-app/.project
+project-quill-app/RUNNING_PID
+project-quill-app/.settings
 
 dist/
 
@@ -26,3 +24,6 @@ dist/
 node_modules/
 _SpecRunner.html
 web/spec/js/
+
+
+
