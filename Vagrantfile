@@ -27,12 +27,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vbox|
     # TODO: create a debug flag to enable this
     # Debug problems using gui mode
-    #vbox.gui = true
+    vbox.gui = true
   end
 
-  # Create a private network, which allows host-only access to the machine
-  # using a specific IP.
-  # config.vm.network :private_network, ip: "192.168.33.10"
+  # host-only access
+  #config.vm.network "private_network", ip: "192.168.33.10"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on

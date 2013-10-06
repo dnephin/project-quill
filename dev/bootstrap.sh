@@ -6,6 +6,7 @@
 set -e
 
 # Install english language pack
+sudo apt-get install -y language-pack-en
 sudo locale-gen en_US.UTF-8
 
 # Node
@@ -17,21 +18,25 @@ sudo apt-get install -y nodejs
 sudo apt-get install -y couchdb
 sudo sed -i -e 's/^bind_address.*/bind_address = 0.0.0.0/' /etc/couchdb/default.ini
 sudo /etc/init.d/couchdb restart
-# TODO: store with design documents
-curl -X PUT http://localhost:5984/statement
 
 # TODO: install jre instead
 # Java
-sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get update
-sudo apt-get install oracle-java6-installer
+#sudo add-apt-repository ppa:webupd8team/java
+#sudo apt-get update
+# TODO: install with prompt?
+#sudo apt-get install -y oracle-java6-installer
 
 # Scala and Play
-curl http://www.scala-lang.org/files/archive/scala-2.10.3.tgz | tar -xz
+if [[ ! -d scala-2.10.3 ]]; then
+    curl http://www.scala-lang.org/files/archive/scala-2.10.3.tgz | tar -xz
+fi
 
 sudo apt-get install unzip
-wget http://downloads.typesafe.com/play/2.2.0/play-2.2.0.zip
-unzip -q play-2.2.0.zip
+
+if [[ ! -d play-2.2.0 ]]; then
+    wget -q http://downloads.typesafe.com/play/2.2.0/play-2.2.0.zip
+    unzip -q play-2.2.0.zip
+fi
 
 
 # Create a link from the users home directory to the shared folder
