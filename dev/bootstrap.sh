@@ -8,26 +8,30 @@ set -e
 # Install english language pack
 sudo locale-gen en_US.UTF-8
 
+# Node
 sudo add-apt-repository -y ppa:chris-lea/node.js
 sudo apt-get update -qq -y
 sudo apt-get install -y nodejs
 
-# TODO: set this to run at startup
-# TODO: set bind_address to 0
+# Couch
 sudo apt-get install -y couchdb
-# TODO: store with views
+sudo sed -i -e 's/^bind_address.*/bind_address = 0.0.0.0/' /etc/couchdb/default.ini
+sudo /etc/init.d/couchdb restart
+# TODO: store with design documents
 curl -X PUT http://localhost:5984/statement
 
+# TODO: install jre instead
+# Java
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java6-installer
 
-# TODO: replace with smaller binaries
 # Scala and Play
-sudo apt-get install unzip
-get http://downloads.typesafe.com/typesafe-activator/1.0.0/typesafe-activator-1.0.0.zip
-unzip typesafe-activator-1.0.0.zip
-cd activator-1.0.0
+curl http://www.scala-lang.org/files/archive/scala-2.10.3.tgz | tar -xz
 
-curl http://www.scala-lang.org/files/archive/scala-2.10.2.tgz | tar -x && \
-    cd scala-2.10.2
+sudo apt-get install unzip
+wget http://downloads.typesafe.com/play/2.2.0/play-2.2.0.zip
+unzip -q play-2.2.0.zip
 
 
 # Create a link from the users home directory to the shared folder
