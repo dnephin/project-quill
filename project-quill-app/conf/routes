@@ -7,3 +7,8 @@ GET     /                           controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+
+GET     /api/statement/:id          controllers.Statement.get(id)
+POST    /api/statement              controllers.Statement.add
+POST    /api/statement/:id          controllers.Statement.update(id: String)

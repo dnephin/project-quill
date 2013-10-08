@@ -12,10 +12,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Install project dependencies
   config.vm.provision "shell", path: "dev/bootstrap.sh"
 
-  # Port forwarding for grunt livereload server
+  # Port forward for grunt livereload server
   config.vm.network "forwarded_port", guest: 35729, host: 8081
   # Port forward for couchdb server
   config.vm.network "forwarded_port", guest: 5984,  host: 8082
+  # Port forward for play dev server
+  config.vm.network "forwarded_port", guest: 9000,  host: 8083
 
   config.vm.hostname = "quill-dev"
 
@@ -29,6 +31,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Debug problems using gui mode
     vbox.gui = true
   end
+
+  # TODO: enable more RAM/cpu
+  # vbox.customize ["modifyvm", :id, "", ""]
+  # http://www.virtualbox.org/manual/ch08.html#idp56513200
 
   # host-only access
   #config.vm.network "private_network", ip: "192.168.33.10"

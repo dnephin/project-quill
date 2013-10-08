@@ -17,6 +17,7 @@ project-quill-app/.classpath
 project-quill-app/.project
 project-quill-app/RUNNING_PID
 project-quill-app/.settings
+project-quill-app/bin
 
 dist/
 
