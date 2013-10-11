@@ -6,8 +6,10 @@ package controllers
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
+import play.api.libs.concurrent.Execution.Implicits._
 
 import models.statement.StatementModel
+import dao.statement.StatementData
 
 
 /**
@@ -24,11 +26,15 @@ object Statement extends Controller {
   }
   
   // TODO: APIAction
-  def add = Action(parse.json) { request =>
-      request.body.validate(StatementModel.read).map {
-          statement => Ok(Json.obj())
-      }.recoverTotal {
-          e => BadRequest(JsError.toFlatJson(e))
+  def add = Action.async {
+      request => {
+          // TODO: handle validation error, non-json request
+		  val statement = Json.fromJson[StatementModel](request.body.asJson.get).get
+		  // TODO: check id/user/version(active)
+		  StatementData.save(statement).map {
+		      // TODO: handle errors
+		      response => Ok(response.json)
+		  }
       }
   }
 
