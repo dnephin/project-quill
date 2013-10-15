@@ -3,6 +3,9 @@ project-quill
 
 *Project Status:* Early development
 
+.. contents:: Contents
+    :local:
+
 
 Development
 -----------
@@ -42,17 +45,15 @@ TODO: debugging problems with vagrant up, /etc/hosts problem
 
 
 Directory Structure
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
-dev
-    tools and resources for development
-docs
-    project documentation
-web_backend
-    scala backend source
-web_frontend
-    web front-end source
-database
-    couchdb design documents and resources
+The project repository has this structure:
+
+:database:        couchdb design documents and resources
+:dev:             tools and resources for development
+:dist:            target directory for distribution packages
+:docs:            project documentation
+:web_backend:     scala backend source
+:web_frontend:    web front-end source
 
 
