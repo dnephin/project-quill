@@ -53,7 +53,7 @@ The project repository has this structure:
 :dev:             tools and resources for development
 :dist:            target directory for distribution packages
 :docs:            project documentation
-:web_backend:     scala backend source
-:web_frontend:    web front-end source
+:web_backend:     scala back-end source
+:web_frontend:    web front-end source (coffeescript, less, handlebars)
 
 
