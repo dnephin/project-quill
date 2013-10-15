@@ -8,8 +8,8 @@ module.exports = (grunt) ->
                 files: [
                     {
                         src: [
-                            'web/src/coffee/*.coffee'
-                            'web/src/coffee/models/*.coffee'
+                            'web_frontend/src/coffee/*.coffee'
+                            'web_frontend/src/coffee/models/*.coffee'
                         ]
                         dest: 'dist/web/js/quill.js'
                     }
@@ -17,8 +17,8 @@ module.exports = (grunt) ->
             compileSpec:
                files: [
                     {
-                        src: [ 'web/spec/coffee/*.coffee' ]
-                        dest: 'web/spec/js/quillSpec.js'
+                        src: [ 'web_frontend/spec/coffee/*.coffee' ]
+                        dest: 'web_frontend/spec/js/quillSpec.js'
                     }
                ]
 
@@ -26,13 +26,13 @@ module.exports = (grunt) ->
             coffee_test:
                 src: 'dist/web/js/quill/js'
                 options:
-                    specs: 'web/spec/js/*.js'
+                    specs: 'web_frontend/spec/js/*.js'
 
         copy:
             main:
                 files: [
                     {
-                        cwd: 'web/static/'
+                        cwd: 'web_frontend/static/'
                         src: ['**']
                         dest: 'dist/web/'
                         filter: 'isFile'
@@ -42,10 +42,10 @@ module.exports = (grunt) ->
         less:
             dev:
                 options:
-                    paths: ["web/src/less"]
+                    paths: ["web_frontend/src/less"]
                 files: [
                     {
-                        src: 'web/src/less/quill.less'
+                        src: 'web_frontend/src/less/quill.less'
                         dest: 'dist/web/css/quill.css'
                     }
                 ]
@@ -54,11 +54,11 @@ module.exports = (grunt) ->
         emberTemplates:
             compile:
                 options:
-                    templateBasePath: "web/src/handlebars/"
+                    templateBasePath: "web_frontend/src/handlebars/"
                 files: [
                     {
                         src: [
-                            'web/src/handlebars/**/*.hbs'
+                            'web_frontend/src/handlebars/**/*.hbs'
                         ]
                         dest: 'dist/web/js/templates.js'
                     }
@@ -70,20 +70,20 @@ module.exports = (grunt) ->
                 livereload: true
 
             coffee:
-                files: 'web/src/coffee/**'
+                files: 'web_frontend/src/coffee/**'
                 tasks: ['coffee', 'jasmine']
 
             less:
-                files: 'web/src/less/*.less'
+                files: 'web_frontend/src/less/*.less'
                 tasks: ['less']
 
             static:
-                files: 'web/static/**'
+                files: 'web_frontend/static/**'
                 tasks: ['copy']
 
             handlebars:
                 files: [
-                        'web/src/handlebars/**/*.hbs'
+                        'web_frontend/src/handlebars/**/*.hbs'
                 ]
                 tasks: ['emberTemplates']
 

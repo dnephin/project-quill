@@ -1,6 +1,8 @@
 project-quill
 =============
 
+*Project Status:* Early development
+
 
 Development
 -----------
@@ -39,16 +41,18 @@ To get started follow these steps:
 TODO: debugging problems with vagrant up, /etc/hosts problem
 
 
-Project Structure
+Directory Structure
 ~~~~~~~~~~~~~~~~~
 
 dev
     tools and resources for development
 docs
     project documentation
-project-quill-app
+web_backend
     scala backend source
-web
+web_frontend
     web front-end source
+database
+    couchdb design documents and resources
 
 

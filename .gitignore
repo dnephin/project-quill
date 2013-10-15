@@ -24,7 +24,7 @@ dist/
 # Web frontend
 node_modules/
 _SpecRunner.html
-web/spec/js/
+web_frontend/spec/js/
 
 
 
