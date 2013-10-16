@@ -26,5 +26,7 @@ node_modules/
 _SpecRunner.html
 web_frontend/spec/js/
 
+# Database
+database/spec/js
 
 

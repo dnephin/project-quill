@@ -46,6 +46,12 @@ module.exports = (grunt) ->
                     expand: true
                     ext: '.js'
                 ]
+            databaseSpec:
+                files: [
+                    src: 'database/spec/coffee/**/*.coffee'
+                    dest: 'database/spec/js/databaseSpec.js'
+                    bare: true
+                ]
 
         coffeelint:
             options:
@@ -59,15 +65,22 @@ module.exports = (grunt) ->
                     level: 'error'
                     value: 4
 
-            app: coffee_src
+            app: [coffee_src, 'web_frontend/spec/coffee/*.coffee']
             build: 'Gruntfile.coffee'
-            database: 'database/src/**/*.coffee'
+            database: [
+                'database/src/**/*.coffee',
+                'database/spec/coffee/**/*.coffee'
+            ]
 
         jasmine:
-            coffee_test:
+            coffeeTest:
                 src: 'dist/web/js/quill/js'
                 options:
                     specs: 'web_frontend/spec/js/*.js'
+            databaseTest:
+                src: 'dist/database/**/*.js'
+                options:
+                    specs: 'database/spec/js/*.js'
 
         copy:
             main:
@@ -108,7 +121,12 @@ module.exports = (grunt) ->
 
             coffee:
                 files: coffee_src
-                tasks: ['coffeelint:app', 'coffee', 'jasmine']
+                tasks: [
+                    'coffeelint:app'
+                    'coffee:compile'
+                    'coffee:compileSpec'
+                    'jasmine:coffeeTest'
+                ]
 
             self:
                 files: 'Gruntfile.coffee'
@@ -117,10 +135,11 @@ module.exports = (grunt) ->
             database:
                 files: 'database/src/**/*.coffee'
                 tasks: [
-                    'coffeelint:database',
-                    'coffee:database',
-                    'mkcouchdb',
-                    'couchapp'
+                    'coffeelint:database'
+                    'coffee:database'
+                    'coffee:databaseSpec'
+                    #'mkcouchdb',
+                    #'couchapp'
                 ]
 
             less:
@@ -135,16 +154,20 @@ module.exports = (grunt) ->
                 files: ['web_frontend/src/handlebars/**/*.hbs']
                 tasks: ['emberTemplates']
 
+        clean:
+            dist: ['dist/*']
+            spec: ['database/spec/js/*', 'web_frontend/spec/js/*']
 
+
+    grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-copy'
+    grunt.loadNpmTasks 'grunt-contrib-jasmine'
     grunt.loadNpmTasks 'grunt-contrib-less'
     grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-ember-templates'
-    grunt.loadNpmTasks 'grunt-contrib-jasmine'
     grunt.loadNpmTasks 'grunt-coffeelint'
     grunt.loadNpmTasks 'grunt-couchapp'
-
 
     grunt.registerTask 'default',   [
                                      'copy'
