@@ -7,6 +7,22 @@
 coffee_src = 'web_frontend/src/coffee/**/*.coffee'
 
 
+buildCouch = (name) ->
+    couchdb_url = 'http://localhost:5984'
+
+    db: "#{couchdb_url}/#{name}"
+    app: "dist/database/#{name}/app.js"
+    options:
+        okay_if_exists: true
+        okay_is_missing: true
+
+
+databases =
+    statement: buildCouch('statement')
+    #label: buildCouch('label')
+    #response: buildCouch('response')
+
+
 module.exports = (grunt) ->
 
     grunt.initConfig
@@ -20,6 +36,15 @@ module.exports = (grunt) ->
                 files: [
                     src: 'web_frontend/spec/coffee/*.coffee'
                     dest: 'web_frontend/spec/js/quillSpec.js'
+                ]
+            database:
+                files: [
+                    cwd: 'database/src/'
+                    src: ['**']
+                    dest: 'dist/database/'
+                    filter: 'isFile'
+                    expand: true
+                    ext: '.js'
                 ]
 
         coffeelint:
@@ -72,6 +97,10 @@ module.exports = (grunt) ->
                     dest: 'dist/web/js/templates.js'
                 ]
 
+        mkcouchdb: databases
+
+        couchapp: databases
+
         watch:
             options:
                 spawn: false
@@ -84,6 +113,15 @@ module.exports = (grunt) ->
             self:
                 files: 'Gruntfile.coffee'
                 tasks: ['coffeelint:build']
+
+            database:
+                files: 'database/src/**/*.coffee'
+                tasks: [
+                    'coffeelint:database',
+                    'coffee:database',
+                    'mkcouchdb',
+                    'couchapp'
+                ]
 
             less:
                 files: 'web_frontend/src/less/*.less'

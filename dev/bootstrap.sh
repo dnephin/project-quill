@@ -50,7 +50,7 @@ cd project-quill
 npm cache clean
 
 echo "Installing grunt-cli"
-npm install -g -q grunt-cli coffee-script
+npm install -g -q grunt-cli coffee-script couchapp
 
 echo "Installing node packages from package.json"
 npm install -q --no-bin-link
