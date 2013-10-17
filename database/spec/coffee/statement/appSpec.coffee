@@ -32,19 +32,20 @@ describe "statement app design document", ->
                     patch: 3
                     published: true
                 label: 'the-label'
+                _id: 'the id'
             ddoc.views.current_published.map(source)
-            expect(emit).toHaveBeenCalledWith(source.label, source)
-            expect(source.version.value).toBe(2007003)
+            expect(emit).toHaveBeenCalledWith(
+                source.label, [source._id, 2007003])
 
         it "reduce returns document with max version", ->
             docs = [
-                { version: { value: 1000 } }
-                { version: { value: 1005000 } }
-                { version: { value: 2003001 } }
-                { version: { value: 2001000 } }
+                [1, 1000]
+                [2, 1005000]
+                [3, 2003001]
+                [4, 2001000]
             ]
             result = ddoc.views.current_published.reduce(null, docs, null)
-            expect(result).toBe(docs[2])
+            expect(result).toEqual([3, 2003001])
 
 
     describe "publish action", ->

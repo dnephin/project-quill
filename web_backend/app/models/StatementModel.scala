@@ -17,14 +17,14 @@ case class VersionModel(
 
 // TODO: move to another file
 case class EditorModel(
-	user: String,
+	id: String,
 	bio: String
 )
 
 
 case class StatementModel(
     _id: String,
-    link: String,
+    label: String,
 	version: VersionModel,
 	editor: EditorModel,
     title: String,

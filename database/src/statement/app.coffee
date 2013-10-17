@@ -22,13 +22,12 @@ ddoc.views.current_published =
             # TODO: document and restrict each version part to 999
             version.major * 1000 * 1000 + version.minor * 1000 + version.patch
 
-        doc.version.value = buildVersion(doc.version)
-        emit(doc.label, doc)
+        emit(doc.label, [doc._id, buildVersion(doc.version)])
 
     # TODO: deal with duplication
     reduce: (keys, values, rereduce) ->
         max = (prev, next) ->
-            if prev.version.value > next.version.value then prev else next
+            if prev[1] > next[1] then prev else next
         values.reduce(max)
 
 
@@ -37,11 +36,10 @@ ddoc.views.current =
         # TODO: deal with duplication
         buildVersion = (version) ->
             version.major * 1000 * 1000 + version.minor * 1000 + version.patch
-        doc.version.value = buildVersion(doc.version)
-        emit(doc.label, doc)
+        emit(doc.label, [doc._id, buildVersion(doc.version)])
     reduce: (keys, values, rereduce) ->
         max = (prev, next) ->
-            if prev.version.value > next.version.value then prev else next
+            if prev[1] > next[1] then prev else next
         values.reduce(max)
 
 

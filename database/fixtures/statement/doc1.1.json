@@ -1,0 +1,18 @@
+{
+    "label": "this-is-document-one",
+    "version": {
+        "major": 1,
+        "minor": 1,
+        "patch": 0,
+        "published": false
+    },
+    "editor": {
+        "id": "aaaaaa",
+        "bio": "I've been doing this for years."
+    },
+    "title": "This is Document One",
+    "problem": "There needs to be a first document. Small edit.",
+    "summary": "This can be made the first document, so that we have a first document.",
+    "full": "See summary"
+}
+

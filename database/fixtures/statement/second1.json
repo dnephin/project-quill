@@ -1,0 +1,18 @@
+{
+    "label": "this-is-document-two",
+    "version": {
+        "major": 1,
+        "minor": 0,
+        "patch": 0,
+        "published": true
+    },
+    "editor": {
+        "id": "aaaaaa",
+        "bio": "It's my hobby."
+    },
+    "title": "This is Document Two",
+    "problem": "There needs to be a second document.",
+    "summary": "This can be made the second document, so that we have a second document.",
+    "full": "See summary"
+}
+

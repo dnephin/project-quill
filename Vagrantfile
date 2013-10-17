@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provider "virtualbox" do |vbox|
     # TODO: create a debug flag to enable this
     # Debug problems using gui mode
-    vbox.gui = true
+    #vbox.gui = true
   end
 
   # TODO: enable more RAM/cpu
