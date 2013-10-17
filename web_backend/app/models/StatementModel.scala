@@ -11,7 +11,6 @@ case class VersionModel(
 	major: Int,
 	minor: Int,
 	patch: Int,
-	active: Boolean,
 	published: Boolean,
 	date: Option[DateTime]
 )

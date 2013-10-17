@@ -33,11 +33,15 @@ module.exports = (grunt) ->
                     dest: 'dist/web/js/quill.js'
                 ]
             compileSpec:
+                options:
+                    bare: true
                 files: [
                     src: 'web_frontend/spec/coffee/*.coffee'
                     dest: 'web_frontend/spec/js/quillSpec.js'
                 ]
             database:
+                options:
+                    bare: true
                 files: [
                     cwd: 'database/src/'
                     src: ['**']
@@ -47,10 +51,11 @@ module.exports = (grunt) ->
                     ext: '.js'
                 ]
             databaseSpec:
+                options:
+                    bare: true
                 files: [
                     src: 'database/spec/coffee/**/*.coffee'
                     dest: 'database/spec/js/databaseSpec.js'
-                    bare: true
                 ]
 
         coffeelint:
@@ -68,7 +73,7 @@ module.exports = (grunt) ->
             app: [coffee_src, 'web_frontend/spec/coffee/*.coffee']
             build: 'Gruntfile.coffee'
             database: [
-                'database/src/**/*.coffee',
+                'database/src/**/*.coffee'
                 'database/spec/coffee/**/*.coffee'
             ]
 
@@ -133,11 +138,15 @@ module.exports = (grunt) ->
                 tasks: ['coffeelint:build']
 
             database:
-                files: 'database/src/**/*.coffee'
+                files: [
+                    'database/src/**/*.coffee'
+                    'database/spec/**/*.coffee'
+                ]
                 tasks: [
                     'coffeelint:database'
                     'coffee:database'
                     'coffee:databaseSpec'
+                    'jasmine:databaseTest'
                     #'mkcouchdb',
                     #'couchapp'
                 ]
