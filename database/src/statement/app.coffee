@@ -1,8 +1,11 @@
 #
-# app/ design document for statement database
+# app.js design document for statement database
 #
 
-ddoc =
+
+# TODO: is there a better way to support testing here?
+module = window ? module
+module.exports = ddoc =
     _id: '_design/app'
     views: {}
     updates: {}
@@ -10,12 +13,6 @@ ddoc =
     shows: {}
 
 
-# TODO: is there a better way to support testing here?
-module = window ? module
-module.exports = ddoc
-
-
-# TODO: this doesn't work because buildVersion is not in the map
 ddoc.views.current_published =
     map: (doc) ->
         return if ! doc.version.published

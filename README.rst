@@ -49,11 +49,13 @@ Directory Structure
 
 The project repository has this structure:
 
-:database:        couchdb design documents and resources
-:dev:             tools and resources for development
-:dist:            target directory for distribution packages
-:docs:            project documentation
-:web_backend:     scala back-end source
-:web_frontend:    web front-end source (coffeescript, less, handlebars)
+==============    ======================================================
+database          couchdb design documents and resources
+dev               tools and resources for development
+dist              target directory for distribution packages
+docs              project documentation
+web_backend       scala back-end source
+web_frontend      web front-end source (coffeescript, less, handlebars)
+==============    ======================================================
 
 

@@ -25,6 +25,8 @@ databases =
 
 module.exports = (grunt) ->
 
+    grunt.option 'stack', true
+
     grunt.initConfig
         coffee:
             compile:
@@ -147,8 +149,6 @@ module.exports = (grunt) ->
                     'coffee:database'
                     'coffee:databaseSpec'
                     'jasmine:databaseTest'
-                    #'mkcouchdb',
-                    #'couchapp'
                 ]
 
             less:
@@ -190,4 +190,13 @@ module.exports = (grunt) ->
                                      'coffeelint'
                                      'coffee'
                                      'jasmine'
+                                    ]
+
+    grunt.registerTask 'buildCouchdb', [
+                                     'coffeelint:database'
+                                     'coffee:database'
+                                     'coffee:databaseSpec'
+                                     'jasmine:databaseTest'
+                                     'mkcouchdb'
+                                     'couchapp'
                                     ]
