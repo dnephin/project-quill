@@ -23,25 +23,43 @@ To get started follow these steps:
 
 1. `Install vagrant <http://docs.vagrantup.com/v2/installation/index.html>`_
 
-2. Start vagrant which will add a VirtualBox image of Ubuntu 13.04 64 bit.
+2. Start vagrant. It will add a VirtualBox image of Ubuntu 13.04 64 bit.
    See `Vagrantfile <./Vagrantfile>`_)
 
-.. code-block:: shell
+    .. code-block:: bash
 
-    vagrant up
+        vagrant up
 
-3. Log into the box
+    TODO: debugging problems with vagrant up, and /etc/hosts problem
 
+3. Login to the box
 
-.. code-block:: shell
+    .. code-block:: bash
 
-    vagrant ssh
+        vagrant ssh
 
+4. Setup couchdb environment. See `<database/README.rst>`_
 
-4. Build + Start (TODO)
+    .. code-block:: bash
 
+        # Ensure that couchdb is running
+        sudo service couchdb start
+        # Setup databases
+        grunt buildCouchdb
 
-TODO: debugging problems with vagrant up, /etc/hosts problem
+5. Build frontend sources
+
+    .. code-block:: bash
+
+        grunt buildFrontend
+
+6. Build backend sources and start webserver
+
+    .. code-block:: bash
+
+        cd web_backend
+        play dev 9000 0.0.0.0
+
 
 
 Directory Structure
@@ -58,4 +76,9 @@ web_backend       scala back-end source
 web_frontend      web front-end source (coffeescript, less, handlebars)
 ==============    ======================================================
 
+
+Coding Standards
+~~~~~~~~~~~~~~~~
+
+TODO
 

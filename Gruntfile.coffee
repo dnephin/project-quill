@@ -3,6 +3,7 @@
 #
 
 
+# TODO: better way to alias all the paths, there is lots of duplication
 # web_frontend coffeescript src is referenced in a few places
 coffee_src = 'web_frontend/src/coffee/**/*.coffee'
 
@@ -19,7 +20,7 @@ buildCouch = (name) ->
 
 databases =
     statement: buildCouch('statement')
-    #label: buildCouch('label')
+    label: buildCouch('label')
     #response: buildCouch('response')
 
 
@@ -178,25 +179,27 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-coffeelint'
     grunt.loadNpmTasks 'grunt-couchapp'
 
-    grunt.registerTask 'default',   [
-                                     'copy'
-                                     'coffeelint:app'
-                                     'coffee:compile'
-                                     'less'
-                                     'emberTemplates'
-                                    ]
+    grunt.registerTask 'buildFrontend', [
+        'copy'
+        'coffeelint:app'
+        'coffee:compile'
+        'less'
+        'emberTemplates'
+    ]
 
-    grunt.registerTask 'test',      [
-                                     'coffeelint'
-                                     'coffee'
-                                     'jasmine'
-                                    ]
+    grunt.registerTask 'test', [
+        'coffeelint'
+        'coffee'
+        'jasmine'
+    ]
 
     grunt.registerTask 'buildCouchdb', [
-                                     'coffeelint:database'
-                                     'coffee:database'
-                                     'coffee:databaseSpec'
-                                     'jasmine:databaseTest'
-                                     'mkcouchdb'
-                                     'couchapp'
-                                    ]
+        'coffeelint:database'
+        'coffee:database'
+        'coffee:databaseSpec'
+        'jasmine:databaseTest'
+        'mkcouchdb'
+        'couchapp'
+    ]
+
+    grunt.registerTask 'default', ['buildFrontend']
