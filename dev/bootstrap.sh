@@ -58,4 +58,4 @@ npm install -q --no-bin-link
 # TODO: resolve linking errors, and remove --no-bin-link
 
 
-echo "source ~/project-quill/dev/bash_env.sh" >> ~/.bashrc
+echo "source ~/project-quill/dev/bash_env.sh" >> /home/vagrant/.bashrc
