@@ -17,7 +17,7 @@ sudo apt-get install -y nodejs
 # Couch
 sudo apt-get install -y couchdb
 sudo sed -i -e 's/^bind_address.*/bind_address = 0.0.0.0/' /etc/couchdb/default.ini
-sudo /etc/init.d/couchdb restart
+sudo service couchdb restart
 
 # TODO: install jre instead
 # Java
@@ -26,7 +26,7 @@ echo debconf shared/accepted-oracle-license-v1-1 select true | \
     echo debconf shared/accepted-oracle-license-v1-1 seen true | \
     sudo debconf-set-selections
 sudo add-apt-repository -y ppa:webupd8team/java
-sudo apt-get update
+sudo apt-get update -qq -y
 sudo apt-get install -y oracle-java6-installer
 
 # Scala and Play
@@ -38,6 +38,7 @@ fi
 sudo apt-get install unzip
 
 if [[ ! -d play-2.2.0 ]]; then
+    echo "Downloading play 2.2.0"
     wget -q http://downloads.typesafe.com/play/2.2.0/play-2.2.0.zip
     sudo -u vagrant unzip -q play-2.2.0.zip
 fi
