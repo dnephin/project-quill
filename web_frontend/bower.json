@@ -1,0 +1,24 @@
+{
+  "name": "project-quill",
+  "version": "0.1",
+  "license": "Apache2",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "spec",
+    "src",
+    "README.rst",
+    "static",
+    "bower",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ember": "~1.0.0",
+    "ember-data-shim": "~1.0.0-beta.3",
+    "handlebars": "~1.0.0",
+    "jquery": "~2.0.3",
+    "bootstrap": "~3.0.0"
+  }
+}

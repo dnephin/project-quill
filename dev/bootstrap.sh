@@ -9,6 +9,8 @@ set -e
 sudo apt-get install -y language-pack-en
 sudo locale-gen en_US.UTF-8
 
+sudo apt-get -y install git tree
+
 # Node
 sudo add-apt-repository -y ppa:chris-lea/node.js
 sudo apt-get update -qq -y
@@ -50,12 +52,15 @@ cd project-quill
 
 npm cache clean
 
-echo "Installing grunt-cli"
-npm install -g -q grunt-cli coffee-script couchapp
+echo "Installing global npm packages"
+npm install -g -q grunt-cli coffee-script couchapp bower
 
 echo "Installing node packages from package.json"
 npm install -q --no-bin-link
 # TODO: resolve linking errors, and remove --no-bin-link
 
+cd web_frontend
+bower install
 
 echo "source ~/project-quill/dev/bash_env.sh" >> /home/vagrant/.bashrc
+

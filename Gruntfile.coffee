@@ -91,13 +91,34 @@ module.exports = (grunt) ->
                     specs: 'database/spec/js/*.js'
 
         copy:
-            main:
+            static:
                 files: [
                     cwd: 'web_frontend/static/'
                     src: ['**']
                     dest: 'dist/web/'
                     filter: 'isFile'
                     expand: true
+                ]
+            bower:
+                files: [
+                    { src: [
+                        'web_frontend/bower/bootstrap/dist/js/bootstrap.js'
+                        'web_frontend/bower/ember/ember.js'
+                        'web_frontend/bower/ember-data-shim/ember-data.js'
+                        'web_frontend/bower/jquery/jquery.js'
+                        'web_frontend/bower/handlebars/handlebars.js'
+                    ]
+                    dest: 'dist/web/js/'
+                    expand: true
+                    flatten: true }
+                    { src: [
+                        'web_frontend/bower/bootstrap/dist/css/bootstrap.css'
+                        'web_frontend/bower/bootstrap/dist/css/' +
+                            'bootstrap-theme.css'
+                    ]
+                    dest: 'dist/web/css/'
+                    expand: true
+                    flatten: true }
                 ]
         less:
             dev:
