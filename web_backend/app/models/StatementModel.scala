@@ -1,10 +1,16 @@
 /**
  * Statement models
  */
-package models.statement
+package quill.models
 
 import play.api.libs.json._
 import org.joda.time.DateTime
+
+
+case class LabelModel(
+	_id: String,
+	editor: String
+)
 
 
 case class VersionModel(
@@ -22,6 +28,7 @@ case class EditorModel(
 )
 
 
+// TODO: field for finalized
 case class StatementModel(
     _id: String,
     label: String,
@@ -46,5 +53,9 @@ object StatementModel {
     implicit val read = Json.reads[StatementModel]
     implicit val write = Json.writes[StatementModel]
     implicit val format = Json.format[StatementModel]
+}
+
+object LabelModel {
+    implicit val format = Json.format[LabelModel]    
 }
 

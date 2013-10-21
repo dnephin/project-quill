@@ -2,7 +2,7 @@ package test.models
 
 import play.api.libs.json._
 import org.scalatest._
-import models.statement.{ StatementModel, VersionModel, EditorModel }
+import quill.models.{ StatementModel, VersionModel, EditorModel }
 import org.joda.time.DateTime
 
 class StatementSpec extends FunSuite {
