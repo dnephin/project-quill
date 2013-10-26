@@ -8,6 +8,7 @@ web_backend/logs
 web_backend/project/project
 web_backend/project/target
 web_backend/target
+web_backend/public
 web_backend/.history
 web_backend/.idea
 web_backend/*.iml

@@ -25,6 +25,7 @@ object StatementData {
     def add(stmt: StatementModel): Future[Response] = {
         // TODO: check version
         // TODO: check _id is not present
+        // TODO: check label/editor
         WS.url(url).post(Json.toJson(stmt))
     }
 

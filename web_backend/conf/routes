@@ -6,11 +6,11 @@
 GET     /                           controllers.Application.index
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               controllers.Assets.at(path="public", file)
 
 
 # Get current published statement
 GET     /api/statement/:id          controllers.Statement.getPublished(id)
 GET     /api/statement/:id/edit     controllers.Statement.getUnpublished(id)
-#POST    /api/statement              controllers.Statement.add
-POST    /api/statement/:id          controllers.Statement.update(id: String)
+POST    /api/statement              controllers.Statement.add
+PUT     /api/statement/:id          controllers.Statement.update(id: String)

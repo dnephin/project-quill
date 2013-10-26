@@ -2,6 +2,7 @@
   */
 package controllers
 
+import play.api.Logger
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import play.api.libs.json.Json
@@ -39,11 +40,12 @@ object Statement extends Controller {
 
     def add = Action.async(parse.json) {
         request => {
+            Logger.warn(request.body.toString())
             // TODO: handle bad request
             val stmt = Json.fromJson[StatementModel](request.body).get
             // TODO: handle error response
             StatementData.add(stmt).map {
-                response => Ok 
+                response => Ok(response.toString()) 
             }
         }
     }
