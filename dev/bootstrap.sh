@@ -45,6 +45,7 @@ if [[ ! -d play-2.2.0 ]]; then
     sudo -u vagrant unzip -q play-2.2.0.zip
 fi
 
+# TODO: install sbt
 
 # Create a link from the users home directory to the shared folder
 ln -sfT /vagrant project-quill

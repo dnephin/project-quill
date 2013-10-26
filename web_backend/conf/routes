@@ -9,6 +9,8 @@ GET     /                           controllers.Application.index
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 
-GET     /api/statement/:id          controllers.Statement.get(id)
+# Get current published statement
+GET     /api/statement/:id          controllers.Statement.getPublished(id)
+GET     /api/statement/:id/edit     controllers.Statement.getUnpublished(id)
 #POST    /api/statement              controllers.Statement.add
 POST    /api/statement/:id          controllers.Statement.update(id: String)

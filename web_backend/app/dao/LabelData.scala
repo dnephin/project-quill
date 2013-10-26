@@ -3,18 +3,28 @@ package quill.dao
 import quill.models.LabelModel
 import play.api.libs.ws.WS
 import play.api.libs.json.Json
+import play.api.libs.concurrent.Execution.Implicits._
 
+/**
+  * Data access for LabelModel
+  */
 object LabelData {
     
     // TODO: config
     val url = "http://localhost:5984/label"
         
     def add(label: LabelModel) = {
-         WS.url(url).post(Json.toJson(label))
+        WS.url(url).post(Json.toJson(label)).map {
+            response => response.json
+        }
     }
-    
-    def get(id: String) = {
-        WS.url(s"${url}/${id}").get()
-    }
+   
+    // TODO: helper  got getById
+    def getById(id: String) = {
+        WS.url(s"$url/$id").get().map {
+             response =>
+                response.json.validate[LabelModel]
+        }
+   }
 
 }

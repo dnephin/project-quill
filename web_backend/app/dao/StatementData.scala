@@ -1,10 +1,15 @@
 package quill.dao
 
+import play.api.Logger
+
 import quill.models.StatementModel
-import play.api.libs.ws.WS
-import play.api.libs.json.Json
+import play.api.libs.ws._
+import play.api.libs.json._
 import scala.concurrent.Future
 import play.api.libs.ws.Response
+import play.api.libs.concurrent.Execution.Implicits._
+
+
 
 /** Data access operations for the statement databases
   */
@@ -23,26 +28,41 @@ object StatementData {
         WS.url(url).post(Json.toJson(stmt))
     }
 
-    def getCurrentPublished(label: String) = {
-        WS.url(currentPublishedView)
-            .withQueryString("group" -> "true", "key" -> label)
+    def idFromCurrentViewResponse(json: JsValue) = {
+        // TODO: Use a Reads/Format
+        // TODO: raise 404 on missing
+        ((json \ "rows")(0) \ "value")(0).as[String]
+    }
+
+    def currentView(label: String, viewUrl: String) = {
+        WS.url(viewUrl)
+            .withQueryString("group" -> "true",
+                             "key" -> JsString(label).toString())
             .get()
-            .map {
+            .flatMap {
                 response =>
-                    // TODO: extract response handling
-                    // TODO: raise 404 on missing
-                    val id = (response.json \ "rows")(1)(__ \ "value").as[String]
-                    getById(id)
+                    getById(idFromCurrentViewResponse(response.json))
             }
     }
+
+    def getCurrentPublished(label: String) = {
+        currentView(label, currentPublishedView)
+    }
+
+    def getCurrent(label: String) = {
+        currentView(label, currentView)
+    }
+
 
     /**
       * Retrieve a Statement by id.
       */
+    // TODO: helper for getById
     def getById(id: String) = {
         WS.url(s"$url/$id").get().map {
             response =>
-                response.json.validate[StatementModel]
+                // TODO: use format, and don't use get
+                response.json.validate[StatementModel].get
         }
     }
 }

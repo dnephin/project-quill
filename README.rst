@@ -58,7 +58,7 @@ To get started follow these steps:
     .. code-block:: bash
 
         cd web_backend
-        play dev 9000 0.0.0.0
+        play run 9000 0
 
 
 

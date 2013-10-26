@@ -20,8 +20,17 @@ import quill.dao.StatementData
   */
 object Statement extends Controller {
 
-    def get(id: String) = Action {
-        Ok(Json.obj("status" -> "OK", "message" -> "what"))
+    def getPublished(id: String) = Action.async {
+        StatementData.getCurrentPublished(id).map {
+            stmt => Ok(Json.toJson(stmt))
+        }
+    }
+
+    // TODO: DRY with param
+    def getUnpublished(id: String) = Action.async {
+        StatementData.getCurrent(id).map {
+            stmt => Ok(Json.toJson(stmt))
+        }
     }
 
     def update(id: String) = Action {
@@ -38,5 +47,4 @@ object Statement extends Controller {
             }
         }
     }
-
 }
