@@ -14,13 +14,13 @@ class StatementSpec extends FunSuite {
 				"major": 1,
 				"minor": 2,
 				"patch": 0,
-				"active": true,
+				"published": true,
 				"date": null
 			},
-			"link": "example-statement",
+			"label": "example-statement",
 			"title": "Example Statement",
 			"editor": {
-				"user": "ad2dffa23",
+				"id": "ad2dffa23",
 				"bio": "I worked on it"
 			},
 			"problem": "It needs to change",
@@ -31,7 +31,7 @@ class StatementSpec extends FunSuite {
 
 	test("StatementModel parsed from json") {
 		val expected = StatementModel(
-			"abab3a3",
+			Some("abab3a3"),
 			"example-statement",
 			VersionModel(1, 2, 0, true, None),
 			EditorModel("ad2dffa23", "I worked on it"),
@@ -39,19 +39,27 @@ class StatementSpec extends FunSuite {
 			"It needs to change",
 			"...",
 			"Change it like this")
-		assert(Json.fromJson[StatementModel](Json.parse(source)).get === expected)
+		Json.fromJson[StatementModel](Json.parse(source)).map {
+			stmt => assert(stmt === expected)    
+		} recover {
+		    case JsError(errors) => throw new AssertionError(errors.toString())
+		}
 	}
 
 	test("VersionModel parsed from json") {
 		val date = new DateTime(2013, 1, 2, 20, 10, 5)
-		val expected = VersionModel(1, 2, 3, false, Some(date))
+		val expected = VersionModel(1, 2, 3, true, Some(date))
 		val source = Json.obj(
 			"major" -> 1,
 			"minor" -> 2,
 			"patch" -> 3,
-			"active" -> false,
+			"published" -> true,
 			"date" -> date)
-		assert(Json.fromJson[VersionModel](source).get === expected)
+		Json.fromJson[VersionModel](source).map {
+			version => assert(version === expected)
+		} recover {
+		    case JsError(errors) => throw new AssertionError(errors.toString()) 
+		}
 	}
 
 	test("VersionModel parsed from json without date") {
@@ -61,9 +69,13 @@ class StatementSpec extends FunSuite {
 			"major" -> 1,
 			"minor" -> 2,
 			"patch" -> 3,
-			"active" -> false,
+			"published" -> false,
 			"date" -> JsNull)
-		assert(Json.fromJson[VersionModel](source).get === expected)
+		Json.fromJson[VersionModel](source).map {
+			version => assert(version === expected)
+		} recover {
+		    case JsError(errors) => throw new AssertionError(errors.toString()) 
+		}
 	}
 
 }

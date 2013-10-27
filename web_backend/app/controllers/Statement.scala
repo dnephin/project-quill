@@ -5,7 +5,7 @@ package controllers
 import play.api.Logger
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import play.api.libs.json.Json
+import play.api.libs.json._
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.mvc.Action
 import play.api.mvc.Controller
@@ -15,7 +15,6 @@ import play.api.mvc.SimpleResult
 import play.api.libs.json.Reads
 import quill.models.StatementModel
 import quill.dao.StatementData
-
 
 /** Statement controller
   */
@@ -39,14 +38,21 @@ object Statement extends Controller {
     }
 
     def add = Action.async(parse.json) {
-        request => {
-            Logger.warn(request.body.toString())
-            // TODO: handle bad request
-            val stmt = Json.fromJson[StatementModel](request.body).get
-            // TODO: handle error response
-            StatementData.add(stmt).map {
-                response => Ok(response.toString()) 
+        request =>
+            {
+                Logger.warn(request.body.toString())
+                Json.fromJson[StatementModel](request.body) match {
+                    case JsSuccess(stmt, path) => StatementData.add(stmt).map {
+                        response => Ok(response.body.toString())
+                    }
+                    case JsError(e) => {
+                        Logger.warn(e.toString())
+                        // TODO: make a JSON body for error
+                        Future { BadRequest(e.toString()) }
+                    }
+                }
+                // TODO: handle error response
+
             }
-        }
     }
 }
