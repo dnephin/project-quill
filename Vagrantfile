@@ -16,8 +16,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.network "forwarded_port", guest: 35729, host: 8081
   # Port forward for couchdb server
   config.vm.network "forwarded_port", guest: 5984,  host: 8082
-  # Port forward for play dev server
-  config.vm.network "forwarded_port", guest: 9000,  host: 8083
+  # Port forward for nginx (frontend, play dev server)
+  config.vm.network "forwarded_port", guest: 1080,  host: 8083
 
   config.vm.hostname = "quill-dev"
 
@@ -30,18 +30,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # TODO: create a debug flag to enable this
     # Debug problems using gui mode
     #vbox.gui = true
+
+    # Set resource limits
+    # See http://www.virtualbox.org/manual/ch08.html#vboxmanage-modifyvm
+    vbox.customize ["modifyvm", :id, "--cpus", "2"]
+    vbox.customize ["modifyvm", :id, "--memory", "1024"]
+
   end
-
-  # TODO: enable more RAM/cpu
-  # vbox.customize ["modifyvm", :id, "", ""]
-  # http://www.virtualbox.org/manual/ch08.html#idp56513200
-
-  # host-only access
-  #config.vm.network "private_network", ip: "192.168.33.10"
-
-  # Create a public network, which generally matched to bridged network.
-  # Bridged networks make the machine appear as another physical device on
-  # your network.
-  # config.vm.network :public_network
 
 end

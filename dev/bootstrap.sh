@@ -6,30 +6,36 @@
 set -e
 
 # Install english language pack
-sudo apt-get install -y language-pack-en
-sudo locale-gen en_US.UTF-8
+apt-get install -y language-pack-en
+locale-gen en_US.UTF-8
 
-sudo apt-get -y install git tree
+apt-get -y install git tree
 
 # Node
-sudo add-apt-repository -y ppa:chris-lea/node.js
-sudo apt-get update -qq -y
-sudo apt-get install -y nodejs
+add-apt-repository -y ppa:chris-lea/node.js
+apt-get update -qq -y
+apt-get install -y nodejs
 
 # Couch
-sudo apt-get install -y couchdb
-sudo sed -i -e 's/^bind_address.*/bind_address = 0.0.0.0/' /etc/couchdb/default.ini
-sudo service couchdb restart
+apt-get install -y couchdb
+sed -i -e 's/^bind_address.*/bind_address = 0.0.0.0/' /etc/couchdb/default.ini
+service couchdb restart
 
-# TODO: install jre instead
+# nginx
+apt-get install -y nginx
+rm /etc/nginx/nginx.conf
+ln -sf /vagrant/dev/nginx.conf /etc/nginx/nginx.conf
+service nginx restart
+
+
 # Java
 echo debconf shared/accepted-oracle-license-v1-1 select true | \
-    sudo debconf-set-selections &&
+    debconf-set-selections &&
     echo debconf shared/accepted-oracle-license-v1-1 seen true | \
-    sudo debconf-set-selections
-sudo add-apt-repository -y ppa:webupd8team/java
-sudo apt-get update -qq -y
-sudo apt-get install -y oracle-java6-installer
+    debconf-set-selections
+add-apt-repository -y ppa:webupd8team/java
+apt-get update -qq -y
+apt-get install -y oracle-java6-installer
 
 # Scala and Play
 if [[ ! -d scala-2.10.3 ]]; then
@@ -37,7 +43,7 @@ if [[ ! -d scala-2.10.3 ]]; then
     sudo -u vagrant tar -xz
 fi
 
-sudo apt-get install unzip
+apt-get install -y unzip
 
 if [[ ! -d play-2.2.0 ]]; then
     echo "Downloading play 2.2.0"
@@ -61,7 +67,7 @@ npm install -q --no-bin-link
 # TODO: resolve linking errors, and remove --no-bin-link
 
 cd web_frontend
-bower install
+sudo -u vagrant -H bower install
 
 echo "source ~/project-quill/dev/bash_env.sh" >> /home/vagrant/.bashrc
 

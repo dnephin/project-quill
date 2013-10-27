@@ -7,7 +7,7 @@
 # web_frontend coffeescript src is referenced in a few places
 coffee_src = 'web_frontend/src/coffee/**/*.coffee'
 
-web_dist = 'web_backend/public'
+web_dist = 'dist/web'
 
 buildCouch = (name) ->
     couchdb_url = 'http://localhost:5984'
