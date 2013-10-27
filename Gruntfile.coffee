@@ -225,3 +225,8 @@ module.exports = (grunt) ->
     ]
 
     grunt.registerTask 'default', ['buildFrontend']
+
+    grunt.registerTask 'build', [
+        'buildFrontend'
+        'buildCouchdb'
+    ]
