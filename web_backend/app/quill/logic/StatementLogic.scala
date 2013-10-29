@@ -1,6 +1,6 @@
 package quill.logic
 
-import quill.models.StatementModel
+import quill.models.Statement
 
 
 /**
@@ -8,7 +8,7 @@ import quill.models.StatementModel
  */
 object StatementAddLogic {
 
-    def apply(stmt: StatementModel) = {
+    def apply(stmt: Statement) = {
         
     }
 }

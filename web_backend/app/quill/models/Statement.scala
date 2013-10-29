@@ -5,45 +5,45 @@ package quill.models
 import play.api.libs.json._
 import org.joda.time.DateTime
 
-case class LabelModel(
+case class Label(
     _id: String,
     editor: String)
 
-case class VersionModel(
+case class Version(
     major: Int,
     minor: Int,
     patch: Int,
     published: Boolean,
     date: Option[DateTime])
 
-case class EditorModel(
+case class Editor(
     id: String,
     bio: String)
 
 // TODO: field for finalized
-case class StatementModel(
+case class Statement(
     _id: Option[String],
     label: String,
-    version: VersionModel,
-    editor: EditorModel,
+    version: Version,
+    editor: Editor,
     title: String,
     problem: String,
     summary: String,
     full: String)
 
-object VersionModel {
-    implicit val format = Json.format[VersionModel]
+object Version {
+    implicit val format = Json.format[Version]
 }
 
-object EditorModel {
-    implicit val format = Json.format[EditorModel]
+object Editor {
+    implicit val format = Json.format[Editor]
 }
 
-object StatementModel {
-    implicit val format = Json.format[StatementModel]
+object Statement {
+    implicit val format = Json.format[Statement]
 }
 
-object LabelModel {
-    implicit val format = Json.format[LabelModel]
+object Label {
+    implicit val format = Json.format[Label]
 }
 

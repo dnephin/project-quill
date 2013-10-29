@@ -2,7 +2,7 @@ package quill.dao
 
 import play.api.Logger
 
-import quill.models.StatementModel
+import quill.models.Statement
 import play.api.libs.ws._
 import play.api.libs.json._
 import scala.concurrent.Future
@@ -22,7 +22,7 @@ object StatementData {
     
     var currentView = s"$url/_design/app/_view/current"
     
-    def add(stmt: StatementModel): Future[Response] = {
+    def add(stmt: Statement): Future[Response] = {
         // TODO: check version
         // TODO: check _id is not present
         // TODO: check label/editor
@@ -63,7 +63,7 @@ object StatementData {
         WS.url(s"$url/$id").get().map {
             response =>
                 // TODO: use format, and don't use get
-                response.json.validate[StatementModel].get
+                response.json.validate[Statement].get
         }
     }
 }

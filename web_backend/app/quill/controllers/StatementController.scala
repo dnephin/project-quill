@@ -13,7 +13,7 @@ import play.api.mvc.ActionBuilder
 import play.api.mvc.Request
 import play.api.mvc.SimpleResult
 import play.api.libs.json.Reads
-import quill.models.StatementModel
+import quill.models.Statement
 import quill.dao.StatementData
 
 /** Statement controller
@@ -41,7 +41,7 @@ object StatementController extends Controller {
         request =>
             {
                 Logger.warn(request.body.toString())
-                Json.fromJson[StatementModel](request.body) match {
+                Json.fromJson[Statement](request.body) match {
                     case JsSuccess(stmt, path) => StatementData.add(stmt).map {
                         response => Ok(response.body.toString())
                     }
