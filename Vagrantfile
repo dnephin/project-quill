@@ -34,7 +34,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Set resource limits
     # See http://www.virtualbox.org/manual/ch08.html#vboxmanage-modifyvm
     vbox.customize ["modifyvm", :id, "--cpus", "2"]
-    vbox.customize ["modifyvm", :id, "--memory", "1024"]
+    vbox.customize ["modifyvm", :id, "--memory", "2048"]
 
   end
 
