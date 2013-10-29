@@ -7,6 +7,7 @@
 # web_frontend coffeescript src is referenced in a few places
 coffee_src = 'web_frontend/src/coffee/**/*.coffee'
 
+web_dist = 'dist/web'
 
 buildCouch = (name) ->
     couchdb_url = 'http://localhost:5984'
@@ -33,7 +34,7 @@ module.exports = (grunt) ->
             compile:
                 files: [
                     src: coffee_src
-                    dest: 'dist/web/js/quill.js'
+                    dest: "#{web_dist}/js/quill.js"
                 ]
             compileSpec:
                 options:
@@ -82,7 +83,7 @@ module.exports = (grunt) ->
 
         jasmine:
             coffeeTest:
-                src: 'dist/web/js/quill/js'
+                src: "#{web_dist}/js/quill/js"
                 options:
                     specs: 'web_frontend/spec/js/*.js'
             databaseTest:
@@ -95,7 +96,7 @@ module.exports = (grunt) ->
                 files: [
                     cwd: 'web_frontend/static/'
                     src: ['**']
-                    dest: 'dist/web/'
+                    dest: web_dist
                     filter: 'isFile'
                     expand: true
                 ]
@@ -108,7 +109,7 @@ module.exports = (grunt) ->
                         'web_frontend/bower/jquery/jquery.js'
                         'web_frontend/bower/handlebars/handlebars.js'
                     ]
-                    dest: 'dist/web/js/'
+                    dest: "#{web_dist}/js/"
                     expand: true
                     flatten: true }
                     { src: [
@@ -116,7 +117,7 @@ module.exports = (grunt) ->
                         'web_frontend/bower/bootstrap/dist/css/' +
                             'bootstrap-theme.css'
                     ]
-                    dest: 'dist/web/css/'
+                    dest: "#{web_dist}/css/"
                     expand: true
                     flatten: true }
                 ]
@@ -126,7 +127,7 @@ module.exports = (grunt) ->
                     paths: ['web_frontend/src/less']
                 files: [
                     src: 'web_frontend/src/less/quill.less'
-                    dest: 'dist/web/css/quill.css'
+                    dest: "#{web_dist}/css/quill.css"
                 ]
 
         # TODO: compare this to grunt-ember-handlebars
@@ -136,7 +137,7 @@ module.exports = (grunt) ->
                     templateBasePath: 'web_frontend/src/handlebars/'
                 files: [
                     src: 'web_frontend/src/handlebars/**/*.hbs'
-                    dest: 'dist/web/js/templates.js'
+                    dest: "#{web_dist}/js/templates.js"
                 ]
 
         mkcouchdb: databases
@@ -224,3 +225,8 @@ module.exports = (grunt) ->
     ]
 
     grunt.registerTask 'default', ['buildFrontend']
+
+    grunt.registerTask 'build', [
+        'buildFrontend'
+        'buildCouchdb'
+    ]

@@ -38,27 +38,19 @@ To get started follow these steps:
 
         vagrant ssh
 
-4. Setup couchdb environment. See `<database/README.rst>`_
+4. Build frontend and database sources
 
     .. code-block:: bash
 
-        # Ensure that couchdb is running
-        sudo service couchdb start
-        # Setup databases
-        grunt buildCouchdb
+        cd project-quill
+        grunt build
 
-5. Build frontend sources
-
-    .. code-block:: bash
-
-        grunt buildFrontend
-
-6. Build backend sources and start webserver
+5. Build backend sources and start webserver
 
     .. code-block:: bash
 
         cd web_backend
-        play dev 9000 0.0.0.0
+        play run
 
 
 

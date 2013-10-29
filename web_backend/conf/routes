@@ -3,12 +3,11 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /                           quill.controllers.Application.index
 
 
-GET     /api/statement/:id          controllers.Statement.get(id)
-#POST    /api/statement              controllers.Statement.add
-POST    /api/statement/:id          controllers.Statement.update(id: String)
+# Get current published statement
+GET     /api/statement/:id          quill.controllers.StatementController.getPublished(id)
+GET     /api/statement/:id/edit     quill.controllers.StatementController.getUnpublished(id)
+POST    /api/statement              quill.controllers.StatementController.add
+PUT     /api/statement/:id          quill.controllers.StatementController.update(id: String)

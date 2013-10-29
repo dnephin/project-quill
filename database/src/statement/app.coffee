@@ -73,6 +73,7 @@ ddoc.updates.update = (doc, req) ->
     if buildVersion(newDoc.version) <= buildVersion(doc.version)
         return [null, "version was not incremented"]
 
+    # TODO: better/shorter id
     newDoc._id = req.uuid
     newDoc.version.date = new Date().toISOString()
     return [newDoc, "new document version"]
