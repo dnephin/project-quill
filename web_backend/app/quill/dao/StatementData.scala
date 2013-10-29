@@ -22,11 +22,10 @@ object StatementData {
     
     var currentView = s"$url/_design/app/_view/current"
     
-    def add(stmt: Statement): Future[Response] = {
-        // TODO: check version
-        // TODO: check _id is not present
-        // TODO: check label/editor
-        WS.url(url).post(Json.toJson(stmt))
+    def add(stmt: Statement): Future[Boolean] = {
+        WS.url(url).post(Json.toJson(stmt)).map {
+            response => response.status == 201
+        }
     }
 
     def idFromCurrentViewResponse(json: JsValue) = {

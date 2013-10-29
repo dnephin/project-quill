@@ -14,7 +14,10 @@ case class Version(
     minor: Int,
     patch: Int,
     published: Boolean,
-    date: Option[DateTime])
+    date: Option[DateTime]) {
+    
+    def value = s"$major.$minor.$patch"
+}
 
 case class Editor(
     id: String,

@@ -15,6 +15,9 @@ import play.api.mvc.SimpleResult
 import play.api.libs.json.Reads
 import quill.models.Statement
 import quill.dao.StatementData
+import quill.logic.StatementAddLogic
+import quill.logic.LabelNotUniqueError
+import quill.logic.BadVersionError
 
 /** Statement controller
   */
@@ -42,8 +45,12 @@ object StatementController extends Controller {
             {
                 Logger.warn(request.body.toString())
                 Json.fromJson[Statement](request.body) match {
-                    case JsSuccess(stmt, path) => StatementData.add(stmt).map {
-                        response => Ok(response.body.toString())
+                    case JsSuccess(stmt, path) => StatementAddLogic(stmt).map {
+                        // TODO: check LogicResponse
+                        response => Ok(response.toString())
+                    } recover {
+                        case LabelNotUniqueError() => BadRequest("bad label")
+                        case BadVersionError() => BadRequest("bad version")
                     }
                     case JsError(e) => {
                         Logger.warn(e.toString())

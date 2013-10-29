@@ -29,7 +29,7 @@ class StatementSpec extends FunSuite {
 		}
 	"""
 
-	test("StatementModel parsed from json") {
+	test("Statement parsed from json") {
 		val expected = Statement(
 			Some("abab3a3"),
 			"example-statement",
@@ -46,7 +46,7 @@ class StatementSpec extends FunSuite {
 		}
 	}
 
-	test("VersionModel parsed from json") {
+	test("Version parsed from json") {
 		val date = new DateTime(2013, 1, 2, 20, 10, 5)
 		val expected = Version(1, 2, 3, true, Some(date))
 		val source = Json.obj(
@@ -62,7 +62,7 @@ class StatementSpec extends FunSuite {
 		}
 	}
 
-	test("VersionModel parsed from json without date") {
+	test("Version parsed from json without date") {
 		val date = new DateTime(2013, 1, 2, 20, 10, 5)
 		val expected = Version(1, 2, 3, false, None)
 		val source = Json.obj(
@@ -76,6 +76,10 @@ class StatementSpec extends FunSuite {
 		} recover {
 		    case JsError(errors) => throw new AssertionError(errors.toString()) 
 		}
+	}
+	
+	test("Version value is correct") {
+	    assert(Version(3, 100, 5, false, None).value === "3.100.5")
 	}
 
 }
