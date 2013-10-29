@@ -1,6 +1,6 @@
 /**
   */
-package controllers
+package quill.controllers
 
 import play.api.Logger
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -18,7 +18,7 @@ import quill.dao.StatementData
 
 /** Statement controller
   */
-object Statement extends Controller {
+object StatementController extends Controller {
 
     def getPublished(id: String) = Action.async {
         StatementData.getCurrentPublished(id).map {
