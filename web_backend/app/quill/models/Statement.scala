@@ -14,7 +14,9 @@ case class Version(
     minor: Int,
     patch: Int,
     published: Boolean,
-    date: Option[DateTime]) {
+    date: Option[DateTime]
+    // TODO: add a message
+) {
     
     def value = s"$major.$minor.$patch"
 }
@@ -33,6 +35,8 @@ case class Statement(
     problem: String,
     summary: String,
     full: String)
+    
+// TODO: limit length of some string fields
 
 object Version {
     implicit val format = Json.format[Version]

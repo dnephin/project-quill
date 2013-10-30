@@ -4,7 +4,8 @@ QuillApp.Router.map ->
 
     @resource 'statement', ->
         @route 'new'
-        @route 'view',  path: ':id'
+        @route 'view',      path: ':id'
+        @route 'viewFull',  path: ':id/view'
 
 
 QuillApp.StatementNewRoute = Ember.Route.extend
@@ -16,6 +17,12 @@ QuillApp.StatementNewRoute = Ember.Route.extend
 QuillApp.StatementViewRoute = Ember.Route.extend
 
     model: (params) -> @store.find('statement', params.id)
+
+
+QuillApp.StatementViewFullRoute = Ember.Route.extend
+
+    model: (params) -> @store.find('statement', params.id)
+
 
 
 # TODO: move to controllers

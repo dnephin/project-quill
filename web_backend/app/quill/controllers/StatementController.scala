@@ -25,14 +25,14 @@ object StatementController extends Controller {
 
     def getPublished(id: String) = Action.async {
         StatementData.getCurrentPublished(id).map {
-            stmt => Ok(Json.toJson(stmt))
+            stmt => Ok(Json.obj("statement" -> Json.toJson(stmt)))
         }
     }
 
     // TODO: DRY with param
     def getUnpublished(id: String) = Action.async {
         StatementData.getCurrent(id).map {
-            stmt => Ok(Json.toJson(stmt))
+            stmt => Ok(Json.obj("statement" -> Json.toJson(stmt)))
         }
     }
 
