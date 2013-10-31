@@ -4,11 +4,9 @@
   <div class="statement-full col-md-12">
     <h2>{{title}}</h2>
 
-    <p class="pull-right">
-        <em>{{version.major}}.{{version.minor}}.{{version.patch}}</em>
-    </p>
+    {{version-view version=version}}
 
-    {{editor-summary editor=statement.editor}}
+    {{editor-summary editor=editor}}
     <p>{{problem}}</p>
     <p>{{full}}</p>
     {{#link-to 'statement.view' label class="pull-right"}}Summary{{/link-to}}

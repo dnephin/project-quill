@@ -1,0 +1,35 @@
+
+
+/*
+ *  Styles for editable "forms" which includes contenteditable elements.
+ *
+ */
+
+.placeholder {
+    font-style: italic;
+    // TODO: move to colors.less
+    color: #ccc;
+    font-weight: normal;
+}
+
+.statement-edit {
+
+    .statement-problem-block,
+    .statement-summary-block {
+        min-height: 4em;
+    }
+    
+    .statement-full-block {
+        min-height: 8em;
+    }
+
+    .placeholder[contenteditable=true] {
+        border: 1px dotted #ddd;
+        text-align: center;
+    }
+
+    p {
+        padding: 1em;
+    }
+
+}

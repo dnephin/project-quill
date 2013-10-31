@@ -13,15 +13,15 @@
 
   <div class="statement-summary col-md-10">
     <h2>{{title}}</h2>
+    {{version-view version=version}}
+    
 
-    <p class="pull-right">
-        <em>{{version.major}}.{{version.minor}}.{{version.patch}}</em>
-    </p>
-
-    {{editor-summary editor=statement.editor}}
+    {{editor-summary editor=editor}}
     <p>{{problem}}</p>
     <p>{{summary}}</p>
-    {{#link-to 'statement.viewFull' label class="pull-right"}}View full{{/link-to}}
+    {{#link-to 'statement.viewFull' label class="pull-right"}}
+        View full
+    {{/link-to}}
   </div>
 
   <div class="statement-actions col-md-10 col-md-offset-2">

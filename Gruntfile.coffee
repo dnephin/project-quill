@@ -126,7 +126,7 @@ module.exports = (grunt) ->
                 options:
                     paths: ['web_frontend/src/less']
                 files: [
-                    src: 'web_frontend/src/less/quill.less'
+                    src: 'web_frontend/src/less/*.less'
                     dest: "#{web_dist}/css/quill.css"
                 ]
 

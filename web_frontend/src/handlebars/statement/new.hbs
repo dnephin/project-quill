@@ -3,24 +3,41 @@
 <div class="container">
 
   <div class="col-md-12 statement-edit">
-    {{input name="title" value=title}}
-    {{input name="version" value=version}}
-    {{textarea name="problem" value=problem}}
-    {{textarea name="summary" value=summary}}
-    {{textarea name="full-document" value=fullDocument}}
+
+    {{view Ember.EditableView
+            tagName="h2"
+            valueBinding="title"
+            placeholder="Title"}}
+
+    <!-- TODO: editable editor component -->
+    {{editor-summary editor=editor}}
+
+    <!-- TODO: editable version view -->
+    <div class="pull-right text-right col-md-2">
+      {{input name="version" value=version}}
+    </div>
+
+    {{view Ember.EditableView
+            tagName="p"
+            class="statement-problem-block"
+            valueBinding="problem"
+            placeholder="Describe the problem which this statement aims to solve"}}
+    {{view Ember.EditableView
+            tagName="p"
+            class="statement-summary-block"
+            valueBinding="summary"
+            placeholder="Summarize the solution"}}
+    {{view Ember.EditableView
+            tagName="p"
+            class="statement-full-block"
+            valueBinding="full"
+            placeholder="Full solution"}}
+
   </div>
 
-  <div class="col-md-3 pull-right">
-    
-    {{#if isEditMode}}
-        <button {{action save}}>Save</button>
-    {{else}}
-        <button {{action toggleProperty 'isEditMode'}}>Edit</button>
-    {{/if}}
-    
-    {{#unless active}}
-      <button {{action publish}}>Publish</button>
-    {{/unless}}
+  <div class="col-md-3 pull-right text-right">
+    <button {{action save}} class="btn btn-default">Save</button>
+    <button {{action publish}} class="btn btn-primary">Publish</button>
   </div>
 
 </div>
