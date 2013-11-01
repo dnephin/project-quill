@@ -30,8 +30,9 @@ QuillApp.StatementViewFullRoute = Ember.Route.extend
 QuillApp.StatementNewController = Ember.ObjectController.extend
 
     actions:
-        save: ->
-            console.log "save #{@content}"
+        save: (event) ->
+            record = @store.createRecord('statement', @content)
+            record.save()
 
         publish: ->
             console.log "publish"

@@ -16,7 +16,7 @@ Ember.EditableView = Em.View.extend
 
     hasFocus: false
     isUserTyping: false
-
+    
     # Override placeholder in the template
     placeholder: 'default text'
 

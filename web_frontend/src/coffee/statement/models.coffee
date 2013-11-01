@@ -1,21 +1,20 @@
 
 
-# TODO: remove or create transform?
-QuillApp.Version = DS.Model.extend
-    major:          DS.attr('number')
-    minor:          DS.attr('number')
-    patch:          DS.attr('number')
-    date:           DS.attr('date')
-    published:      DS.attr('boolean')
+QuillApp.ObjectTransform = DS.Transform.extend
+
+    deserialize: (obj) ->
+        return obj
+
+    serialize: (obj) ->
+        return obj
 
 
 QuillApp.Statement = DS.Model.extend
     label:          DS.attr('string')
     title:          DS.attr('string')
-    version:        DS.attr()
+    version:        DS.attr('object')
     problem:        DS.attr('string')
     summary:        DS.attr('string')
-    editor:         DS.attr()
+    editor:         DS.attr('object')
     full:           DS.attr('string')
-
 
