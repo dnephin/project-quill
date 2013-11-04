@@ -34,7 +34,7 @@ class StatementSpec extends FunSuite {
 			Some("abab3a3"),
 			"example-statement",
 			Version(1, 2, 0, true, None),
-			Editor("ad2dffa23", "I worked on it"),
+			Editor(Some("ad2dffa23"), "I worked on it"),
 			"Example Statement",
 			"It needs to change",
 			"...",

@@ -10,4 +10,5 @@ GET     /                           quill.controllers.Application.index
 GET     /api/statement/:id          quill.controllers.StatementController.getPublished(id)
 GET     /api/statement/:id/edit     quill.controllers.StatementController.getUnpublished(id)
 POST    /api/statement              quill.controllers.StatementController.add
+POST    /api/statement/:id/publish  quill.controllers.StatementController.publish
 PUT     /api/statement/:id          quill.controllers.StatementController.update(id: String)

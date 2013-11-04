@@ -19,6 +19,7 @@ import quill.logic.StatementAddLogic
 import quill.logic.LabelNotUniqueError
 import quill.logic.BadVersionError
 
+
 /** Statement controller
   */
 object StatementController extends Controller {
@@ -39,12 +40,19 @@ object StatementController extends Controller {
     def update(id: String) = Action {
         Ok(Json.obj("status" -> "OK", "message" -> "what"))
     }
+    
+    def publish(id: String) = Action.async {
+        // TODO: check editor id matches user session
+        StatementData.publish(id).map {
+            stmt => Ok
+        }
+    }
 
     def add = Action.async(parse.json) {
         request =>
             {
                 Logger.warn(request.body.toString())
-                Json.fromJson[Statement](request.body) match {
+                Json.fromJson[Statement](request.body \ "statement") match {
                     case JsSuccess(stmt, path) => StatementAddLogic(stmt).map {
                         // TODO: check LogicResponse
                         response => Ok(response.toString())

@@ -22,9 +22,11 @@ case class Version(
 }
 
 case class Editor(
-    id: String,
+    id: Option[String],
     bio: String)
 
+// TODO: require non-empty
+// TODO: limit length of some string fields
 // TODO: field for finalized
 case class Statement(
     _id: Option[String],
@@ -36,7 +38,6 @@ case class Statement(
     summary: String,
     full: String)
     
-// TODO: limit length of some string fields
 
 object Version {
     implicit val format = Json.format[Version]

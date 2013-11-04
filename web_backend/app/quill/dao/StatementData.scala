@@ -18,9 +18,11 @@ object StatementData {
     // TODO: config
     val url = "http://localhost:5984/statement"
 
-    var currentPublishedView = s"$url/_design/app/_view/current_published"
+    var currentPublishedViewUrl = s"$url/_design/app/_view/current_published"
     
-    var currentView = s"$url/_design/app/_view/current"
+    var currentViewUrl = s"$url/_design/app/_view/current"
+    
+    var publishUrl = s"$url/_design/app/_update/publish"
     
     def add(stmt: Statement): Future[Boolean] = {
         WS.url(url).post(Json.toJson(stmt)).map {
@@ -46,13 +48,19 @@ object StatementData {
     }
 
     def getCurrentPublished(label: String) = {
-        currentView(label, currentPublishedView)
+        currentView(label, currentPublishedViewUrl)
     }
 
     def getCurrent(label: String) = {
-        currentView(label, currentView)
+        currentView(label, currentViewUrl)
     }
-
+    
+    def publish(id: String) = {
+        WS.url(publishUrl).post(Json.obj("_id" -> id)).map {
+            // TODO: message on error
+            response => response.status == 201
+        }
+    }
 
     /**
       * Retrieve a Statement by id.

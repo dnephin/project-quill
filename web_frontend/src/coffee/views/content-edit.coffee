@@ -4,6 +4,7 @@
 
 # TODO: cleanup
 # TODO: tests
+# TODO: sometimes click/focus does not make it editable
 #
 # A view that is editable and displays a placeholder when empty
 #

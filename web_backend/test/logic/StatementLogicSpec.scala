@@ -13,7 +13,7 @@ class StatementAddLogicSpec extends FunSpec {
                 Some("abab3a3"),
                 "example-statement",
                 version,
-                Editor("ad2dffa23", "I worked on it"),
+                Editor(Some("ad2dffa23"), "I worked on it"),
                 "Example Statement",
                 "It needs to change",
                 "...",
