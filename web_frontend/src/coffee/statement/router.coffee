@@ -16,6 +16,12 @@ QuillApp.StatementNewRoute = Ember.Route.extend
         controller.set 'content', {}
 
 
+QuillApp.StatementEditRoute = Ember.Route.extend
+
+    # TODO: custom url for unpublished
+    model: (params) -> @store.find('statement', params.label)
+
+
 QuillApp.StatementViewRoute = Ember.Route.extend
 
     model: (params) -> @store.find('statement', params.label)
@@ -39,12 +45,12 @@ QuillApp.StatementNewController = Ember.ObjectController.extend
                 console.log "Error: #{reason.responseText}"
             )
 
+
 QuillApp.StatementEditController = Ember.ObjectController.extend
 
     actions:
         save: (event) ->
-            # TODO: should be an update
-            statement = @store.createRecord('statement', @content)
+            statement = @get 'model'
             statement.save().then( (obj) =>
                 # TODO: show visual "saved" message
                 console.log "Saved"
@@ -55,7 +61,7 @@ QuillApp.StatementEditController = Ember.ObjectController.extend
 
         publish: (event) ->
             console.log "Publishing"
-            Ember.$.getJSON("/api/statement/#{@content.id}/publish")
+            Ember.$.post("/api/statement/#{@content.id}/publish")
             .then( (obj) =>
                 @set('published', true)
                 console.log "published"
