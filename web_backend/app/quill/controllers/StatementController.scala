@@ -38,13 +38,13 @@ object StatementController extends Controller {
     }
 
     def update(id: String) = Action {
-        Ok(Json.obj("status" -> "OK", "message" -> "what"))
+        Ok(Json.obj())
     }
     
     def publish(id: String) = Action.async {
         // TODO: check editor id matches user session
         StatementData.publish(id).map {
-            stmt => Ok
+            stmt => Ok(Json.obj())
         }
     }
 

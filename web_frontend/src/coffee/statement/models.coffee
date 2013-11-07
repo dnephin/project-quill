@@ -49,3 +49,13 @@ QuillApp.StatementSerializer = DS.RESTSerializer.extend
         delete obj.date
 
         obj
+
+
+QuillApp.StatementAdapter = QuillApp.ApplicationAdapter.extend
+
+    # TODO: fails, I think because no models were put into context
+    findForEdit: (store, type, label) ->
+        @ajax(@buildURL(type.typeKey, label) + "/edit", 'GET')
+
+    publish: (id) ->
+        @ajax(@buildURL('statement', id) + "/publish", 'POST')
