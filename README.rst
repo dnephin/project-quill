@@ -1,5 +1,7 @@
-project-quill
+Project Quill
 =============
+
+An open source group decision making tool
 
 *Project Status:* Early development
 

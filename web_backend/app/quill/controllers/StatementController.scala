@@ -38,6 +38,7 @@ object StatementController extends Controller {
     }
 
     def update(id: String) = Action {
+        // TODO: check editor id matches user session
         Ok(Json.obj())
     }
     
