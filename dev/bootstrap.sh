@@ -5,6 +5,9 @@
 
 set -e
 
+# Update apt cache
+apt-get update
+
 # Install english language pack
 apt-get install -y language-pack-en
 locale-gen en_US.UTF-8
