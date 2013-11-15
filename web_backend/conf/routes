@@ -6,10 +6,10 @@
 GET     /                           quill.controllers.Application.index
 
 # Authentication
-#GET     /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
-#POST    /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
-#GET     /api/login                      securesocial.controllers.LoginPage.login
-#GET     /api/logout                     securesocial.controllers.LoginPage.logout
+GET     /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
+POST    /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
+GET     /api/login                      securesocial.controllers.LoginPage.login
+GET     /api/logout                     securesocial.controllers.LoginPage.logout
 
 
 # Get current published statement
@@ -18,5 +18,9 @@ GET     /api/statement/:id/edit     quill.controllers.StatementController.getUnp
 POST    /api/statement              quill.controllers.StatementController.add
 POST    /api/statement/:id/publish  quill.controllers.StatementController.publish(id)
 PUT     /api/statement/:id          quill.controllers.StatementController.update(id: String)
+
+
+# TODO: remove, used so securesocial assets use the correct url
+GET     /*file                      controllers.Assets.at(path="/public", file)
 
 

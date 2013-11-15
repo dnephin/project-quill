@@ -2,12 +2,15 @@
 package auth.services
 
 
+import scala.concurrent.Await
+import scala.concurrent.duration._
 import play.api.Application
 import play.api.libs.concurrent.Execution.Implicits._
 import securesocial.core.{Identity, IdentityId, UserServicePlugin}
 import securesocial.core.providers.Token
 
 import auth.dao.UserData
+import auth.models.{User, UserIdentity}
 
 
 class AuthUserService(application: Application)
@@ -20,8 +23,7 @@ class AuthUserService(application: Application)
      * @return an optional user
      */
     def find(id: IdentityId) = {
-        // TODO: don't use get
-        UserData.getByIdentityId(id).value.get.toOption match {
+        val optUser = UserData.getByIdentityId(id).map {
             case Some(user) => user.identity match {
                 // TODO: why is all this necessary ?
                 case uid: Identity => Some(uid)
@@ -29,6 +31,9 @@ class AuthUserService(application: Application)
             }
             case _ => None
         }
+
+        // TODO: better way to do this, or at least move to config
+        Await.result(optUser, 2 seconds)
     }
 
     /**
@@ -37,12 +42,23 @@ class AuthUserService(application: Application)
      * @param user
      */
     def save(identity: Identity): Identity = {
-        // TODO: handle race condition when first get misses
+        // TODO: handle duplicate identities on different users
         // TODO: move to user logic?
         // Get user by identity
-        UserData.getByIdentityId(identity.identityId).map {
-            user => UserData.add(user)
+        val optIdentity = UserData.getByIdentityId(identity.identityId).map {
+            case Some(user) => {
+                UserData.add(user)
+                user.identity
+            }
+            case _ => {
+                val userId = UserIdentity.fromIdentity(identity)
+                UserData.add(User(None, Seq(), userId))
+                userId
+            }
         }
+
+         // TODO: better way to do this, or at least move to config
+        Await.result(optIdentity, 2 seconds)
     }
 
     /**

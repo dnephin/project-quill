@@ -77,6 +77,24 @@ object UserIdentity {
     )(OAuth2Info.apply, unlift(OAuth2Info.unapply))
 
     implicit val format = Json.format[UserIdentity]
+
+
+    // TODO: better way of doing this?
+    def fromIdentity(i: Identity) = {
+        UserIdentity(i.identityId,
+                     i.firstName,
+                     i.lastName,
+                     i.fullName,
+                     i.email,
+                     i.avatarUrl,
+                     i.authMethod,
+                     i.oAuth1Info,
+                     i.oAuth2Info,
+                     i.passwordInfo)
+    }
+
+
+
 }
 
 object User {

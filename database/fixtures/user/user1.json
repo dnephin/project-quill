@@ -1,0 +1,31 @@
+{
+    "_id": "profile_name",
+    "links": [
+        {
+            "name": "facebook",
+            "url": "http://facebook.com/someone",
+            "description": "Personal facebook account",
+            "date": 1384484278000 
+        }
+     ],
+    "identity": {
+        "identityId": {
+            "userId": "someone",
+            "providerId": "github"
+        },
+        "firstName": "Some",
+        "lastName": "One",
+        "fullName": "",
+        "email": "someone@example.com",
+        "avatarUrl": "http://avatarurl.example.com",
+        "authMethod": {"method": "oauth2"},
+        "oAuth1Info": null,
+        "oAuth2Info": null,
+        "passwordInfo": {
+            "hasher": "hasher",
+            "password": "password",
+            "salt": "the salt"
+        }
+    }
+}
+

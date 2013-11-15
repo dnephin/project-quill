@@ -28,28 +28,31 @@ object UserData {
     }
    
     // TODO: helper  got getById
-    def getById(id: String) = {
+    def getById(id: String): Future[Option[User]] = {
         WS.url(s"$url/$id").get().map {
              response =>
                 // TODO: don't use get
-                response.json.validate[User].get
+                response.json.validate[User].asOpt
         }
         // TODO: error handling
    }
 
-    def idFromViewResponse(json: JsValue) = {
+    def idFromViewResponse(json: JsValue): Option[String] = {
         // TODO: Use a Reads/Format
         // TODO: raise 404 on missing
-        ((json \ "rows")(0) \ "_id").as[String]
+        ((json \ "rows")(0) \ "id").asOpt[String]
     }
 
-   def getByIdentityId(identityId: IdentityId) = {
+   def getByIdentityId(identityId: IdentityId): Future[Option[User]] = {
         WS.url(identityIdViewUrl)
             .withQueryString(
                 "key" -> Json.arr(identityId.providerId,
-                                 identityId.userId).toString())
+                                  identityId.userId).toString())
             .get().flatMap {
-                response => getById(idFromViewResponse(response.json))
+                response => idFromViewResponse(response.json) match {
+                    case Some(id) => getById(id)
+                    case None => Future.successful(None)
+                }
             }
    }
 
