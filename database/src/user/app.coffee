@@ -1,11 +1,11 @@
 #
-# app.js design document for label database
+# app.js design document for user database
 #
 
 
 # TODO: is there a better way to support testing here?
 module = if window?
-    window.label = {}
+    window.user = {}
 else
     module
 module.exports = ddoc =
@@ -16,4 +16,4 @@ module.exports = ddoc =
     shows: {}
 
 
-
+# TODO: document validation

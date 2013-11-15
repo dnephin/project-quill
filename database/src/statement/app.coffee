@@ -4,7 +4,10 @@
 
 
 # TODO: is there a better way to support testing here?
-module = window ? module
+module = if window?
+    window.statement = {}
+else
+    module
 module.exports = ddoc =
     _id: '_design/app'
     views: {}

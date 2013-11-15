@@ -2,7 +2,7 @@
 # Unit tests for statement/_design/app
 #
 
-ddoc = window.exports
+ddoc = window.statement.exports
 
 describe "statement app design document", ->
 
