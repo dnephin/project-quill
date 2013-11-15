@@ -6,10 +6,10 @@
 GET     /                           quill.controllers.Application.index
 
 # Authentication
-GET     /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
-POST    /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
-GET     /api/login                      securesocial.controllers.LoginPage.login
-GET     /api/logout                     securesocial.controllers.LoginPage.logout
+#GET     /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
+#POST    /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
+#GET     /api/login                      securesocial.controllers.LoginPage.login
+#GET     /api/logout                     securesocial.controllers.LoginPage.logout
 
 
 # Get current published statement

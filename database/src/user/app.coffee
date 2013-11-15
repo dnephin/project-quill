@@ -17,3 +17,10 @@ module.exports = ddoc =
 
 
 # TODO: document validation
+
+
+ddoc.views.identity_id =
+    map: (doc) ->
+        id = doc.identity.identityId
+        emit [id.providerId, id.userId], null
+

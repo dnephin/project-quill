@@ -2,7 +2,9 @@
 package auth.controllers
 
 
-import play.api.mvc.{Controller, Action, Session}
+import scala.concurrent.Future
+import play.api.mvc.{Controller, Action, Session, Request, ActionBuilder}
+import play.api.mvc.{SimpleResult, Results}
 import securesocial.core._
 
 // TODO: upstream to securesocial
@@ -31,3 +33,4 @@ object LoginController extends Controller {
     }
 
 }
+

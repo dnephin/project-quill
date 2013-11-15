@@ -173,6 +173,7 @@ module.exports = (grunt) ->
                     'coffee:database'
                     'coffee:databaseSpec'
                     'jasmine:databaseTest'
+                    'couchapp'
                 ]
 
             less:
