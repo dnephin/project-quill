@@ -36,7 +36,26 @@ case class Statement(
     title: String,
     problem: String,
     summary: String,
-    full: String)
+    full: String
+) {
+
+
+    /**
+      * Add an editor id and return a new Statement.
+      *
+      */
+    def addEditorId(editorId: String) = {
+        Statement(_id,
+                  label,
+                  version,
+                  Editor(Some(editorId), editor.bio),
+                  title,
+                  problem,
+                  summary,
+                  full)
+    }
+
+}
     
 
 object Version {

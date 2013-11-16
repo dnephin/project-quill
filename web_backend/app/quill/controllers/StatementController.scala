@@ -42,21 +42,11 @@ object StatementController extends Controller with SecureSocial {
         }
     }
 
-    def update(id: String) = SecuredAction(ajaxCall=true) {
-        // TODO: check editor id matches user session
-        Ok(Json.obj())
-    }
-    
-    def publish(id: String) = SecuredAction(ajaxCall=true).async {
-        // TODO: check editor id matches user session
-        StatementData.publish(id).map {
-            stmt => Ok(Json.obj())
-        }
-    }
-
-    def add = SecuredAction(ajaxCall=true).async(parse.json) { request => {
+    def update(id: String) = SecuredAction(ajaxCall=true).async(parse.json) {
+        request => {
             Logger.warn(request.body.toString())
             Json.fromJson[Statement](request.body \ "statement") match {
+            // TODO: check editor id matches user session
                 case JsSuccess(stmt, path) => StatementAddLogic(stmt).map {
                     // TODO: check LogicResponse
                     response => Ok(response.toString())
@@ -70,7 +60,46 @@ object StatementController extends Controller with SecureSocial {
                     Future { BadRequest(e.toString()) }
                 }
             }
-            // TODO: handle error response
+        }
+    }
+    
+    /**
+     *  Publish a statement.
+     *
+     */
+    def publish(id: String) = SecuredAction(ajaxCall=true).async { implicit request =>
+        // TODO: move to logic
+        //StatementData.getById(id).flatMap {
+        //    stmt => if (stmt.editor.id != 
+        // TODO: check editor id matches user session
+        StatementData.publish(id).map {
+            stmt => Ok(Json.obj())
+        }
+    }
+
+    def add = SecuredAction(ajaxCall=true).async(parse.json) { request => {
+        // TODO: cleanup
+        Logger.warn(request.body.toString())
+        val response = for {
+            stmt <- Json.fromJson[Statement](request.body \ "statement");
+            // TODO: store username in Identity
+            maybeUser <- UserData.getByIdentityId(request.user.identityId);
+            user <- maybeUser;
+            response <- StatementAddLogic(stmt.addEditorId(user.editor.id))
+       // TODO: check LogicResponse
+        } yield response
+        response.map {
+            Ok(response.toString())
+        }
+
+        //        } recover {
+        //            case LabelNotUniqueError() => BadRequest("bad label")
+        //            case BadVersionError() => BadRequest("bad version")
+        //            case JsError(e) => {
+        //            Logger.warn(e.toString())
+                    // TODO: make a JSON body for error
+        //            Future.successful(BadRequest(e.toString()))
+        //            }
         }
     }
 }
