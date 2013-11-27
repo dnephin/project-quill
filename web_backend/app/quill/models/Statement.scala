@@ -37,26 +37,7 @@ case class Statement(
     problem: String,
     summary: String,
     full: String
-) {
-
-
-    /**
-      * Add an editor id and return a new Statement.
-      *
-      */
-    def addEditorId(editorId: String) = {
-        Statement(_id,
-                  label,
-                  version,
-                  Editor(Some(editorId), editor.bio),
-                  title,
-                  problem,
-                  summary,
-                  full)
-    }
-
-}
-    
+)
 
 object Version {
     implicit val format = Json.format[Version]

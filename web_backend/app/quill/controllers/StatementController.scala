@@ -18,9 +18,9 @@ import quill.dao.StatementData
 import quill.logic.StatementAddLogic
 import quill.logic.LabelNotUniqueError
 import quill.logic.BadVersionError
-
-
 import securesocial.core.SecureSocial
+import auth.dao.UserData
+import quill.models.Editor
 
 
 // TODO: remove ajaxCall=true with an abstraction
@@ -77,29 +77,29 @@ object StatementController extends Controller with SecureSocial {
         }
     }
 
-    def add = SecuredAction(ajaxCall=true).async(parse.json) { request => {
-        // TODO: cleanup
-        Logger.warn(request.body.toString())
-        val response = for {
-            stmt <- Json.fromJson[Statement](request.body \ "statement");
-            // TODO: store username in Identity
-            maybeUser <- UserData.getByIdentityId(request.user.identityId);
-            user <- maybeUser;
-            response <- StatementAddLogic(stmt.addEditorId(user.editor.id))
-       // TODO: check LogicResponse
-        } yield response
-        response.map {
-            Ok(response.toString())
-        }
-
-        //        } recover {
-        //            case LabelNotUniqueError() => BadRequest("bad label")
-        //            case BadVersionError() => BadRequest("bad version")
-        //            case JsError(e) => {
-        //            Logger.warn(e.toString())
+    def add = SecuredAction(ajaxCall=true).async(parse.json) {
+        request => {
+            // TODO: cleanup
+            Logger.warn(request.body.toString())
+            
+            val stmt = Json.fromJson[Statement](request.body \ "statement").get
+            
+            val response = for {
+                optUser <- UserData.getByIdentityId(request.user.identityId)
+                success <- StatementAddLogic(
+                                stmt.copy(
+                                        editor=Editor(optUser.get._id, stmt.editor.bio)))
+            } yield Ok(success.toString())
+            
+            response recover {
+                case LabelNotUniqueError() => BadRequest("bad label")
+                case BadVersionError() => BadRequest("bad version")
+                case e: NoSuchElementException => {
+                    Logger.warn(e.toString())
                     // TODO: make a JSON body for error
-        //            Future.successful(BadRequest(e.toString()))
-        //            }
+                    BadRequest(e.toString())
+                }
+            }
         }
     }
 }

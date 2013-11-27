@@ -18,7 +18,8 @@ object StatementData {
     // TODO: config
     val url = "http://localhost:5984/statement"
 
-    var currentPublishedViewUrl = s"$url/_design/app/_view/current_published"
+    var currentPublishedViewUrl =
+        s"$url/_design/app/_view/current_published"
     
     var currentViewUrl = s"$url/_design/app/_view/current"
     

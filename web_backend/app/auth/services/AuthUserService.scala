@@ -17,7 +17,7 @@ class AuthUserService(application: Application)
                       extends UserServicePlugin(application) {
 
     /**
-     * Finds a user that maches the specified id
+     * Finds a user that matches the specified id
      *
      * @param id the user id
      * @return an optional user
