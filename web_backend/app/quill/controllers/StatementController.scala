@@ -20,7 +20,7 @@ import quill.logic.LabelNotUniqueError
 import quill.logic.BadVersionError
 import securesocial.core.SecureSocial
 import auth.dao.UserData
-import quill.models.Editor
+import quill.logic.StatementUpdateLogic
 
 
 // TODO: remove ajaxCall=true with an abstraction
@@ -44,20 +44,23 @@ object StatementController extends Controller with SecureSocial {
 
     def update(id: String) = SecuredAction(ajaxCall=true).async(parse.json) {
         request => {
+            // TODO: cleanup
             Logger.warn(request.body.toString())
-            Json.fromJson[Statement](request.body \ "statement") match {
-            // TODO: check editor id matches user session
-                case JsSuccess(stmt, path) => StatementAddLogic(stmt).map {
-                    // TODO: check LogicResponse
-                    response => Ok(response.toString())
-                } recover {
-                    case LabelNotUniqueError() => BadRequest("bad label")
-                    case BadVersionError() => BadRequest("bad version")
-                }
-                case JsError(e) => {
+            
+            // TODO: move to a Composite Action
+            val stmt = Json.fromJson[Statement](request.body \ "statement").get
+            
+            val response = for {
+                optUser <- UserData.getByIdentityId(request.user.identityId)
+                success <- StatementUpdateLogic(stmt, optUser.get._id.get)
+            } yield Ok(success.toString())
+            
+            response recover {
+                case BadVersionError() => BadRequest("bad version")
+                case e: NoSuchElementException => {
                     Logger.warn(e.toString())
                     // TODO: make a JSON body for error
-                    Future { BadRequest(e.toString()) }
+                    BadRequest(e.toString())
                 }
             }
         }
@@ -82,13 +85,12 @@ object StatementController extends Controller with SecureSocial {
             // TODO: cleanup
             Logger.warn(request.body.toString())
             
+            // TODO: move to a Composite Action
             val stmt = Json.fromJson[Statement](request.body \ "statement").get
             
             val response = for {
                 optUser <- UserData.getByIdentityId(request.user.identityId)
-                success <- StatementAddLogic(
-                                stmt.copy(
-                                        editor=Editor(optUser.get._id, stmt.editor.bio)))
+                success <- StatementAddLogic(stmt, optUser.get._id.get)
             } yield Ok(success.toString())
             
             response recover {

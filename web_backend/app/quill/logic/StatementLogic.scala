@@ -8,6 +8,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import quill.models.Label
 import quill.dao.StatementData
 import quill.models.Version
+import quill.models.Editor
 
 
 case class LabelNotUniqueError() extends Exception
@@ -32,11 +33,15 @@ object StatementAddLogic {
     }
 
     // TODO: validate editor.id
-    def apply(stmt: Statement): Future[Boolean] = {
-        if (!isAcceptedVersion(stmt.version)) Future { throw new BadVersionError() }
+    def apply(stmt: Statement, userId: String): Future[Boolean] = {
+        if (!isAcceptedVersion(stmt.version)) Future { 
+            throw new BadVersionError() 
+        }
+        
         else for {
             _ <- addUniqueLabel(stmt.label)
-            result <- StatementData.add(stmt)
+            result <- StatementData.add(
+                    stmt.copy(editor=Editor(Some(userId), stmt.editor.bio)))
         } yield if (!result) throw new AddFailedError() else true
         
     }
@@ -59,6 +64,9 @@ object StatementPublishLogic {
   */
 object StatementUpdateLogic {
 
+    def apply(stmt: Statement, userId: String): Future[Boolean] = {
+        Future.successful(true)
+    }
 
 }
 
