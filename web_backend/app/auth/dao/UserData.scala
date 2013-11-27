@@ -10,6 +10,10 @@ import securesocial.core.IdentityId
 
 case class UserNotFoundException(msg: String) extends Exception
 
+// TODO: move to couchdb client lib
+case class Conflict() extends Exception
+
+
 /** Data access for User identities
   */
 object UserData {
@@ -19,39 +23,40 @@ object UserData {
 
     val identityIdViewUrl = s"$url/_design/app/_view/identity_id"
 
-    // TODO: DRY boilerplate, better response
-    def add(user: User): Future[Boolean] = {
+    // TODO: error handling and logging
+    // TODO: move to couch client lib
+    def add(user: User): Future[String] = {
         WS.url(url).post(Json.toJson(user)).map {
-            // TODO: log unexpected codes (not 409)
-            // TODO: add _id to user
-            response => response.status == 201
+            response => response.status match {
+                case 201 => (response.json \ "id").as[String]
+                case 409 => throw Conflict()
+            }
         }
     }
 
-    // TODO: helper for getById
-    def getById(id: String): Future[Option[User]] = {
-        WS.url(s"$url/$id").get().map { response =>
-            response.json.validate[User].asOpt
+    // TODO: error handling and logging
+    // TODO: move to couch client lib
+    def getById(id: String): Future[User] = {
+        WS.url(s"$url/$id").get().map {
+            response => response.status match {
+                case 200 => response.json.validate[User].get
+                case 404 => throw UserNotFoundException(id)
+            }
         }
-        // TODO: error handling and logging
     }
 
-    def idFromViewResponse(json: JsValue): Option[String] = {
-        // TODO: Use a Reads/Format
-        // TODO: raise 404 on missing
-        ((json \ "rows")(0) \ "id").asOpt[String]
-    }
+    // TODO: move to couch client lib
+    val viewId = ((__ \ "rows")(0) \ "id").read[String]
 
-    // TODO: store username in Identity
-    def getByIdentityId(identityId: IdentityId): Future[Option[User]] = {
-        val request = WS.url(identityIdViewUrl)
-            .withQueryString("key" -> Json.arr(identityId.providerId,
-                identityId.userId).toString())
+    def getByIdentityId(identityId: IdentityId): Future[User] = {
+        val key = Json.arr(identityId.providerId, identityId.userId).toString()
+        val request = WS.url(identityIdViewUrl).withQueryString("key" -> key)
 
         request.get().flatMap { response =>
-            idFromViewResponse(response.json) match {
-                case Some(userId) => getById(userId)
-                case None         => Future.successful(None)
+            viewId.reads(response.json) match {
+                case userId: JsSuccess[String] => getById(userId.get)
+                case e: JsError =>
+                    throw UserNotFoundException(identityId.toString())
             }
         }
     }

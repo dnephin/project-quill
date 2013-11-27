@@ -8,9 +8,9 @@ import play.api.Application
 import play.api.libs.concurrent.Execution.Implicits._
 import securesocial.core.{Identity, IdentityId, UserServicePlugin}
 import securesocial.core.providers.Token
-
 import auth.dao.UserData
-import auth.models.{User, UserIdentity}
+import auth.models.User
+import auth.logic.UserSaveLogic
 
 
 class AuthUserService(application: Application)
@@ -22,13 +22,14 @@ class AuthUserService(application: Application)
      * @param id the user id
      * @return an optional user
      */
-    def find(id: IdentityId) = {
+    def find(id: IdentityId): Option[Identity] = {
         val optUser = UserData.getByIdentityId(id).map {
-            case Some(user) => user.identity match {
-                // TODO: why is all this necessary ?
+            // TODO: another way to downcast ?
+            user => user match {
                 case uid: Identity => Some(uid)
-                case _ => None
             }
+        } recover {
+            // TODO: log errors
             case _ => None
         }
 
@@ -38,27 +39,13 @@ class AuthUserService(application: Application)
 
     /**
      * Saves the user.  This method gets called when a user logs in.
-     * This is your chance to save the user information in your backing store.
+     *
      * @param user
      */
     def save(identity: Identity): Identity = {
-        // TODO: handle duplicate identities on different users
-        // TODO: move to user logic?
-        // Get user by identity
-        val optIdentity = UserData.getByIdentityId(identity.identityId).map {
-            case Some(user) => {
-                UserData.add(user)
-                user.identity
-            }
-            case _ => {
-                val userId = UserIdentity.fromIdentity(identity)
-                UserData.add(User(None, Seq(), userId))
-                userId
-            }
-        }
 
          // TODO: better way to do this, or at least move to config
-        Await.result(optIdentity, 2 seconds)
+        Await.result(UserSaveLogic(identity), 2 seconds)
     }
 
     /**

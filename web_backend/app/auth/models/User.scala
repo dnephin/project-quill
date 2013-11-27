@@ -1,10 +1,10 @@
 /**
-  * A model for a User
+  * Models for a User and authentication
   *
   *
   */
 
-package auth.models 
+package auth.models
 
 
 import org.joda.time.DateTime
@@ -14,13 +14,6 @@ import securesocial.core.{Identity, IdentityId, PasswordInfo}
 import securesocial.core.{OAuth2Info, OAuth1Info, AuthenticationMethod}
 
 
-
-case class User(
-    _id: Option[String],
-    links: Seq[UserLink],
-    identity: UserIdentity
-)
-
 case class UserLink(
     name: String,
     url: String,
@@ -28,8 +21,12 @@ case class UserLink(
     date: DateTime
 )
 
-case class UserIdentity(
+
+// TODO: split into three documents?
+case class User(
+    _id: String,
     identityId: IdentityId,
+    links: Seq[UserLink],
     firstName: String,
     lastName: String,
     fullName: String,
@@ -46,14 +43,14 @@ object UserLink {
     implicit val format = Json.format[UserLink]
 }
 
-object UserIdentity {
+object User {
 
     implicit val formatId: Format[IdentityId] = (
         (__ \ "userId").format[String] and
         (__ \ "providerId").format[String]
     )(IdentityId.apply, unlift(IdentityId.unapply))
 
-    implicit val formatAuthMethod: Format[AuthenticationMethod] = 
+    implicit val formatAuthMethod: Format[AuthenticationMethod] =
         (__ \ "method").format[String].inmap(
             (method: String) => AuthenticationMethod(method),
             (method: AuthenticationMethod) => method.method)
@@ -76,28 +73,20 @@ object UserIdentity {
         (__ \ "refreshToken").format[Option[String]]
     )(OAuth2Info.apply, unlift(OAuth2Info.unapply))
 
-    implicit val format = Json.format[UserIdentity]
-
-
-    // TODO: better way of doing this?
-    def fromIdentity(i: Identity) = {
-        UserIdentity(i.identityId,
-                     i.firstName,
-                     i.lastName,
-                     i.fullName,
-                     i.email,
-                     i.avatarUrl,
-                     i.authMethod,
-                     i.oAuth1Info,
-                     i.oAuth2Info,
-                     i.passwordInfo)
-    }
-
-
-
-}
-
-object User {
     implicit val format = Json.format[User]
-}
 
+    def fromIdentity(i: Identity) = {
+        User("",
+             i.identityId,
+             Seq(),
+             i.firstName,
+             i.lastName,
+             i.fullName,
+             i.email,
+             i.avatarUrl,
+             i.authMethod,
+             i.oAuth1Info,
+             i.oAuth2Info,
+             i.passwordInfo)
+    }
+}

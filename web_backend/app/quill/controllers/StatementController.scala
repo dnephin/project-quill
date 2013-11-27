@@ -51,8 +51,8 @@ object StatementController extends Controller with SecureSocial {
             val stmt = Json.fromJson[Statement](request.body \ "statement").get
             
             val response = for {
-                optUser <- UserData.getByIdentityId(request.user.identityId)
-                success <- StatementUpdateLogic(stmt, optUser.get._id.get)
+                user <- UserData.getByIdentityId(request.user.identityId)
+                success <- StatementUpdateLogic(stmt, user._id)
             } yield Ok(success.toString())
             
             response recover {
@@ -89,8 +89,8 @@ object StatementController extends Controller with SecureSocial {
             val stmt = Json.fromJson[Statement](request.body \ "statement").get
             
             val response = for {
-                optUser <- UserData.getByIdentityId(request.user.identityId)
-                success <- StatementAddLogic(stmt, optUser.get._id.get)
+                user <- UserData.getByIdentityId(request.user.identityId)
+                success <- StatementAddLogic(stmt, user._id)
             } yield Ok(success.toString())
             
             response recover {
