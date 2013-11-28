@@ -1,9 +1,9 @@
 package test.models
 
+import org.joda.time.DateTime
 import play.api.libs.json._
 import org.scalatest._
 import quill.models.{ Statement, Version, Editor }
-import org.joda.time.DateTime
 
 class StatementSpec extends FunSuite {
 
@@ -47,14 +47,14 @@ class StatementSpec extends FunSuite {
 	}
 
 	test("Version parsed from json") {
-		val date = new DateTime(2013, 1, 2, 20, 10, 5)
+		val date = new DateTime(2013, 11, 28, 5, 40, 39, 491)
 		val expected = Version(1, 2, 3, true, Some(date))
 		val source = Json.obj(
 			"major" -> 1,
 			"minor" -> 2,
 			"patch" -> 3,
 			"published" -> true,
-			"date" -> date)
+			"date" -> "2013-11-28T05:40:39.491Z")
 		Json.fromJson[Version](source).map {
 			version => assert(version === expected)
 		} recover {

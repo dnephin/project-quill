@@ -1,3 +1,5 @@
-- remove lookup user from Statement
 - composite action for ApiAction, UserApiAction, etc
+- remove lookup user from Statement Controller actions
 - SubCut for testing
+- include label in statement db?
+- setup persistent session store for Play

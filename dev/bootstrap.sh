@@ -30,6 +30,9 @@ rm /etc/nginx/nginx.conf
 ln -sf /vagrant/dev/nginx.conf /etc/nginx/nginx.conf
 service nginx restart
 
+# memcached
+apt-get install -i memcached
+
 
 # Java
 echo debconf shared/accepted-oracle-license-v1-1 select true | \

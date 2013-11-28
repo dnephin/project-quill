@@ -21,6 +21,6 @@ module.exports = ddoc =
 
 ddoc.views.identity_id =
     map: (doc) ->
-        id = doc.identity.identityId
+        id = doc.identityId
         emit [id.providerId, id.userId], null
 

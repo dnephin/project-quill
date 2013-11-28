@@ -17,7 +17,7 @@ case class Version(
     date: Option[DateTime]
     // TODO: add a message
 ) {
-    
+
     def value = s"$major.$minor.$patch"
 }
 
@@ -40,6 +40,11 @@ case class Statement(
 )
 
 object Version {
+    // TODO: should this be moved into config/globals
+    val dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    implicit val dateTimeReads = Reads.jodaDateReads(dateFormat)
+    implicit val dateTimeWrites = Writes.jodaDateWrites(dateFormat)
+
     implicit val format = Json.format[Version]
 }
 

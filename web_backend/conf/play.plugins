@@ -1,6 +1,9 @@
 # Only used for username/password logins
 #1500:com.typesafe.plugin.CommonsMailerPlugin
 
+# Used to persist session in dev
+5000:com.github.mumoshu.play2.memcached.MemcachedPlugin
+
 9994:securesocial.core.DefaultAuthenticatorStore
 9995:securesocial.core.DefaultIdGenerator
 

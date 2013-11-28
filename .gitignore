@@ -19,6 +19,7 @@ web_backend/.project
 web_backend/RUNNING_PID
 web_backend/.settings
 web_backend/bin
+web_backend/conf/auth_providers.conf
 
 dist/
 

@@ -52,6 +52,11 @@ ddoc.updates.publish = (doc, req) ->
     if !doc
         return [null, "document not found"]
 
+    reqDoc = JSON.parse(req.body)
+    if reqDoc.editorId != doc.editor.id
+        return [null, "editor id does not match #{doc.editor.id}"]
+
+
     doc.version.published = true
     doc.version.date = new Date().toISOString()
     return [doc, "published"]
@@ -68,11 +73,11 @@ ddoc.updates.update = (doc, req) ->
 
     if !doc.version.published
         return [newDoc, "updated document"]
-   
+
     # TODO: deal with duplication
     buildVersion = (version) ->
         version.major * 1000 * 1000 + version.minor * 1000 + version.patch
-    
+
     if buildVersion(newDoc.version) <= buildVersion(doc.version)
         return [null, "version was not incremented"]
 
@@ -82,6 +87,7 @@ ddoc.updates.update = (doc, req) ->
     return [newDoc, "new document version"]
 
 
+# TODO: test this is called for update handlers as well
 # Validate the document
 ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
     if !oldDoc

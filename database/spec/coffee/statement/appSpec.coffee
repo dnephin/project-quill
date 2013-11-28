@@ -54,11 +54,19 @@ describe "statement app design document", ->
             result = ddoc.updates.publish(null, null)
             expect(result).toEqual([null, "document not found"])
 
+        it "fails when editor does not match", ->
+            source =
+                editor: { id: "bob" }
+                version: { published: false }
+            req = body: '{"editorId": "abe"}'
+            result = ddoc.updates.publish(source, req)
+            expect(result).toEqual([null, "editor id does not match bob"])
+
         it "succeeds when not published and editor matches", ->
             source =
                 editor: { id: "abe" }
                 version: { published: false }
-            req = body: '{"editor": "abe"}'
+            req = body: '{"editorId": "abe"}'
             result = ddoc.updates.publish(source, req)
             expect(result).toEqual([source, "published"])
             expect(source.version.date).toEqual(jasmine.any(String))

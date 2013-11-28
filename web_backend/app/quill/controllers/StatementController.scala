@@ -21,6 +21,7 @@ import quill.logic.BadVersionError
 import securesocial.core.SecureSocial
 import auth.dao.UserData
 import quill.logic.StatementUpdateLogic
+import auth.models.User
 
 
 // TODO: remove ajaxCall=true with an abstraction
@@ -37,6 +38,7 @@ object StatementController extends Controller with SecureSocial {
 
     // TODO: DRY with param
     def getUnpublished(id: String) = SecuredAction(ajaxCall=true).async {
+        // TODO: compare editor id to document
         StatementData.getCurrent(id).map {
             stmt => Ok(Json.obj("statement" -> Json.toJson(stmt)))
         }
@@ -46,15 +48,15 @@ object StatementController extends Controller with SecureSocial {
         request => {
             // TODO: cleanup
             Logger.warn(request.body.toString())
-            
+
             // TODO: move to a Composite Action
             val stmt = Json.fromJson[Statement](request.body \ "statement").get
-            
+
             val response = for {
                 user <- UserData.getByIdentityId(request.user.identityId)
                 success <- StatementUpdateLogic(stmt, user._id)
             } yield Ok(success.toString())
-            
+
             response recover {
                 case BadVersionError() => BadRequest("bad version")
                 case e: NoSuchElementException => {
@@ -65,18 +67,23 @@ object StatementController extends Controller with SecureSocial {
             }
         }
     }
-    
+
     /**
      *  Publish a statement.
      *
      */
     def publish(id: String) = SecuredAction(ajaxCall=true).async { implicit request =>
+
+        // TODO: move into composed action
+        val user = request.user match {
+            case user: User => user
+        }
+
+        Logger.warn(s"Saving $id with user $user._id")
+
         // TODO: move to logic
-        //StatementData.getById(id).flatMap {
-        //    stmt => if (stmt.editor.id != 
-        // TODO: check editor id matches user session
-        StatementData.publish(id).map {
-            stmt => Ok(Json.obj())
+        StatementData.publish(id, user._id).map {
+            id => Ok(Json.obj("_id" -> id))
         }
     }
 
@@ -84,15 +91,15 @@ object StatementController extends Controller with SecureSocial {
         request => {
             // TODO: cleanup
             Logger.warn(request.body.toString())
-            
+
             // TODO: move to a Composite Action
             val stmt = Json.fromJson[Statement](request.body \ "statement").get
-            
+
             val response = for {
                 user <- UserData.getByIdentityId(request.user.identityId)
                 success <- StatementAddLogic(stmt, user._id)
             } yield Ok(success.toString())
-            
+
             response recover {
                 case LabelNotUniqueError() => BadRequest("bad label")
                 case BadVersionError() => BadRequest("bad version")
