@@ -22,6 +22,7 @@ import securesocial.core.SecureSocial
 import auth.dao.UserData
 import quill.logic.StatementUpdateLogic
 import auth.models.User
+import components.ApiBodyParser
 
 
 // TODO: remove ajaxCall=true with an abstraction
@@ -44,13 +45,10 @@ object StatementController extends Controller with SecureSocial {
         }
     }
 
-    def update(id: String) = SecuredAction(ajaxCall=true).async(parse.json) {
+    def update(id: String) = SecuredAction(ajaxCall=true).async(
+            ApiBodyParser[Statement]("statement")) {
         request => {
-            // TODO: cleanup
-            Logger.warn(request.body.toString())
-
-            // TODO: move to a Composite Action
-            val stmt = Json.fromJson[Statement](request.body \ "statement").get
+            val stmt = request.body
 
             val response = for {
                 user <- UserData.getByIdentityId(request.user.identityId)
@@ -87,13 +85,10 @@ object StatementController extends Controller with SecureSocial {
         }
     }
 
-    def add = SecuredAction(ajaxCall=true).async(parse.json) {
+    def add = SecuredAction(ajaxCall=true).async(
+            ApiBodyParser[Statement]("statement")) {
         request => {
-            // TODO: cleanup
-            Logger.warn(request.body.toString())
-
-            // TODO: move to a Composite Action
-            val stmt = Json.fromJson[Statement](request.body \ "statement").get
+            val stmt = request.body
 
             val response = for {
                 user <- UserData.getByIdentityId(request.user.identityId)

@@ -49,16 +49,6 @@ object StatementAddLogic {
 
 
 /**
-  *  Publish a statement
-  *
-  */
-object StatementPublishLogic {
-
-
-}
-
-
-/**
   *  Update a statement
   *
   */
