@@ -31,7 +31,7 @@ ln -sf /vagrant/dev/nginx.conf /etc/nginx/nginx.conf
 service nginx restart
 
 # memcached
-apt-get install -i memcached
+apt-get install -y memcached
 
 
 # Java
