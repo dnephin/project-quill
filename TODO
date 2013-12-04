@@ -1,6 +1,4 @@
 Phase 1 - Statement
-- after add() ember does not redirect to edit
-- after publish() does not redirect to view
 - include label in statement db
     - friendly label on add
     - update handler for add

@@ -43,7 +43,7 @@ QuillApp.StatementNewController = Ember.ObjectController.extend
             .save()
             .then (obj) =>
                 # TODO: add id to model
-                @transitionToRoute('statement.edit', statement)
+                @transitionToRoute('statement.edit', @content)
             .fail (reason) ->
                 # TODO: report errors
                 console.log "Error: #{reason.responseText}"
@@ -65,7 +65,9 @@ QuillApp.StatementEditController = Ember.ObjectController.extend
             console.log "Publishing"
             @store.adapterFor('statement').publish(@content.id)
             .then (obj) =>
+                # TODO: update from response from server instead
                 @set('published', true)
                 console.log "published"
+                @transitionToRoute('statement.viewFull', @content)
             .fail (reason) ->
                 console.log "Error: #{reason.responseText}"
