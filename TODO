@@ -1,5 +1,13 @@
+Phase 1 - Statement
+- _id should include label/version
+- after add() ember does not redirect to edit
+- update does not go to DB
+- after publish() does not redirect to view
+- implement responses
+
+Phase 2 - Cleanup
+
 - composite action for ApiAction, UserApiAction, etc
 - remove lookup user from Statement Controller actions
 - SubCut for testing
 - include label in statement db?
-- setup persistent session store for Play
