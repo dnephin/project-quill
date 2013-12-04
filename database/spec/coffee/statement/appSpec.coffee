@@ -110,8 +110,8 @@ describe "statement app design document", ->
             source =
                 editor: { id: "abe" }
                 version: { published: true, major: 3, minor: 2, patch: 7 }
+                label: "abababab"
             req =
-                uuid: "ababababa"
                 body: JSON.stringify
                     editor: { id: "abe" }
                     version: { major: 3, minor: 3, patch: 0 }
@@ -121,7 +121,7 @@ describe "statement app design document", ->
             [newDoc, msg] = result
             expect(msg).toBe("new document version")
             expect(newDoc.version.date).toEqual(jasmine.any(String))
-            expect(newDoc._id).toBe(req.uuid)
+            expect(newDoc._id).toBe("#{source.label}-3.3.0")
             expect(newDoc.title).toBe("The title")
             expect(newDoc.version.published).toBe(false)
 

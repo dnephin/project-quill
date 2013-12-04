@@ -31,6 +31,8 @@ object StatementData {
 
     val updateUrl = s"$url/_design/app/_update/update"
 
+    // TODO: do this with a handler and update the id to a friendly id
+    // and push label at the same time
     def add(stmt: Statement): Future[Boolean] = {
         WS.url(url).post(Json.toJson(stmt)).map {
             response => response.status == 201

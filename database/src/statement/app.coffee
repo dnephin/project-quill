@@ -80,11 +80,16 @@ ddoc.updates.update = (doc, req) ->
     buildVersion = (version) ->
         version.major * 1000 * 1000 + version.minor * 1000 + version.patch
 
+    buildVersionString = (version) ->
+        "#{version.major}.#{version.minor}.#{version.patch}"
+
     if buildVersion(newDoc.version) <= buildVersion(doc.version)
         return [null, "version was not incremented"]
 
+
+
     # TODO: better/shorter id
-    newDoc._id = req.uuid
+    newDoc._id = "#{doc.label}-#{buildVersionString(newDoc.version)}"
     newDoc.version.date = new Date().toISOString()
     newDoc.version.published = false
     return [newDoc, "new document version"]

@@ -1,13 +1,14 @@
 Phase 1 - Statement
-- update requires _rev
-- _id should include label/version
 - after add() ember does not redirect to edit
 - after publish() does not redirect to view
-- implement responses
+- include label in statement db
+    - friendly label on add
+    - update handler for add
+- implement response objects
+
 
 Phase 2 - Cleanup
 
 - composite action for ApiAction, UserApiAction, etc
 - remove lookup user from Statement Controller actions
 - SubCut for testing
-- include label in statement db?
