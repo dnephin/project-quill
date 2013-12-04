@@ -52,7 +52,7 @@ object StatementController extends Controller with SecureSocial {
 
             val response = for {
                 user <- UserData.getByIdentityId(request.user.identityId)
-                success <- StatementUpdateLogic(stmt, user._id)
+                success <- StatementUpdateLogic(stmt.copy(_id=Some(id)), user._id)
             } yield Ok(success.toString())
 
             response recover {
@@ -70,7 +70,8 @@ object StatementController extends Controller with SecureSocial {
      *  Publish a statement.
      *
      */
-    def publish(id: String) = SecuredAction(ajaxCall=true).async { implicit request =>
+    def publish(id: String) = SecuredAction(ajaxCall=true).async(
+            parse.empty) { implicit request =>
 
         // TODO: move into composed action
         val user = request.user match {

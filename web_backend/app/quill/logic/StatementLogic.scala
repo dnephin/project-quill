@@ -32,6 +32,10 @@ object StatementAddLogic {
         acceptedVersion contains version.value
     }
 
+    def addEditor(stmt: Statement, userId: String) = {
+        stmt.copy(editor=Editor(Some(userId), stmt.editor.bio))
+    }
+
     // TODO: validate editor.id
     def apply(stmt: Statement, userId: String): Future[Boolean] = {
         if (!isAcceptedVersion(stmt.version)) Future { 
@@ -40,8 +44,7 @@ object StatementAddLogic {
         
         else for {
             _ <- addUniqueLabel(stmt.label)
-            result <- StatementData.add(
-                    stmt.copy(editor=Editor(Some(userId), stmt.editor.bio)))
+            result <- StatementData.add(addEditor(stmt, userId))
         } yield if (!result) throw new AddFailedError() else true
         
     }
@@ -54,8 +57,12 @@ object StatementAddLogic {
   */
 object StatementUpdateLogic {
 
-    def apply(stmt: Statement, userId: String): Future[Boolean] = {
-        Future.successful(true)
+    // TODO: validate editor.id
+    def apply(stmt: Statement, userId: String): Future[String] = {
+        for {
+            stmtId <- StatementData.update(
+                        StatementAddLogic.addEditor(stmt, userId))
+        } yield stmtId
     }
 
 }

@@ -123,6 +123,7 @@ describe "statement app design document", ->
             expect(newDoc.version.date).toEqual(jasmine.any(String))
             expect(newDoc._id).toBe(req.uuid)
             expect(newDoc.title).toBe("The title")
+            expect(newDoc.version.published).toBe(false)
 
 
     describe "validate document on update", ->

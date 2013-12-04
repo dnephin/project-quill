@@ -72,6 +72,8 @@ ddoc.updates.update = (doc, req) ->
         return [null, "editor does not match"]
 
     if !doc.version.published
+        # TODO: is this safe?
+        newDoc._rev = doc._rev
         return [newDoc, "updated document"]
 
     # TODO: deal with duplication
@@ -84,6 +86,7 @@ ddoc.updates.update = (doc, req) ->
     # TODO: better/shorter id
     newDoc._id = req.uuid
     newDoc.version.date = new Date().toISOString()
+    newDoc.version.published = false
     return [newDoc, "new document version"]
 
 
