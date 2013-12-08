@@ -23,6 +23,8 @@ import auth.dao.UserData
 import quill.logic.StatementUpdateLogic
 import auth.models.User
 import components.ApiBodyParser
+import auth.logic.UserPublicGetLogic
+import auth.models.UserPublic
 
 
 // TODO: remove ajaxCall=true with an abstraction
@@ -30,18 +32,54 @@ import components.ApiBodyParser
   */
 object StatementController extends Controller with SecureSocial {
 
-    def getPublished(id: String) = UserAwareAction.async {
-        // TODO: add user_can_edit if editor matches user
-        StatementData.getCurrentPublished(id).map {
-            stmt => Ok(Json.obj("statement" -> Json.toJson(stmt)))
+    // TODO: where does this belong?
+    def userMatches(user: Option[User], other: UserPublic): Boolean = {
+        user.map(_._id == other._id).getOrElse(false)
+    }
+
+    def getPublished(id: String) = UserAwareAction.async { request =>
+        // TODO: move to action
+        val user = request.user.map { user =>
+            user match {
+                case u: User => u
+            }
+        }
+
+        for {
+            stmt <- StatementData.getCurrentPublished(id)
+            // TODO: remove get
+            stmtUser <- UserPublicGetLogic(stmt.editor.id.get)
+        } yield {
+            Ok(Json.obj(
+                "statement" -> Json.toJson(stmt),
+                "user" -> Json.toJson(stmtUser),
+                "meta" -> Json.obj(
+                    "user_can_edit" -> userMatches(user, stmtUser))
+            ))
         }
     }
 
-    // TODO: DRY with param
-    def getUnpublished(id: String) = SecuredAction(ajaxCall=true).async {
-        // TODO: compare editor id to document
-        StatementData.getCurrent(id).map {
-            stmt => Ok(Json.obj("statement" -> Json.toJson(stmt)))
+    // TODO: DRY with getPublished
+    def getUnpublished(id: String) = SecuredAction(ajaxCall=true).async { request =>
+        // TODO: move to action
+        val user = request.user match {
+            case u: User => u
+        }
+
+        for {
+            stmt <- StatementData.getCurrent(id)
+            // TODO: remove get
+            stmtUser <- UserPublicGetLogic(stmt.editor.id.get)
+        } yield {
+            if (stmt.editor.id.getOrElse(false) == user._id)
+                Ok(Json.obj(
+                    "statement" -> Json.toJson(stmt),
+                    "user" -> Json.toJson(stmtUser)
+                ))
+            else {
+                Logger.warn(s"$stmt $user")
+                Forbidden("Editor does not match user")
+            }
         }
     }
 
@@ -49,9 +87,12 @@ object StatementController extends Controller with SecureSocial {
             ApiBodyParser[Statement]("statement")) {
         request => {
             val stmt = request.body
+            // TODO: move to action
+            val user = request.user match {
+                case u: User => u
+            }
 
             val response = for {
-                user <- UserData.getByIdentityId(request.user.identityId)
                 success <- StatementUpdateLogic(stmt.copy(_id=Some(id)), user._id)
             } yield Ok(success.toString())
 
@@ -90,9 +131,12 @@ object StatementController extends Controller with SecureSocial {
             ApiBodyParser[Statement]("statement")) {
         request => {
             val stmt = request.body
+            // TODO: move into composed action
+            val user = request.user match {
+                case user: User => user
+            }
 
             val response = for {
-                user <- UserData.getByIdentityId(request.user.identityId)
                 success <- StatementAddLogic(stmt, user._id)
             } yield Ok(success.toString())
 

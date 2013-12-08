@@ -53,6 +53,7 @@ QuillApp.StatementEditController = Ember.ObjectController.extend
 
     actions:
         save: (event) ->
+            # TODO: save is undefined when redirected from /new
             @get('model').save()
             .then (obj) =>
                 # TODO: show visual "saved" message

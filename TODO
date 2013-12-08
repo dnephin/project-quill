@@ -1,12 +1,15 @@
 Phase 1 - Statement
-- include label in statement db
-    - friendly label on add
-    - update handler for add
+- add edit link
 - implement response objects
 
 
 Phase 2 - Cleanup
 
+- fixtures for user, and update Statement fixtures to match
+- add display name to user maybe? or just use fullName
+- include label in statement db
+    - friendly label on add
+    - update handler for add
 - composite action for ApiAction, UserApiAction, etc
 - remove lookup user from Statement Controller actions
 - SubCut for testing

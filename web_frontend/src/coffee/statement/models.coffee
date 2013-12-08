@@ -14,11 +14,18 @@ QuillApp.Statement = DS.Model.extend
     date:           DS.attr('date')
 
     editorBio:      DS.attr('string')
-    editorId:       DS.attr('string')
+
+    # TODO: use belongsTo?
+    user:           DS.belongsTo('user')
 
 
 QuillApp.StatementSerializer = DS.RESTSerializer.extend
     primaryKey: '_id'
+
+    normalizePayload: (type, payload) ->
+        if payload.user?
+            payload.user = [payload.user]
+        payload
 
     normalizeHash:
         statement: (obj) ->
@@ -28,7 +35,7 @@ QuillApp.StatementSerializer = DS.RESTSerializer.extend
             obj.published = version.published
             obj.date = version.date
             obj.editorBio = obj.editor.bio
-            obj.editorId = obj.editor.id
+            obj.user = obj.editor.id
             obj
             
 
@@ -44,10 +51,8 @@ QuillApp.StatementSerializer = DS.RESTSerializer.extend
             bio: obj.editorBio
 
         delete obj.editorBio
-        delete obj.editorId
         delete obj.published
         delete obj.date
-
         obj
 
 

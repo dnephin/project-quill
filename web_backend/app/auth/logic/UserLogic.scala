@@ -6,6 +6,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import auth.models.User
 import auth.dao.UserData
 import auth.dao.UserNotFoundException
+import auth.models.UserPublic
 
 /**
  * Save user logic.
@@ -29,6 +30,18 @@ object UserSaveLogic {
         } recoverWith {
             case UserNotFoundException(_) => createNewUser(identity)
         }
+    }
+
+}
+
+
+/**
+ * Retrieve a UserPublic object.
+ */
+object UserPublicGetLogic {
+
+    def apply(userId: String): Future[UserPublic] = {
+        UserData.getById(userId).map(UserPublic.fromUser(_))
     }
 
 }

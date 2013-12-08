@@ -21,6 +21,10 @@ case class UserLink(
     date: DateTime
 )
 
+object UserLink {
+    implicit val format = Json.format[UserLink]
+}
+
 
 // TODO: split into three documents?
 case class User(
@@ -38,10 +42,6 @@ case class User(
     passwordInfo: Option[PasswordInfo] = None
 ) extends Identity
 
-
-object UserLink {
-    implicit val format = Json.format[UserLink]
-}
 
 object User {
 
@@ -88,5 +88,36 @@ object User {
              i.oAuth1Info,
              i.oAuth2Info,
              i.passwordInfo)
+    }
+}
+
+
+
+// TODO: combine with user to remove duplication
+/**
+ *  A user object that can be sent to other users. It does not contain any
+ *  sensitive data.
+ */
+case class UserPublic(
+    _id: String,
+    links: Seq[UserLink],
+    firstName: String,
+    lastName: String,
+    fullName: String,
+    avatarUrl: Option[String]
+    // TODO: include email?, maybe masked
+)
+
+object UserPublic {
+    implicit val format = Json.format[UserPublic]
+
+    def fromUser(user: User) = {
+        UserPublic(
+            user._id,
+            user.links,
+            user.firstName,
+            user.lastName,
+            user.fullName,
+            user.avatarUrl)
     }
 }

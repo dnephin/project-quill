@@ -2,5 +2,6 @@
 
 {{! Profile image and bio of an editor }}
 
-<img />
-<p>{{editorId}} -<em>{{editorBio}}</em></p>
+<!-- TODO: set height/width -->
+<img {{bind-attr src=user.avatarUrl}} {{bind-attr alt=user.fullName}} />
+<p>{{user.fullName}} -<em>{{editorBio}}</em></p>
