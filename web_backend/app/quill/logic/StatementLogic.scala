@@ -46,7 +46,6 @@ object StatementAddLogic {
             _ <- addUniqueLabel(stmt.label)
             result <- StatementData.add(addEditor(stmt, userId))
         } yield if (!result) throw new AddFailedError() else true
-        
     }
 }
 
