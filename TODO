@@ -1,4 +1,7 @@
 Phase 1 - Statement
+- test backend controllers
+- ember routes
+- ember controller
 - implement response objects
 
 
@@ -14,4 +17,3 @@ Phase 2 - Cleanup
 - remove lookup user from Statement Controller actions
 - SubCut for testing
 - version selections for new post
--

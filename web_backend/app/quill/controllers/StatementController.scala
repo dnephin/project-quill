@@ -60,7 +60,7 @@ object StatementController extends Controller with SecureSocial {
     }
 
     // TODO: DRY with getPublished
-    def getUnpublished(id: String) = SecuredAction(ajaxCall=true).async { request =>
+    def getForEdit(id: String) = SecuredAction(ajaxCall=true).async { request =>
         // TODO: move to action
         val user = request.user match {
             case u: User => u

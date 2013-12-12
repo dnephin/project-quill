@@ -1,5 +1,7 @@
 
 
+package quill.dao
+
 
 import scala.concurrent.Future
 
