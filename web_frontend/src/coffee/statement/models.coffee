@@ -14,8 +14,6 @@ QuillApp.Statement = DS.Model.extend
     date:           DS.attr('date')
 
     editorBio:      DS.attr('string')
-
-    # TODO: use belongsTo?
     user:           DS.belongsTo('user')
 
 

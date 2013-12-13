@@ -18,6 +18,8 @@ object Anchor {
 
 case class Feedback(
     _id: Option[String],
+    // TODO: stricter enum ?
+    position: String,
     editor: Editor,
     content: String,
     date: Option[DateTime],
