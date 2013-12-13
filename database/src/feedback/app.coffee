@@ -1,11 +1,11 @@
 #
-# app.js design document for response database
+# app.js design document for feedback database
 #
 
 
 # TODO: is there a better way to support testing here?
 module = if window?
-    window.user = {}
+    window.feedback = {}
 else
     module
 module.exports = ddoc =

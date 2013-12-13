@@ -15,18 +15,26 @@ import quill.models.Feedback
 case class UnexpectedResponseFormat(msg: String) extends Exception
 
 
+// TODO: do without this type, or move to couch client
+case class CouchViewWithDoc(doc: Feedback)
+
+object CouchViewWithDoc {
+    implicit val format = Json.format[CouchViewWithDoc]
+}
+
+
 /**
  * Data access for Responses
  */
 object FeedbackData {
 
     // TODO: config
-    val url = "http://localhost:5984/user"
+    val url = "http://localhost:5984/feedback"
 
     val statementViewUrl = s"$url/_design/app/_view/by_statement"
 
     // TODO: move to couch client lib
-    val viewRows = (__ \ "rows").read[Seq[Feedback]]
+    val viewRows = (__ \ "rows").read[Seq[CouchViewWithDoc]]
 
     // TODO: error handling and logging
     // TODO: move to couch client lib
@@ -45,9 +53,8 @@ object FeedbackData {
             .withQueryString("key" -> key, "include_docs" -> "true")
             .get().map { response =>
                 viewRows.reads(response.json) match {
-                    // TOOD: better way to do this?
-                    case responses: JsSuccess[Seq[Feedback]] => responses.get
-                    case e: JsError =>
+                    case JsSuccess(responses, _)    => responses.map(_.doc)
+                    case e: JsError                 =>
                         throw UnexpectedResponseFormat(e.toString)
                 }
             }

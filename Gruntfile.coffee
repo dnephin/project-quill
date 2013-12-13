@@ -23,7 +23,7 @@ databases =
     statement: buildCouch('statement')
     label: buildCouch('label')
     user: buildCouch('user')
-    response: buildCouch('response')
+    feedback: buildCouch('feedback')
 
 
 module.exports = (grunt) ->

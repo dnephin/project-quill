@@ -1,0 +1,17 @@
+
+{
+    "_id": "",
+    "editor": {
+        "id": "aaaa",
+        "bio": "Something"
+    },
+    "content": "This is my feedback",
+    "date": 412345234,
+    "anchor": {
+        "statementId": "abab",
+        "parentId": "baba",
+        "context": "The line here"
+    },
+    "active": true
+}
+
