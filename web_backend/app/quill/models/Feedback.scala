@@ -16,7 +16,7 @@ object Anchor {
 }
 
 
-case class Response(
+case class Feedback(
     _id: Option[String],
     editor: Editor,
     content: String,
@@ -27,6 +27,6 @@ case class Response(
 )
 
 
-object Response {
-    implicit val format = Json.format[Response]
+object Feedback {
+    implicit val format = Json.format[Feedback]
 }

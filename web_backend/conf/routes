@@ -20,9 +20,9 @@ POST    /api/statement/:id/publish  quill.controllers.StatementController.publis
 PUT     /api/statement/:id          quill.controllers.StatementController.update(id: String)
 
 
-# Response routes
-POST    /api/response               quill.controllers.ResponseController.add
-GET     /api/response               quill.controllers.ResponseController.list
+# Feedback routes
+POST    /api/feedback               quill.controllers.FeedbackController.add
+GET     /api/feedback               quill.controllers.FeedbackController.list
 
 
 # TODO: remove, used so securesocial assets use the correct url
