@@ -1,9 +1,10 @@
 Project Quill
 =============
 
-An open source group decision making tool
+*Project Goal:* Create an open source group decision making tool. See `<docs/goals.rst>`_
 
-*Project Status:* Early development
+*Project Status:* Early development. See `<docs/project_plan.rst>`_
+
 
 .. contents:: Contents
     :local:
