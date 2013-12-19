@@ -3,7 +3,8 @@
 #
 #
 
-window.QuillApp = Ember.Application.create()
+window.QuillApp = Ember.Application.create
+    LOG_TRANSITIONS: true
 
 
 QuillApp.ApplicationSerializer = DS.RESTSerializer.extend

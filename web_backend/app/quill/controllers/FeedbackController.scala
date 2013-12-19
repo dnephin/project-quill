@@ -31,8 +31,8 @@ object FeedbackController extends Controller with SecureSocial {
         // TODO: logic
         // TODO: raise on missing
         val statementId = request.getQueryString("statementId").get
-        FeedbackData.getByStatementId(statementId).map { responses =>
-            Ok(Json.obj("responses" -> responses))
+        FeedbackData.getByStatementId(statementId).map { feedback =>
+            Ok(Json.obj("feedback" -> feedback))
         }
     }
 

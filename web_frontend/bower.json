@@ -15,10 +15,13 @@
     "tests"
   ],
   "dependencies": {
-    "ember": "~1.0.0",
+    "ember": "~1.2.0",
     "ember-data-shim": "~1.0.0-beta.3",
     "handlebars": "~1.0.0",
     "jquery": "~2.0.3",
-    "bootstrap": "~3.0.0"
+    "bootstrap": "~3.0.3"
+  },
+  "resolutions": {
+    "ember": "~1.2.0"
   }
 }

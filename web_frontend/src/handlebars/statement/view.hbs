@@ -1,27 +1,15 @@
 
 <div class="container">
 
-  <div class="statement-views col-md-2">
-    <ul class="list-unstyled">
-        <li>Support</li>
-        <li>Counter</li>
-        <li>Challenge</li>
-        <li>Accept</li>
-        <li>Disregard</li>
-   </ul>
-  </div>
-
-  <div class="statement-summary col-md-10">
+  <div class="statement-full col-md-12">
     <h2>{{title}}</h2>
+
     {{version-view version=version}}
-    
 
     {{editor-summary editorBio=editorBio user=user}}
     <p>{{problem}}</p>
-    <p>{{summary}}</p>
-    {{#link-to 'statement.viewFull' label class="pull-right"}}
-        View full
-    {{/link-to}}
+    <p>{{full}}</p>
+    {{#link-to 'statement.index' label class="pull-right"}}Summary{{/link-to}}
   </div>
 
   <div class="statement-actions col-md-10 col-md-offset-2">
@@ -32,5 +20,3 @@
   </div>
 
 </div>
-
-
