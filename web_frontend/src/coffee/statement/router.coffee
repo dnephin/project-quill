@@ -1,15 +1,16 @@
 
 
-# TODO: move app route to app.coffee, and make this StatementRoutes
 # TODO: prevent labels like 'new'
 QuillApp.Router.map ->
 
     @resource 'statementNew',   path: '/statement/new'
     @resource 'statement',      path: '/statement/:label', ->
-        @route      'view'
         @route      'edit',         path: '/edit'
+        @route      'view'
         @resource   'feedback', QuillApp.FeedbackRoutes
 
+
+### Routes ###
 
 QuillApp.StatementNewRoute = Ember.Route.extend
     templateName: 'statement/new'
@@ -18,14 +19,20 @@ QuillApp.StatementNewRoute = Ember.Route.extend
         controller.set 'content', {}
 
 
-QuillApp.StatementIndexRoute = Ember.Route.extend
+QuillApp.StatementRoute = Ember.Route.extend
 
-    model: (_, transition) ->
-        @store.find('statement', transition.params.label)
+    model: (params) -> @store.find('statement', params.label)
 
     serialize: (model) -> label: model.get('label')
 
-    afterModel: (model) -> @transitionTo('feedback', model)
+    renderTemplate: (controller, model) ->
+        @render 'statement/index',
+            controller: 'statement'
+
+
+QuillApp.StatementIndexRoute = Ember.Route.extend
+
+    beforeModel: -> @replaceWith('feedback')
 
 
 QuillApp.StatementEditRoute = Ember.Route.extend
@@ -39,11 +46,15 @@ QuillApp.StatementEditRoute = Ember.Route.extend
 
 QuillApp.StatementViewRoute = Ember.Route.extend
 
+    # TODO: why can't I get the model fron StatementRoute?
     model: (_, transition) ->
         @store.find('statement', transition.params.label)
 
+    # TODO: do i need all of these?
     serialize: (model) -> label: model.get('label')
 
+
+### Controllers ###
 
 QuillApp.StatementNewController = Ember.ObjectController.extend
 

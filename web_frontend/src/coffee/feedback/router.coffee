@@ -10,19 +10,18 @@ QuillApp.FeedbackNewRoute = Ember.Route.extend
     setupController: (controller, model) ->
         controller.set 'content', {}
 
+    renderTemplate: (controller, model) ->
+        @render 'feedback/new',
+            into: 'statement.index'
+            outlet: 'feedback'
+
 
 QuillApp.FeedbackIndexRoute = Ember.Route.extend
 
-    model: (params, transition) ->
-        # TODO: this shouldn't be necessary
-        statementId = transition.params.label || \
-            transition.providedModels.statement.id
-        @store.findQuery('feedback', statementId: statementId)
-
     renderTemplate: (controller, model) ->
-        @render 'statement/index',
-            outlet: 'main'
-            controller: 'statement'
+        @render 'feedback/list',
+            into: 'statement.index'
+            outlet: 'feedback'
 
 
 QuillApp.FeedbackNewController = Ember.ObjectController.extend
