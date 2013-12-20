@@ -25,10 +25,6 @@ QuillApp.StatementRoute = Ember.Route.extend
 
     serialize: (model) -> label: model.get('label')
 
-    renderTemplate: (controller, model) ->
-        @render 'statement/index',
-            controller: 'statement'
-
 
 QuillApp.StatementIndexRoute = Ember.Route.extend
 
@@ -37,6 +33,7 @@ QuillApp.StatementIndexRoute = Ember.Route.extend
 
 QuillApp.StatementEditRoute = Ember.Route.extend
 
+    # TODO: does not cache
     # TODO: why is label in transition instead of params
     # just because it's a route and not a resource?
     model: (params, transition) ->

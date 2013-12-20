@@ -5,6 +5,14 @@ QuillApp.FeedbackRoutes = ->
     @route      'view',     path: '/:id'
 
 
+
+QuillApp.FeedbackRoute = Ember.Route.extend
+
+    renderTemplate: (controller, model) ->
+        @render 'statement/summary',
+            controller: 'statement'
+
+
 QuillApp.FeedbackNewRoute = Ember.Route.extend
 
     setupController: (controller, model) ->
@@ -12,7 +20,7 @@ QuillApp.FeedbackNewRoute = Ember.Route.extend
 
     renderTemplate: (controller, model) ->
         @render 'feedback/new',
-            into: 'statement.index'
+            into: 'statement.summary'
             outlet: 'feedback'
 
 
@@ -20,7 +28,7 @@ QuillApp.FeedbackIndexRoute = Ember.Route.extend
 
     renderTemplate: (controller, model) ->
         @render 'feedback/list',
-            into: 'statement.index'
+            into: 'statement.summary'
             outlet: 'feedback'
 
 
