@@ -3,8 +3,7 @@
 
 QuillApp.Feedback = DS.Model.extend
     position:           DS.attr('string')
-    text:               DS.attr('string')
-    position:           DS.attr('string')
+    fullText:           DS.attr('string')
     date:               DS.attr('date')
     active:             DS.attr()
 
@@ -21,8 +20,6 @@ QuillApp.FeedbackSerializer = DS.RESTSerializer.extend
         feedback: (obj) ->
             obj.editorBio = obj.editor.bio
             obj.user = obj.editor.id
-            # TODO: rename in backend
-            obj.text = obj.content
             obj
 
 
@@ -30,9 +27,9 @@ QuillApp.FeedbackSerializer = DS.RESTSerializer.extend
         obj = @_super(record, options)
         obj.editor =
             bio: obj.editorBio
-        obj.content = obj.text
 
+        obj.active = obj.active || true
         delete obj.editorBio
-        delete obj.text
+        delete user
         obj
 

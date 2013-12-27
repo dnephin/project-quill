@@ -21,7 +21,7 @@ case class Feedback(
     // TODO: stricter enum ?
     position: String,
     editor: Editor,
-    content: String,
+    fullText: String,
     date: Option[DateTime],
     anchor: Anchor,
     // TODO: use an enum of some kind for other states

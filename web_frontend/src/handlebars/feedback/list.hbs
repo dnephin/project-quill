@@ -4,6 +4,8 @@
 
 {{#link-to 'feedback.new'}}New{{/link-to}}
 
-{{#each feedback}}
-    {{content}}
+{{#each}}
+    <div>
+    <p>{{fullText}}</p>
+    </div>
 {{/each}}

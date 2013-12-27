@@ -18,9 +18,10 @@ object FeedbackController extends Controller with SecureSocial {
 
 
     def add() = SecuredAction(ajaxCall=true).async(
-            ApiBodyParser[Feedback]("response")) { request =>
+            ApiBodyParser[Feedback]("feedback")) { request =>
         // TODO: logic
         // TODO: add editorId
+        // TODO: return 'feedback' ->
         FeedbackData.add(request.body).map { responseId =>
             Ok(Json.obj("_id" -> responseId))
         }

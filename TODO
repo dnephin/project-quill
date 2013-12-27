@@ -1,6 +1,7 @@
 Phase 1 - Statement
-- ember routes
-- ember controller
+- FeedbackController TODOs
+- FeedbackController.view
+- feedback list view
 
 
 Phase 2 - Cleanup
