@@ -11,6 +11,7 @@ case class Anchor(
     context: String
 )
 
+
 object Anchor {
     implicit val format = Json.format[Anchor]
 }
@@ -26,7 +27,11 @@ case class Feedback(
     anchor: Anchor,
     // TODO: use an enum of some kind for other states
     active: Boolean = true
-)
+) extends Editable {
+    def setEditorId(editorId: String) = {
+        copy(editor=editor.setId(editorId))
+    }
+}
 
 
 object Feedback {

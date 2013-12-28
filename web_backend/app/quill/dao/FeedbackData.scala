@@ -4,15 +4,16 @@ package quill.dao
 
 
 import scala.concurrent.Future
-
 import auth.dao.Conflict
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json._
 import play.api.libs.ws.WS
 import quill.models.Feedback
+import play.Logger
 
 
 case class UnexpectedResponseFormat(msg: String) extends Exception
+case class FeedbackNotFound() extends Exception
 
 
 // TODO: do without this type, or move to couch client
@@ -58,6 +59,27 @@ object FeedbackData {
                         throw UnexpectedResponseFormat(e.toString)
                 }
             }
+    }
+
+    /**
+      * Retrieve a Feedback by id.
+      */
+    // TODO: helper for getById
+    def getById(id: String): Future[Feedback] = {
+        WS.url(s"$url/$id").get().map {
+            response => {
+                val content = response.json
+                Logger.warn(content.toString())
+                // TODO: use format, and don't use get
+                content.validate[Feedback] match {
+                    case stmt: JsSuccess[Feedback] => stmt.get
+                    case JsError(e) => {
+                        Logger.warn(e.toString())
+                        throw FeedbackNotFound()
+                    }
+                }
+            }
+        }
     }
 
 }

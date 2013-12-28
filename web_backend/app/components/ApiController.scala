@@ -6,6 +6,7 @@ import play.api.libs.json._
 import play.api.mvc.{ Results, ActionBuilder, Request, SimpleResult }
 import play.api.libs.iteratee.Done
 import play.api.libs.iteratee.Input
+import play.api.mvc.Controller
 import scala.concurrent.Future
 
 
@@ -30,22 +31,11 @@ object ApiBodyParser extends BodyParsers {
     }
 }
 
-//
-//
-//trait ApiAuthController extends SecureSocial {
-//
-//    object SecuredApiAction extends SecuredActionBuilder[SecuredRequest[_]] {
-//
-//        def apply[A]() = new SecuredActionBuikder[A](true, None).async(parse.json)
-//
-//    }
-//
-//    object UserApiAction extends ActionBuilder[RequestWithUser] {
-//
-//    }
-//
-//
 
+trait ApiController extends Controller {
 
-
-
+    // TODO: move to a namespace specific to JSON
+    def jsonId(typeName: String, id: String) = {
+        Json.obj(typeName -> Json.obj("id" -> id))
+    }
+}

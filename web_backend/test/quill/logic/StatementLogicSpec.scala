@@ -1,4 +1,4 @@
-package test.logic
+package test.quill.logic
 
 import org.scalatest.FunSpec
 import org.scalatest.concurrent._

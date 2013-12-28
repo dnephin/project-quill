@@ -8,7 +8,6 @@ import scala.concurrent.Future
 import play.api.libs.json._
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import play.api.mvc.Action
-import play.api.mvc.Controller
 import play.api.mvc.ActionBuilder
 import play.api.mvc.Request
 import play.api.mvc.SimpleResult
@@ -25,12 +24,13 @@ import auth.models.User
 import components.ApiBodyParser
 import auth.logic.UserPublicGetLogic
 import auth.models.UserPublic
+import components.ApiController
 
 
 // TODO: remove ajaxCall=true with an abstraction
 /** Statement controller
   */
-object StatementController extends Controller with SecureSocial {
+object StatementController extends ApiController with SecureSocial {
 
     // TODO: where does this belong?
     def userMatches(user: Option[User], other: UserPublic): Boolean = {
@@ -93,8 +93,9 @@ object StatementController extends Controller with SecureSocial {
             }
 
             val response = for {
-                success <- StatementUpdateLogic(stmt.copy(_id=Some(id)), user._id)
-            } yield Ok(success.toString())
+                statementId <- StatementUpdateLogic(
+                        stmt.copy(_id=Some(id)), user._id)
+            } yield Ok(jsonId("statement", statementId))
 
             response recover {
                 case BadVersionError() => BadRequest("bad version")
@@ -123,7 +124,7 @@ object StatementController extends Controller with SecureSocial {
 
         // TODO: move to logic
         StatementData.publish(id, user._id).map {
-            id => Ok(Json.obj("_id" -> id))
+            statementId => Ok(jsonId("statement", statementId))
         }
     }
 
@@ -137,8 +138,8 @@ object StatementController extends Controller with SecureSocial {
             }
 
             val response = for {
-                success <- StatementAddLogic(stmt, user._id)
-            } yield Ok(success.toString())
+                statementId <- StatementAddLogic(stmt, user._id)
+            } yield Ok(jsonId("statement", statementId))
 
             response recover {
                 case LabelNotUniqueError() => BadRequest("bad label")

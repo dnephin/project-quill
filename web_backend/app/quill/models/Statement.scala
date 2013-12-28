@@ -5,9 +5,12 @@ package quill.models
 import play.api.libs.json._
 import org.joda.time.DateTime
 
+
 case class Label(
     _id: String,
-    editor: String)
+    editor: String
+)
+
 
 case class Version(
     major: Int,
@@ -21,9 +24,6 @@ case class Version(
     def value = s"$major.$minor.$patch"
 }
 
-case class Editor(
-    id: Option[String],
-    bio: String)
 
 // TODO: require non-empty
 // TODO: limit length of some string fields
@@ -37,7 +37,12 @@ case class Statement(
     problem: String,
     summary: String,
     full: String
-)
+) extends Editable {
+    def setEditorId(editorId: String) = {
+        copy(editor=editor.setId(editorId))
+    }
+}
+
 
 object Version {
     // TODO: should this be moved into config/globals
@@ -48,13 +53,11 @@ object Version {
     implicit val format = Json.format[Version]
 }
 
-object Editor {
-    implicit val format = Json.format[Editor]
-}
 
 object Statement {
     implicit val format = Json.format[Statement]
 }
+
 
 object Label {
     implicit val format = Json.format[Label]

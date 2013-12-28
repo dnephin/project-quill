@@ -5,6 +5,7 @@
 # Home page
 GET     /                           quill.controllers.Application.index
 
+# TODO: change urs to /api/auth/
 # Authentication
 GET     /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
 POST    /api/authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
@@ -23,6 +24,7 @@ PUT     /api/statement/:id          quill.controllers.StatementController.update
 # Feedback routes
 POST    /api/feedback               quill.controllers.FeedbackController.add
 GET     /api/feedback               quill.controllers.FeedbackController.list
+GET     /api/feedback/:id           quill.controllers.FeedbackController.view(id: String)
 
 
 # TODO: remove, used so securesocial assets use the correct url

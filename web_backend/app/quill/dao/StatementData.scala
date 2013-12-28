@@ -33,9 +33,11 @@ object StatementData {
 
     // TODO: do this with a handler and update the id to a friendly id
     // and push label at the same time
-    def add(stmt: Statement): Future[Boolean] = {
+    def add(stmt: Statement): Future[String] = {
         WS.url(url).post(Json.toJson(stmt)).map {
-            response => response.status == 201
+            response => response.status match {
+                case 201 => (response.json \ "id").as[String]
+            }
         }
     }
 

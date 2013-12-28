@@ -13,7 +13,6 @@ import quill.models.Editor
 
 case class LabelNotUniqueError() extends Exception
 case class BadVersionError() extends Exception
-case class AddFailedError() extends Exception
 
 /** Create a new Statement
   */
@@ -32,20 +31,16 @@ object StatementAddLogic {
         acceptedVersion contains version.value
     }
 
-    def addEditor(stmt: Statement, userId: String) = {
-        stmt.copy(editor=Editor(Some(userId), stmt.editor.bio))
-    }
-
     // TODO: validate editor.id
-    def apply(stmt: Statement, userId: String): Future[Boolean] = {
+    def apply(stmt: Statement, userId: String): Future[String] = {
         if (!isAcceptedVersion(stmt.version)) Future { 
             throw new BadVersionError() 
         }
         
         else for {
             _ <- addUniqueLabel(stmt.label)
-            result <- StatementData.add(addEditor(stmt, userId))
-        } yield if (!result) throw new AddFailedError() else true
+            result <- StatementData.add(stmt.setEditorId(userId))
+        } yield result
     }
 }
 
@@ -56,12 +51,10 @@ object StatementAddLogic {
   */
 object StatementUpdateLogic {
 
-    // TODO: validate editor.id
+    // TODO: validate editor.id against previous editor.id
+    // (couch might be doing
     def apply(stmt: Statement, userId: String): Future[String] = {
-        for {
-            stmtId <- StatementData.update(
-                        StatementAddLogic.addEditor(stmt, userId))
-        } yield stmtId
+        StatementData.update(stmt.setEditorId(userId))
     }
 
 }
