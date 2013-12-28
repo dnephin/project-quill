@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# Strip tailing whitespace
+#
+
+if git rev-parse --verify HEAD >/dev/null 2>&1; then
+    against=HEAD
+else
+    # Initial commit: diff against an empty tree object
+    against=1f2b43c0b2e2d50cdcd4bf6a50fd76878385fcc8
+fi
+
+
+for FILE in $(exec git diff-index --check --cached $against -- | sed '/^[+-]/d' | sed -r 's/:[0-9]+:.*//' | uniq); do
+    echo "Whitespace errors found in $FILE - fixing..."
+    # Fix trailing space
+    sed -i 's/[[:space:]]*$//' "$FILE"
+    git add "$FILE"
+done
+
+

@@ -1,0 +1,49 @@
+
+<div class="container">
+
+    <h2>New Feedback</h2>
+
+
+
+  <div class="statement-views col-md-2">
+    <ul class="list-unstyled">
+        <li>Support</li>
+        <li>Counter</li>
+        <li>Challenge</li>
+        <li>Accept</li>
+        <li>Disregard</li>
+   </ul>
+          {{view Ember.EditableView
+                  tagName="p"
+                  valueBinding="position"
+                  placeholder="What you think?"}}
+
+  </div>
+
+      <!-- TODO: editable editor component -->
+      <div class="col-md-3">
+          <img />
+          {{view Ember.EditableView
+                  tagName="p"
+                  valueBinding="editorBio"
+                  placeholder="Your bio..."}}
+      </div>
+
+    <div class="row">
+    <div class="col-md-12">
+
+    {{view Ember.EditableView
+            tagName="p"
+            classNames="feedback-content-block"
+            valueBinding="fullText"
+            placeholder="Provide feedback"}}
+    </div>
+    </div>
+
+
+  <div class="col-md-3 pull-right text-right">
+    <button {{action save}} class="btn btn-default">Save</button>
+  </div>
+
+
+</div>

@@ -1,0 +1,25 @@
+
+<div class="container">
+
+  <div class="statement-summary col-md-10">
+    <h2>{{title}}</h2>
+    {{version-view version=version}}
+
+
+    {{editor-summary editorBio=editorBio user=user}}
+    <p>{{problem}}</p>
+    <p>{{summary}}</p>
+    {{#link-to 'statement.view' label class="pull-right"}}
+        View full
+    {{/link-to}}
+  </div>
+
+  <div class="statement-actions col-md-10 col-md-offset-2">
+  </div>
+
+  <div class="statement-feedback col-md-12">
+    {{outlet feedback}}
+  </div>
+
+</div>
+

@@ -1,0 +1,17 @@
+
+
+{{! Profile image and bio of an editor }}
+
+<div class="thumbnail">
+    <!-- TODO: set height/width -->
+    <img
+        {{bind-attr src=user.avatarUrl}}
+        {{bind-attr alt=user.fullName}}
+        class=""
+    />
+
+    <div class="caption">
+        <p>{{user.fullName}}</p>
+        <p>{{editorBio}}</p>
+    </div>
+</div>

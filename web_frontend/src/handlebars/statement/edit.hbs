@@ -1,0 +1,70 @@
+
+
+<!-- TODO: cleanup duplication with statement/new.hbs -->
+
+<div class="container">
+
+  <div class="statement-edit">
+
+    <div class="col-md-12">
+        {{view Ember.EditableView
+            tagName="h2" valueBinding="title" placeholder="Title"}}
+    </div>
+
+    <div class="row">
+      <!-- TODO: editable editor component -->
+      <div class="col-md-3">
+          <img />
+          {{view Ember.EditableView
+                  tagName="p"
+                  valueBinding="editorBio"
+                  placeholder="Your bio..."}}
+      </div>
+
+    <!-- TODO: update from title when field is empty -->
+      <div class="col-md-3 col-md-offset-3">
+        {{view Ember.EditableView
+                tagName="p"
+                classNames="statement-label"
+                valueBinding="label"
+                placeholder="Label"}}
+      </div>
+
+
+      <!-- TODO: editable version view -->
+      <div class="col-md-3">
+        {{input type="text" value=version}}
+      </div>
+    </div>
+
+
+    <div class="row">
+    <div class="col-md-12">
+    {{view Ember.EditableView
+            tagName="p"
+            classNames="statement-problem-block"
+            valueBinding="problem"
+            placeholder="Describe the problem which this statement aims to solve"}}
+
+    {{view Ember.EditableView
+            tagName="p"
+            classNames="statement-summary-block"
+            valueBinding="summary"
+            placeholder="Summarize the solution"}}
+
+    {{view Ember.EditableView
+            tagName="p"
+            classNames="statement-full-block"
+            valueBinding="full"
+            placeholder="Full solution"}}
+    </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-3 pull-right text-right">
+    <button {{action save}} class="btn btn-default">Save</button>
+    <button {{action publish}} class="btn btn-primary">Publish</button>
+  </div>
+
+</div>

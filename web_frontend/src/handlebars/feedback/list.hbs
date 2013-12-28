@@ -1,0 +1,9 @@
+
+
+<h2>Feedback</h2>
+
+{{#link-to 'feedback.new'}}New{{/link-to}}
+
+{{#each feedback in content}}
+    {{feedback-list-entry feedback=feedback}}
+{{/each}}

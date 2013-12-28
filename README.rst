@@ -1,5 +1,13 @@
-project-quill
+Project Quill
 =============
+
+*Project Goal:* Create an open source group decision making tool. See `<docs/goals.rst>`_
+
+*Project Status:* Early development. See `<docs/project_plan.rst>`_
+
+
+.. contents:: Contents
+    :local:
 
 
 Development
@@ -18,37 +26,54 @@ To get started follow these steps:
 
 1. `Install vagrant <http://docs.vagrantup.com/v2/installation/index.html>`_
 
-2. Start vagrant which will add a VirtualBox image of Ubuntu 13.04 64 bit.
+2. Start vagrant. It will add a VirtualBox image of Ubuntu 13.04 64 bit.
    See `Vagrantfile <./Vagrantfile>`_)
 
-.. code-block:: shell
+    .. code-block:: bash
 
-    vagrant up
+        vagrant up
 
-3. Log into the box
+    TODO: debugging problems with vagrant up, and /etc/hosts problem
+
+3. Login to the box
+
+    .. code-block:: bash
+
+        vagrant ssh
+
+4. Build frontend and database sources
+
+    .. code-block:: bash
+
+        cd project-quill
+        grunt build
+
+5. Build backend sources and start webserver
+
+    .. code-block:: bash
+
+        cd web_backend
+        play run
 
 
-.. code-block:: shell
 
-    vagrant ssh
+Directory Structure
+~~~~~~~~~~~~~~~~~~~
+
+The project repository has this structure:
+
+==============    ======================================================
+database          couchdb design documents and resources
+dev               tools and resources for development
+dist              target directory for distribution packages
+docs              project documentation
+web_backend       scala back-end source
+web_frontend      web front-end source (coffeescript, less, handlebars)
+==============    ======================================================
 
 
-4. Build + Start (TODO)
+Coding Standards
+~~~~~~~~~~~~~~~~
 
-
-TODO: debugging problems with vagrant up, /etc/hosts problem
-
-
-Project Structure
-~~~~~~~~~~~~~~~~~
-
-dev
-    tools and resources for development
-docs
-    project documentation
-project-quill-app
-    scala backend source
-web
-    web front-end source
-
+TODO
 

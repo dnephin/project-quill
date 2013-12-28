@@ -4,26 +4,32 @@
 !.gitignore
 
 # Ignore Play! working directory #
-project-quill-app/logs
-project-quill-app/project/project
-project-quill-app/project/target
-project-quill-app/target
-project-quill-app/.history
-project-quill-app/.idea
-project-quill-app/*.iml
-project-quill-app/out
-project-quill-app/.idea_modules
-project-quill-app/.classpath
-project-quill-app/.project
-project-quill-app/RUNNING_PID
-project-quill-app/.settings
+web_backend/logs
+web_backend/project/project
+web_backend/project/target
+web_backend/target
+web_backend/public
+web_backend/.history
+web_backend/.idea
+web_backend/*.iml
+web_backend/out
+web_backend/.idea_modules
+web_backend/.classpath
+web_backend/.project
+web_backend/RUNNING_PID
+web_backend/.settings
+web_backend/bin
+web_backend/conf/auth_providers.conf
 
 dist/
 
 # Web frontend
 node_modules/
 _SpecRunner.html
-web/spec/js/
+web_frontend/spec/js/
+web_frontend/bower/
 
+# Database
+database/spec/js
 
 
