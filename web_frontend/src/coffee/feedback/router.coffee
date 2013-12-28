@@ -30,7 +30,9 @@ QuillApp.FeedbackIndexRoute = Ember.Route.extend
             outlet: 'feedback'
 
     model: (params, transition) ->
-        @store.find('feedback', statementId: transition.params.label)
+        # TODO: why is this necessary? why does it fire twice?
+        if transition.params? and transition.params.label?
+            @store.find('feedback', statementId: transition.params.label)
 
 
 QuillApp.FeedbackNewController = Ember.ObjectController.extend
@@ -51,7 +53,7 @@ QuillApp.FeedbackNewController = Ember.ObjectController.extend
                 @transitionToRoute('feedback.view', @content)
             .fail (reason) ->
                 # TODO: report errors
-                console.log "Error: #{reason.responseText}"
+                console.log reason
 
 
 QuillApp.FeedbackIndexController = Ember.ArrayController.extend

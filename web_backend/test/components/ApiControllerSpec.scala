@@ -12,7 +12,7 @@ class ApiControllerSpec extends FunSuite {
 
     test("jsonId returns correct Json.Obj") {
         assert(SampleController.jsonId("name", "the_id") ===
-            Json.obj("name" -> Json.obj("id" -> "the_id")))
+            Json.obj("name" -> Json.obj("_id" -> "the_id")))
     }
 
 }

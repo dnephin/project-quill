@@ -3,6 +3,9 @@
 #
 #
 
+# Debugging config
+# Ember.LOG_BINDINGS = true
+
 window.QuillApp = Ember.Application.create
     LOG_TRANSITIONS: true
 

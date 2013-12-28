@@ -10,6 +10,7 @@ import play.api.libs.json._
 import play.api.libs.ws.WS
 import quill.models.Feedback
 import play.Logger
+import auth.dao.Conflict
 
 
 case class UnexpectedResponseFormat(msg: String) extends Exception

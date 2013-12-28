@@ -36,6 +36,6 @@ trait ApiController extends Controller {
 
     // TODO: move to a namespace specific to JSON
     def jsonId(typeName: String, id: String) = {
-        Json.obj(typeName -> Json.obj("id" -> id))
+        Json.obj(typeName -> Json.obj("_id" -> id))
     }
 }

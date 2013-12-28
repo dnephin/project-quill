@@ -1,8 +1,3 @@
-Phase 1 - Statement
-- FeedbackController TODOs
-- FeedbackController.view
-- feedback list view
-
 
 Phase 2 - Cleanup
 
@@ -16,3 +11,4 @@ Phase 2 - Cleanup
 - remove lookup user from Statement Controller actions
 - SubCut for testing
 - version selections for new post
+- secure-social refactor
