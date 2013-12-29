@@ -1,6 +1,6 @@
-#
-# app.js design document for statement database
-#
+###
+ app.js design document for statement database
+###
 
 
 # TODO: is there a better way to support testing here?
@@ -85,8 +85,6 @@ ddoc.updates.update = (doc, req) ->
 
     if buildVersion(newDoc.version) <= buildVersion(doc.version)
         return [null, "version was not incremented"]
-
-
 
     # TODO: better/shorter id
     newDoc._id = "#{doc.label}-#{buildVersionString(newDoc.version)}"
