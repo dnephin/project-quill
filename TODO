@@ -2,9 +2,10 @@
 Phase 2 - Cleanup
 
 Task 1 - Database cleanup
-- add macros to grunt-couch
-- migrate to grunt-couch
 - cleanup design docs
+    - fix testing to use jasmine-node
+- create a grunt task for couch macros
+- migrate to grunt-couch
 - add tests for all design docs
 - add fixtures for user, and update Statement fixtures to match
 - include label in statement db

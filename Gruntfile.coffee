@@ -106,6 +106,7 @@ module.exports = (grunt) ->
         emberTemplates: 'grunt-ember-templates'
         mkcouchdb:      'grunt-couchapp'
         replace:        'grunt-text-replace'
+        jasmine_node:   'grunt-jasmine-node'
 
     grunt.option 'stack', true
 
@@ -131,7 +132,7 @@ module.exports = (grunt) ->
                 arrow_spacing: 'error'
                 cyclomatic_complexity:
                     level: 'error'
-                    value: 9 # This may need to increase to 11
+                    value: 6 # This may need to increase to 10
                 line_endings: 'error'
                 space_operators: 'error'
                 indentation:
@@ -153,10 +154,13 @@ module.exports = (grunt) ->
                 options:
                     vendor: paths.web_frontend.bower.js.src
                     specs: paths.web_frontend.specs.dest
-            databaseTest:
-                src: paths.database.files.dest + '**/*.js'
-                options:
-                    specs: paths.database.specs.dest + '**/*.js'
+
+        jasmine_node:
+            projectRoot: paths.database.files.dest
+            specFolders: [
+                paths.database.specs.dest
+            ]
+            colors: true
 
         copy:
             static:
@@ -183,7 +187,8 @@ module.exports = (grunt) ->
 
         watch:
             options:
-                spawn: false
+                # TODO: disable again once grunt-jasmine-node #9 is fixed
+                spawn: true
                 livereload: true
 
             appCoffee:
@@ -208,7 +213,7 @@ module.exports = (grunt) ->
                     'coffee:database'
                     'coffee:databaseSpec'
                     'replace:database'
-                    'jasmine:databaseTest'
+                    'jasmine_node'
                     'couchapp'
                 ]
 
@@ -260,7 +265,7 @@ module.exports = (grunt) ->
         'coffee:database'
         'coffee:databaseSpec'
         'replace:database'
-        'jasmine:databaseTest'
+        'jasmine_node'
         'mkcouchdb'
         'couchapp'
     ]

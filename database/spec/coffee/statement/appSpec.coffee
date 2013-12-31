@@ -2,7 +2,8 @@
  Unit tests for statement/_design/app
 ###
 
-ddoc = window.statement.exports
+# TODO: find a way to use relative path
+ddoc = require('/vagrant/dist/database/statement/app.js')
 
 describe "statement app design document", ->
 
@@ -12,10 +13,10 @@ describe "statement app design document", ->
     describe "current_published view", ->
 
         beforeEach ->
-            window.emit = jasmine.createSpy('emit')
+            GLOBAL.emit = jasmine.createSpy('emit')
 
         afterEach ->
-            window.emit = null
+            GLOBAL.emit = undefined
 
         it "map emits nothing if not published", ->
             source =
