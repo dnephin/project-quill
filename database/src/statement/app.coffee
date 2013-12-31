@@ -20,11 +20,7 @@ ddoc.views.current_published =
     map: (doc) ->
         return if ! doc.version.published
 
-        # TODO: deal with duplication
-        buildVersion = (version) ->
-            # TODO: document and restrict each version part to 999
-            version.major * 1000 * 1000 + version.minor * 1000 + version.patch
-
+        ### !code dist/database/statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
 
     # TODO: deal with duplication
@@ -36,10 +32,9 @@ ddoc.views.current_published =
 
 ddoc.views.current =
     map: (doc) ->
-        # TODO: deal with duplication
-        buildVersion = (version) ->
-            version.major * 1000 * 1000 + version.minor * 1000 + version.patch
+        ### !code dist/database/statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
+
     reduce: (keys, values, rereduce) ->
         max = (prev, next) ->
             if prev[1] > next[1] then prev else next

@@ -2,6 +2,7 @@
 # Gruntfile for web_frontend and database
 #
 
+couchMacroReplace = require('./grunt/couch-macro.js')
 
 # TODO: better way to alias all the paths, there is lots of duplication
 # web_frontend coffeescript src is referenced in a few places
@@ -31,6 +32,7 @@ module.exports = (grunt) ->
     require('jit-grunt') grunt,
         emberTemplates: 'grunt-ember-templates'
         mkcouchdb:      'grunt-couchapp'
+        replace:        'grunt-text-replace'
 
     grunt.option 'stack', true
 
@@ -130,6 +132,7 @@ module.exports = (grunt) ->
                     expand: true
                     flatten: true }
                 ]
+
         less:
             dev:
                 options:
@@ -180,6 +183,7 @@ module.exports = (grunt) ->
                     'coffeelint:database'
                     'coffee:database'
                     'coffee:databaseSpec'
+                    'replace:database'
                     'jasmine:databaseTest'
                     'couchapp'
                 ]
@@ -195,6 +199,15 @@ module.exports = (grunt) ->
             handlebars:
                 files: ['web_frontend/src/handlebars/**/*.hbs']
                 tasks: ['emberTemplates']
+
+        replace:
+            database:
+                src: ['dist/database/**/*.js']
+                overwrite: true
+                replacements: [
+                    from: /^\s+\/\* \!code (.+?\.js)\*\/\s*$/mg
+                    to: couchMacroReplace(grunt)
+                ]
 
         clean:
             dist: ['dist/*']
@@ -219,6 +232,7 @@ module.exports = (grunt) ->
         'coffeelint:database'
         'coffee:database'
         'coffee:databaseSpec'
+        'replace:database'
         'jasmine:databaseTest'
         'mkcouchdb'
         'couchapp'
