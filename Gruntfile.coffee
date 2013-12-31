@@ -44,7 +44,7 @@ paths =
                     'web_frontend/bower/ember/ember.js'
                     'web_frontend/bower/ember-data-shim/ember-data.js'
                 ]
-                dest: "dist/web/js/"
+                dest: 'dist/web/js/'
                 expand: true
                 flatten: true
             css:
@@ -53,11 +53,19 @@ paths =
                     'web_frontend/bower/bootstrap/dist/css/' +
                         'bootstrap-theme.css'
                 ]
-                dest: "dist/web/css/"
+                dest: 'dist/web/css/'
                 expand: true
                 flatten: true
 
     database:
+        host: 'http://localhost:5984'
+        names: [
+            'statement'
+            'label'
+            'user'
+            'feedback'
+        ]
+
         files:
             cwd:        'database/src/'
             src:        ['**/*.coffee']
@@ -79,32 +87,40 @@ paths =
 pathsFromOpts = (opts) ->
     opts.cwd + src for src in opts.src
 
+#
+# Build a mapping for couch-compile from a list of databases
+#
+buildCouchCompile = (databases) ->
+    _ = require('grunt').util._
 
-# TODO: clean this up
-buildCouch = (name) ->
-    couchdb_url = 'http://localhost:5984'
+    buildFiles = (db) ->
+        files: [
+            src:  "#{paths.database.files.dest}#{db}/app.js"
+            dest: "#{paths.database.files.dest}#{db}/app.json"
+        ]
 
-    db: "#{couchdb_url}/#{name}"
-    app: "dist/database/#{name}/app.js"
-    options:
-        okay_if_exists: true
-        okay_is_missing: true
+    _.object([db, buildFiles(db)] for db in databases)
 
+#
+# Build a mapping for couch-push from a list of databases
+#
+buildCouchPushFiles = (databases) ->
 
-databases =
-    statement: buildCouch('statement')
-    label: buildCouch('label')
-    user: buildCouch('user')
-    feedback: buildCouch('feedback')
+    buildFiles = (db) ->
+        src:  "#{paths.database.files.dest}#{db}/app.json"
+        dest: "#{paths.database.host}/#{db}"
+
+    buildFiles(db) for db in databases
 
 
 module.exports = (grunt) ->
 
     require('jit-grunt') grunt,
-        emberTemplates: 'grunt-ember-templates'
-        mkcouchdb:      'grunt-couchapp'
-        replace:        'grunt-text-replace'
-        jasmine_node:   'grunt-jasmine-node'
+        "couch-compile":    'grunt-couch'
+        "couch-push":       'grunt-couch'
+        emberTemplates:     'grunt-ember-templates'
+        jasmine_node:       'grunt-jasmine-node'
+        replace:            'grunt-text-replace'
 
     grunt.option 'stack', true
 
@@ -154,7 +170,7 @@ module.exports = (grunt) ->
                     specs: paths.web_frontend.specs.dest
 
         jasmine_node:
-            projectRoot: "/dev/null"
+            projectRoot: '/dev/null'
             specFolders: [paths.database.specs.dest]
             colors: true
 
@@ -177,9 +193,16 @@ module.exports = (grunt) ->
                     templateBasePath: paths.web_frontend.handlebars.basePath
                 files: [paths.web_frontend.handlebars.files]
 
-        mkcouchdb: databases
+        "couch-compile": buildCouchCompile(paths.database.names)
 
-        couchapp: databases
+        "couch-push":
+            localhost:
+                files: buildCouchPushFiles(paths.database.names)
+
+        couchMacro:
+            database:
+                src: [paths.database.files.dest + '**/*.js']
+                baseDir: paths.database.files.dest
 
         watch:
             options:
@@ -217,11 +240,6 @@ module.exports = (grunt) ->
             handlebars:
                 files: [paths.web_frontend.handlebars.files.src]
                 tasks: ['emberTemplates']
-
-        couchMacro:
-            database:
-                src: [paths.database.files.dest + '**/*.js']
-                baseDir: paths.database.files.dest
 
         clean:
             dist: ['dist/*']
@@ -279,8 +297,7 @@ module.exports = (grunt) ->
         'coffee:databaseSpec'
         'couchMacro:database'
         'jasmine_node'
-        'mkcouchdb'
-        'couchapp'
+        'couch'
     ]
 
     grunt.registerTask 'default', ['buildFrontend']

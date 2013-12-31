@@ -66,11 +66,10 @@ cd project-quill
 npm cache clean
 
 echo "Installing global npm packages"
-npm install -g -q grunt-cli coffee-script couchapp bower
+npm install -g -q grunt-cli coffee-script bower
 
 echo "Installing node packages from package.json"
 npm install -q --no-bin-link
-# TODO: resolve linking errors, and remove --no-bin-link
 
 cd web_frontend
 sudo -u vagrant -H bower install

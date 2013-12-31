@@ -5,7 +5,6 @@ Task 1 - Database cleanup
 - cleanup design docs
     - validate all parts needed for views
     - flush out feedback views
-- migrate to grunt-couch
 - add fixtures for user, and update Statement fixtures to match
 - include label in statement db
     - friendly label on add
