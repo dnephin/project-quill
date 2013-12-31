@@ -1,5 +1,5 @@
 #
-# Gruntfile for web_frontend and database src
+# Gruntfile for web_frontend and database
 #
 
 
@@ -27,6 +27,10 @@ databases =
 
 
 module.exports = (grunt) ->
+
+    require('jit-grunt') grunt,
+        emberTemplates: 'grunt-ember-templates'
+        mkcouchdb:      'grunt-couchapp'
 
     grunt.option 'stack', true
 
@@ -59,8 +63,12 @@ module.exports = (grunt) ->
                 options:
                     bare: true
                 files: [
-                    src: 'database/spec/coffee/**/*.coffee'
-                    dest: 'database/spec/js/databaseSpec.js'
+                    expand:     true
+                    flatten:    false
+                    cwd:        'database/spec/coffee/'
+                    src:        ['**/*.coffee']
+                    dest:       'database/spec/js/'
+                    ext:        '.js'
                 ]
 
         coffeelint:
@@ -90,7 +98,7 @@ module.exports = (grunt) ->
             databaseTest:
                 src: 'dist/database/**/*.js'
                 options:
-                    specs: 'database/spec/js/*.js'
+                    specs: 'database/spec/js/**/*.js'
 
         copy:
             static:
@@ -193,16 +201,6 @@ module.exports = (grunt) ->
             spec: ['database/spec/js/*', 'web_frontend/spec/js/*']
 
 
-    grunt.loadNpmTasks 'grunt-contrib-clean'
-    grunt.loadNpmTasks 'grunt-contrib-coffee'
-    grunt.loadNpmTasks 'grunt-contrib-copy'
-    grunt.loadNpmTasks 'grunt-contrib-jasmine'
-    grunt.loadNpmTasks 'grunt-contrib-less'
-    grunt.loadNpmTasks 'grunt-contrib-watch'
-    grunt.loadNpmTasks 'grunt-ember-templates'
-    grunt.loadNpmTasks 'grunt-coffeelint'
-    grunt.loadNpmTasks 'grunt-couchapp'
-
     grunt.registerTask 'buildFrontend', [
         'copy'
         'coffeelint:app'
@@ -217,7 +215,7 @@ module.exports = (grunt) ->
         'jasmine'
     ]
 
-    grunt.registerTask 'buildCouchdb', [
+    grunt.registerTask 'buildDatabase', [
         'coffeelint:database'
         'coffee:database'
         'coffee:databaseSpec'
@@ -230,5 +228,5 @@ module.exports = (grunt) ->
 
     grunt.registerTask 'build', [
         'buildFrontend'
-        'buildCouchdb'
+        'buildDatabase'
     ]
