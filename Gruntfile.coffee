@@ -66,9 +66,9 @@ paths =
             ext:        '.js'
 
         specs:
-            cwd:        'database/spec/coffee/'
+            cwd:        'database/spec/'
             src:        ['**/*.coffee']
-            dest:       'database/spec/js/'
+            dest:       'dist/database/spec/'
             expand:     true
             ext:        '.js'
 
@@ -154,10 +154,8 @@ module.exports = (grunt) ->
                     specs: paths.web_frontend.specs.dest
 
         jasmine_node:
-            projectRoot: paths.database.files.dest
-            specFolders: [
-                paths.database.specs.dest
-            ]
+            projectRoot: "/dev/null"
+            specFolders: [paths.database.specs.dest]
             colors: true
 
         copy:
@@ -206,14 +204,7 @@ module.exports = (grunt) ->
                 files: [].concat(
                     pathsFromOpts(paths.database.files),
                     pathsFromOpts(paths.database.specs))
-                tasks: [
-                    'coffeelint:database'
-                    'coffee:database'
-                    'coffee:databaseSpec'
-                    'couchMacro:database'
-                    'jasmine_node'
-                    'couchapp'
-                ]
+                tasks: ['buildDatabase']
 
             less:
                 files: paths.web_frontend.less.src
@@ -234,10 +225,7 @@ module.exports = (grunt) ->
 
         clean:
             dist: ['dist/*']
-            spec: [
-                paths.database.specs.dest + '*'
-                paths.web_frontend.specs.dest
-            ]
+            spec: [paths.web_frontend.specs.dest]
 
     #
     # A task which uses grunt-text-replace to include common code in couch

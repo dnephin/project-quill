@@ -2,8 +2,7 @@
  Unit tests for user/_design/app
 ###
 
-# TODO: find a way to use relative path
-ddoc = require('/vagrant/dist/database/user/app.js')
+ddoc = require('../../user/app.js')
 
 
 describe "user app design document", ->

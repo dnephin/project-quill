@@ -2,8 +2,7 @@
  Unit tests for feedback/_design/app
 ###
 
-# TODO: find a way to use relative path
-ddoc = require('/vagrant/dist/database/feedback/app.js')
+ddoc = require('../../feedback/app.js')
 
 
 describe "feedback app design document", ->
