@@ -2,6 +2,7 @@
 Phase 2 - Cleanup
 
 Task 1 - Database cleanup
+- grunt task for uploading fixtures
 - cleanup design docs
     - validate all parts needed for views
     - flush out feedback views

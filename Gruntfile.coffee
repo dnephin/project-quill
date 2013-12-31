@@ -102,13 +102,19 @@ buildCouchCompile = (databases) ->
     _.object([db, buildFiles(db)] for db in databases)
 
 #
+# Return the url for a database
+#
+databaseUrl = (database) ->
+    "#{paths.database.host}/#{database}"
+
+#
 # Build a mapping for couch-push from a list of databases
 #
 buildCouchPushFiles = (databases) ->
 
     buildFiles = (db) ->
         src:  "#{paths.database.files.dest}#{db}/app.json"
-        dest: "#{paths.database.host}/#{db}"
+        dest: databaseUrl(db)
 
     buildFiles(db) for db in databases
 
@@ -245,6 +251,8 @@ module.exports = (grunt) ->
             dist: ['dist/*']
             spec: [paths.web_frontend.specs.dest]
 
+
+    # TODO: publish as own repo
     #
     # A task which uses grunt-text-replace to include common code in couch
     # design documents.
