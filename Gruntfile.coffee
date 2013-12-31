@@ -100,8 +100,6 @@ databases =
 
 module.exports = (grunt) ->
 
-    couchMacroReplace = require('./grunt/couch-macro.js')
-
     require('jit-grunt') grunt,
         emberTemplates: 'grunt-ember-templates'
         mkcouchdb:      'grunt-couchapp'
@@ -212,7 +210,7 @@ module.exports = (grunt) ->
                     'coffeelint:database'
                     'coffee:database'
                     'coffee:databaseSpec'
-                    'replace:database'
+                    'couchMacro:database'
                     'jasmine_node'
                     'couchapp'
                 ]
@@ -229,21 +227,48 @@ module.exports = (grunt) ->
                 files: [paths.web_frontend.handlebars.files.src]
                 tasks: ['emberTemplates']
 
-        replace:
+        couchMacro:
             database:
                 src: [paths.database.files.dest + '**/*.js']
-                overwrite: true
-                replacements: [
-                    from: /^\s+\/\* \!code (.+?\.js)\*\/\s*$/mg
-                    # TODO: make a grunt task?
-                    to: couchMacroReplace(grunt, paths.database.files.dest)
-                ]
+                baseDir: paths.database.files.dest
 
         clean:
             dist: ['dist/*']
             spec: [
                 paths.database.specs.dest + '*'
                 paths.web_frontend.specs.dest
+            ]
+
+    #
+    # A task which uses grunt-text-replace to include common code in couch
+    # design documents.
+    #
+    grunt.registerMultiTask 'couchMacro', ->
+        path        = require 'path'
+        textReplace = require 'grunt-text-replace/lib/grunt-text-replace'
+
+        baseDir     = @data.baseDir
+        cache       = {}
+
+        replacer = (_word, _idx, _text, matches) ->
+            filename = path.join(baseDir, matches[0])
+            grunt.log.writeln("Using macro #{filename}")
+
+            if cache[filename]?
+                cache[filename]
+            else
+                try
+                    cache[filename] = grunt.file.read(filename)
+                catch error
+                    grunt.log.error "Failed to read #{filename}"
+                    throw grunt.util.error "Missing file", error
+
+        textReplace.replace
+            src:            @data.src
+            overwrite:      true
+            replacements:   [
+                from: /^\s+\/\* \!code (.+?\.js)\*\/\s*$/mg
+                to:   replacer
             ]
 
     grunt.registerTask 'buildFrontend', [
@@ -264,7 +289,7 @@ module.exports = (grunt) ->
         'coffeelint:database'
         'coffee:database'
         'coffee:databaseSpec'
-        'replace:database'
+        'couchMacro:database'
         'jasmine_node'
         'mkcouchdb'
         'couchapp'

@@ -24,5 +24,5 @@ describe "feedback app design document", ->
                 anchor:
                     statementId: "statement"
 
-            ddoc.views.identity_id.map(doc)
+            ddoc.views.by_statement.map(doc)
             expect(emit).toHaveBeenCalledWith("statement", null)
