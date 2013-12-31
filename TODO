@@ -4,7 +4,6 @@ Phase 2 - Cleanup
 Task 1 - Database cleanup
 - add macros to grunt-couch
 - migrate to grunt-couch
-- cleanup paths in gruntfile
 - cleanup design docs
 - add tests for all design docs
 - add fixtures for user, and update Statement fixtures to match

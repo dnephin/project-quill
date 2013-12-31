@@ -74,7 +74,7 @@ paths =
 
 
 #
-# Return a list of file paths from an file options mapping
+# Return a list of file paths from a file options mapping
 #
 pathsFromOpts = (opts) ->
     opts.cwd + src for src in opts.src
@@ -230,9 +230,8 @@ module.exports = (grunt) ->
                 overwrite: true
                 replacements: [
                     from: /^\s+\/\* \!code (.+?\.js)\*\/\s*$/mg
-                    # TODO: use paths
                     # TODO: make a grunt task?
-                    to: couchMacroReplace(grunt)
+                    to: couchMacroReplace(grunt, paths.database.files.dest)
                 ]
 
         clean:

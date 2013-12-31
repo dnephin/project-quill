@@ -20,7 +20,7 @@ ddoc.views.current_published =
     map: (doc) ->
         return if ! doc.version.published
 
-        ### !code dist/database/statement/build-version-macro.js ###
+        ### !code statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
 
     # TODO: deal with duplication
@@ -32,7 +32,7 @@ ddoc.views.current_published =
 
 ddoc.views.current =
     map: (doc) ->
-        ### !code dist/database/statement/build-version-macro.js ###
+        ### !code statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
 
     reduce: (keys, values, rereduce) ->
