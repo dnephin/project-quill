@@ -32,7 +32,7 @@ QuillApp.FeedbackIndexRoute = Ember.Route.extend
     model: (params, transition) ->
         # TODO: why is this necessary? why does it fire twice?
         if transition.params? and transition.params.label?
-            @store.find('feedback', statementId: transition.params.label)
+            @store.find('feedback', statement: transition.params.label)
 
 
 QuillApp.FeedbackNewController = Ember.ObjectController.extend
@@ -42,8 +42,8 @@ QuillApp.FeedbackNewController = Ember.ObjectController.extend
     actions:
         save: (event) ->
             @set 'content.anchor',
-                statementId: @get 'statement.label'
-                parentId:    @get 'statement.id'
+                statementLabel: @get 'statement.label'
+                parentId:       @get 'statement.id'
                 # TODO: include a highlighted context text
                 context:     ""
             @store.createRecord('feedback', @content)

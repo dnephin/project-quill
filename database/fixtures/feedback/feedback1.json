@@ -8,7 +8,7 @@
     "content": "This is my feedback",
     "date": 412345234,
     "anchor": {
-        "statementId": "abab",
+        "statementLabel": "abab",
         "parentId": "baba",
         "context": "The line here"
     },

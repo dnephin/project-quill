@@ -18,10 +18,10 @@ describe "feedback app design document", ->
         afterEach ->
             GLOBAL.emit = undefined
 
-        it "emits a document by it's statementId", ->
+        it "emits a document by it's statementLabel", ->
             doc =
                 anchor:
-                    statementId: "statement"
+                    statementLabel: "statement"
 
             ddoc.views.by_statement.map(doc)
             expect(emit).toHaveBeenCalledWith("statement", null)
@@ -33,11 +33,11 @@ describe "feedback app design document", ->
         beforeEach ->
             newDoc =
                 anchor:
-                    statementId: "the statement id"
+                    statementLabel: "the statement id"
 
         it "succeeds when document is valid", ->
             expect( -> ddoc.validate_doc_update(newDoc)).not.toThrow()
 
-        it "fails when statementId is missing", ->
-            delete newDoc.anchor.statementId
+        it "fails when statementLabel is missing", ->
+            delete newDoc.anchor.statementLabel
             expect( -> ddoc.validate_doc_update(newDoc)).toThrow()

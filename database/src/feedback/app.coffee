@@ -9,15 +9,15 @@ module.exports = ddoc =
 
 
 #
-# A view which returns all feedback for a statementId
+# A view which returns all feedback for a statementLabel
 #
 ddoc.views.by_statement =
     map: (doc) ->
-        emit(doc.anchor.statementId, null)
+        emit(doc.anchor.statementLabel, null)
 
 
 # TODO: userId view
-# TODO: userId + statementId view
+# TODO: userId + statementLabel view
 
 #
 # Validate the document
@@ -25,4 +25,4 @@ ddoc.views.by_statement =
 ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
     ### !code common/validation.js ###
 
-    validate newDoc, 'anchor.statementId', 'string'
+    validate newDoc, 'anchor.statementLabel', 'string'

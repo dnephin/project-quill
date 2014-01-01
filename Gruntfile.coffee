@@ -179,7 +179,8 @@ module.exports = (grunt) ->
             databaseSpec:
                 projectRoot: '/dev/null'
                 specFolders: [paths.database.specs.dest]
-                colors: true
+                colors:      true
+                forceExit:   true
 
         copy:
             static:

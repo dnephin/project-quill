@@ -35,8 +35,8 @@ object FeedbackController extends ApiController with SecureSocial {
     def list() = Action.async(parse.empty) { request =>
         // TODO: logic
         // TODO: raise on missing
-        val statementId = request.getQueryString("statementId").get
-        FeedbackData.getByStatementId(statementId).map { feedback =>
+        val statementLabel = request.getQueryString("statement").get
+        FeedbackData.getByStatementId(statementLabel).map { feedback =>
             Ok(Json.obj("feedback" -> feedback))
         }
     }

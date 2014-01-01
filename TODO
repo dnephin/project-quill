@@ -3,14 +3,11 @@ Phase 2 - Cleanup
 
 Task 1 - Database cleanup
 - grunt task for uploading fixtures
-- rename feedback.anchor.statementId to statementLabel
-- cleanup design docs
-    - validate all parts needed for views
-    - flush out feedback views
-- add fixtures for user, and update Statement fixtures to match
+- flush out feedback views
 - include label in statement db
     - friendly label on add
     - update handler for add
+- add fixtures for user, and update statement fixtures to match
 
 Task 2 - Upgrades
 - upgrade ubuntu image
