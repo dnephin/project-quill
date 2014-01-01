@@ -134,11 +134,32 @@ describe "statement app design document", ->
                 editor: { id: "abe" }
                 version: { published: false }
             newDoc =
+                label: "The label"
                 editor: { id: "abe" }
-                version: { published: false }
+                version:
+                    published: false
+                    major: 1
+                    minor: 2
+                    patch: 0
 
         it "succeeds when the document is new", ->
-            expect(ddoc.validate_doc_update).not.toThrow()
+            expect( -> ddoc.validate_doc_update(newDoc, null)).not.toThrow()
+
+        it "fails when document is missing a complete version", ->
+            delete newDoc.version.major
+            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
+
+        it "fails when document version is not numeric", ->
+            newDoc.version.minor = "a"
+            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
+
+        it "fails when document is missing a version", ->
+            delete newDoc.version
+            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
+
+        it "fails when document is missing a label", ->
+            delete newDoc.label
+            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
 
         it "fails when document is already published", ->
             oldDoc.version.published = true

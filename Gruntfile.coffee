@@ -152,7 +152,7 @@ module.exports = (grunt) ->
                 arrow_spacing: 'error'
                 cyclomatic_complexity:
                     level: 'error'
-                    value: 6 # This may need to increase to 10
+                    value: 8 # This may need to increase to 10
                 line_endings: 'error'
                 space_operators: 'error'
                 indentation:
@@ -176,9 +176,10 @@ module.exports = (grunt) ->
                     specs: paths.web_frontend.specs.dest
 
         jasmine_node:
-            projectRoot: '/dev/null'
-            specFolders: [paths.database.specs.dest]
-            colors: true
+            databaseSpec:
+                projectRoot: '/dev/null'
+                specFolders: [paths.database.specs.dest]
+                colors: true
 
         copy:
             static:
@@ -212,7 +213,7 @@ module.exports = (grunt) ->
 
         watch:
             options:
-                # TODO: disable again once grunt-jasmine-node #9 is fixed
+                # TODO: why does jasmine run the wrong source when this is true
                 spawn: true
                 livereload: true
 
@@ -305,7 +306,7 @@ module.exports = (grunt) ->
         'coffee:databaseSpec'
         'couchMacro:database'
         'jasmine_node'
-        'couch'
+#        'couch'
     ]
 
     grunt.registerTask 'default', ['buildFrontend']

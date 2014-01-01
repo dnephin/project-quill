@@ -8,7 +8,6 @@ module.exports = ddoc =
     views: {}
     updates: {}
 
-
 #
 # A view of the current published statement for each label.
 #
@@ -40,7 +39,7 @@ ddoc.views.current =
 # Update a document to be published
 #
 ddoc.updates.publish = (doc, req) ->
-    # TODO: error codes and error handling?
+    # TODO: error codes
     if !doc
         return [null, "document not found"]
 
@@ -82,13 +81,20 @@ ddoc.updates.update = (doc, req) ->
     newDoc.version.published = false
     return [newDoc, "new document version"]
 
-
-# TODO: test this is called for update handlers as well
 #
 # Validate the document
 #
 ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
-    if !oldDoc
+    ### !code common/validation.js ###
+
+    for item in ['version.major', 'version.minor', 'version.patch']
+        validate newDoc, item, 'number'
+
+    validate newDoc, 'version.published',   'boolean'
+    validate newDoc, 'label',               'string'
+    validate newDoc, 'editor.id',           'string'
+
+    if !oldDoc?
         return
 
     if oldDoc.version.published
@@ -96,4 +102,3 @@ ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
 
     if oldDoc.editor.id != newDoc.editor.id
         throw(forbidden: 'editor does not match')
-

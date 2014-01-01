@@ -15,7 +15,7 @@
     "grunt-contrib-clean": "~0.5.0",
     "jit-grunt": "~0.1.2",
     "grunt-text-replace": "~0.3.10",
-    "grunt-jasmine-node": "~0.1.0",
+    "grunt-jasmine-node": "git+ssh://git@github.com:dnephin/grunt-jasmine-node.git",
     "grunt-couch": "git+ssh://git@github.com:dnephin/grunt-couch.git"
 },
   "devDependencies": {},

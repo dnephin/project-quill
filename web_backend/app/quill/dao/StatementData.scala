@@ -70,6 +70,7 @@ object StatementData {
         WS.url(s"$publishUrl/$id").post(Json.obj("editorId" -> editorId)).map {
             // TODO: logging and error handling
             response => response.status match {
+                // TODO: upgrade couch to get this header
                 case 201 => response.header("X-Couch-Id").getOrElse("Unknown")
                 case _ => {
                     val msg = response.body

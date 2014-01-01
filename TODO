@@ -11,6 +11,10 @@ Task 1 - Database cleanup
     - friendly label on add
     - update handler for add
 
+Task 2 - Upgrades
+- upgrade ubuntu image
+- upgrade couchde
+
 Misc - Unsorted
 - add edit link to statement summary view
 - add display name to user maybe? or just use fullName
