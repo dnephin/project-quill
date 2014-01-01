@@ -59,12 +59,10 @@ paths =
 
     database:
         host: 'http://localhost:5984'
-        names: [
-            'statement'
-            'label'
-            'user'
-            'feedback'
-        ]
+        names:
+            statement:  ['app', 'label']
+            user:       ['app']
+            feedback:   ['app']
 
         files:
             cwd:        'database/src/'
@@ -90,16 +88,16 @@ pathsFromOpts = (opts) ->
 #
 # Build a mapping for couch-compile from a list of databases
 #
-buildCouchCompile = (databases) ->
-    _ = require('grunt').util._
+buildCouchCompile = (grunt, databases) ->
+    _ = grunt.util._
 
-    buildFiles = (db) ->
+    buildFiles = (db, docs) ->
         files: [
-            src:  "#{paths.database.files.dest}#{db}/app.js"
-            dest: "#{paths.database.files.dest}#{db}/app.json"
+            src: ("#{paths.database.files.dest}#{db}/#{doc}.js" for doc in docs)
+            dest: "#{paths.database.files.dest}#{db}/ddocs.json"
         ]
 
-    _.object([db, buildFiles(db)] for db in databases)
+    _.object([db, buildFiles(db, docs)] for db, docs of databases)
 
 #
 # Return the url for a database
@@ -110,13 +108,13 @@ databaseUrl = (database) ->
 #
 # Build a mapping for couch-push from a list of databases
 #
-buildCouchPushFiles = (databases) ->
+buildCouchPushFiles = (grunt, databases) ->
 
     buildFiles = (db) ->
-        src:  "#{paths.database.files.dest}#{db}/app.json"
+        src:  "#{paths.database.files.dest}#{db}/ddocs.json"
         dest: databaseUrl(db)
 
-    buildFiles(db) for db in databases
+    buildFiles(db) for db of databases
 
 
 module.exports = (grunt) ->
@@ -201,11 +199,11 @@ module.exports = (grunt) ->
                     templateBasePath: paths.web_frontend.handlebars.basePath
                 files: [paths.web_frontend.handlebars.files]
 
-        "couch-compile": buildCouchCompile(paths.database.names)
+        "couch-compile": buildCouchCompile(grunt, paths.database.names)
 
         "couch-push":
             localhost:
-                files: buildCouchPushFiles(paths.database.names)
+                files: buildCouchPushFiles(grunt, paths.database.names)
 
         couchMacro:
             database:
