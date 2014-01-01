@@ -17,3 +17,11 @@ ddoc.views.identity_id =
         id = doc.identityId
         emit [id.providerId, id.userId], null
 
+#
+# Validate the document
+#
+ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
+    ### !code common/validation.js ###
+
+    validate newDoc, 'identityId.providerId',   'string'
+    validate newDoc, 'identityId.userId',       'string'

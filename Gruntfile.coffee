@@ -306,7 +306,7 @@ module.exports = (grunt) ->
         'coffee:databaseSpec'
         'couchMacro:database'
         'jasmine_node'
-#        'couch'
+        'couch'
     ]
 
     grunt.registerTask 'default', ['buildFrontend']

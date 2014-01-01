@@ -18,3 +18,11 @@ ddoc.views.by_statement =
 
 # TODO: userId view
 # TODO: userId + statementId view
+
+#
+# Validate the document
+#
+ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
+    ### !code common/validation.js ###
+
+    validate newDoc, 'anchor.statementId', 'string'
