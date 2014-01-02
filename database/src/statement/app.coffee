@@ -14,6 +14,7 @@ module.exports = ddoc =
 ddoc.views.current_published =
     map: (doc) ->
         return if ! doc.version.published
+        return if doc.type != 'statement'
 
         ### !code statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
@@ -28,6 +29,8 @@ ddoc.views.current_published =
 #
 ddoc.views.current =
     map: (doc) ->
+        return if doc.type != 'statement'
+
         ### !code statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
 
@@ -86,6 +89,9 @@ ddoc.updates.update = (doc, req) ->
 #
 ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->
     ### !code common/validation.js ###
+
+    validate newDoc, 'type', 'string'
+    return if newDoc.type != 'statement'
 
     for item in ['version.major', 'version.minor', 'version.patch']
         validate newDoc, item, 'number'

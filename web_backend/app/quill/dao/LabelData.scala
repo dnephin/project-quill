@@ -12,7 +12,7 @@ import scala.concurrent.Future
 object LabelData {
     
     // TODO: config
-    val url = "http://localhost:5984/label"
+    val url = "http://localhost:5984/statement"
     
     // TODO: DRY boilerplate, better response
     def add(label: Label): Future[Boolean] = {

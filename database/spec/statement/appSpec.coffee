@@ -19,13 +19,23 @@ describe "statement app design document", ->
 
         it "map emits nothing if not published", ->
             source =
+                type: 'statement'
                 version:
                     published: false
             ddoc.views.current_published.map(source)
             expect(emit.calls.length).toBe(0)
 
+        it "map emits nothing if document is not type statement", ->
+            source =
+                type: 'label'
+                version:
+                    published: true
+            ddoc.views.current_published.map(source)
+            expect(emit.calls.length).toBe(0)
+
         it "map emits with version if publised", ->
             source =
+                type: 'statement'
                 version:
                     major: 2
                     minor: 7
@@ -46,7 +56,6 @@ describe "statement app design document", ->
             ]
             result = ddoc.views.current_published.reduce(null, docs, null)
             expect(result).toEqual([3, 2003001])
-
 
     describe "publish action", ->
 
@@ -136,6 +145,7 @@ describe "statement app design document", ->
             newDoc =
                 label: "The label"
                 editor: { id: "abe" }
+                type: "statement"
                 version:
                     published: false
                     major: 1
@@ -143,23 +153,23 @@ describe "statement app design document", ->
                     patch: 0
 
         it "succeeds when the document is new", ->
-            expect( -> ddoc.validate_doc_update(newDoc, null)).not.toThrow()
+            expect( -> ddoc.validate_doc_update(newDoc)).not.toThrow()
 
         it "fails when document is missing a complete version", ->
             delete newDoc.version.major
-            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
+            expect( -> ddoc.validate_doc_update(newDoc)).toThrow()
 
         it "fails when document version is not numeric", ->
             newDoc.version.minor = "a"
-            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
+            expect( -> ddoc.validate_doc_update(newDoc)).toThrow()
 
         it "fails when document is missing a version", ->
             delete newDoc.version
-            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
+            expect( -> ddoc.validate_doc_update(newDoc)).toThrow()
 
         it "fails when document is missing a label", ->
             delete newDoc.label
-            expect( -> ddoc.validate_doc_update(newDoc, null)).toThrow()
+            expect( -> ddoc.validate_doc_update(newDoc)).toThrow()
 
         it "fails when document is already published", ->
             oldDoc.version.published = true
@@ -169,6 +179,13 @@ describe "statement app design document", ->
             newDoc.editor.id = "sam"
             expect( -> ddoc.validate_doc_update(newDoc, oldDoc)).toThrow()
 
+        it "fails when the document is missing type", ->
+            delete newDoc.type
+            expect( -> ddoc.validate_doc_update(newDoc)).toThrow()
+
         it "succeeds when document is valid", ->
             expect( -> ddoc.validate_doc_update(newDoc, oldDoc)).not.toThrow()
 
+        it "skips non-statement documents", ->
+            newDoc = type: 'other'
+            expect( -> ddoc.validate_doc_update(newDoc)).not.toThrow()

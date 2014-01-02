@@ -3,9 +3,8 @@ Phase 2 - Cleanup
 
 Task 1 - Database cleanup
 - grunt task for uploading fixtures
-- include label in statement db
-    - friendly label on add
-    - update handler for add
+- update handler for add statement
+    - friendly label on statement add
 - add fixtures for user, and update statement fixtures to match
 
 Task 2 - Upgrades
