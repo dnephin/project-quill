@@ -1,0 +1,18 @@
+
+
+_id: example_user
+
+identityId:
+    userId:     user@example.com
+    providerId: github
+
+links: []
+
+firstName: Example
+lastName: User
+fullName: Example User
+email: user@example.com
+avatarUrl: "http://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Sl-shadow.jpg/200px-Sl-shadow.jpg"
+
+authMethod:
+    method: oauth2
