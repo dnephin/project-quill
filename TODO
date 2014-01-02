@@ -3,13 +3,15 @@ Phase 2 - Cleanup
 
 Task 1 - Database cleanup
 - grunt task for uploading fixtures
-- update handler for add statement
-    - friendly label on statement add
 - add fixtures for user, and update statement fixtures to match
 
 Task 2 - Upgrades
 - upgrade ubuntu image
-- upgrade couchde
+- upgrade couchdb
+    - use statement.add update handler to add statements
+    - use X-Couch-Id header returned by update handlers
+
+Task 3 - Web Backend cleanup
 
 Misc - Unsorted
 - add edit link to statement summary view

@@ -39,6 +39,20 @@ ddoc.views.current =
         maxVersion(values)
 
 #
+# Add a new statement document
+#
+ddoc.updates.add = (doc, req) ->
+    if doc
+        return [null, "document with this id already exists"]
+
+    ### !code statement/build-version-macro.js ###
+
+    doc = JSON.parse(req.body)
+    doc._id = "#{doc.label}-#{buildVersionString(doc.version)}"
+    doc.version.date = new Date().toISOString()
+    return [doc, "added"]
+
+#
 # Update a document to be published
 #
 ddoc.updates.publish = (doc, req) ->
