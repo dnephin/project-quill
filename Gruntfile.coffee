@@ -78,6 +78,7 @@ paths =
             expand:     true
             ext:        '.js'
 
+        fixtures:       'database/fixtures/'
 
 #
 # Return a list of file paths from a file options mapping
@@ -156,12 +157,17 @@ module.exports = (grunt) ->
                 indentation:
                     level: 'error'
                     value: 4
-
             app: [
                 paths.web_frontend.coffee.src
                 paths.web_frontend.specs.src
             ]
-            build: paths.gruntfile
+            build:
+                options:
+                    cyclomatic_complexity:
+                        level: 'error'
+                        value: 12
+                files:
+                    src: paths.gruntfile
             database: [].concat(
                 pathsFromOpts(paths.database.files),
                 pathsFromOpts(paths.database.specs))
@@ -209,6 +215,14 @@ module.exports = (grunt) ->
             database:
                 src: [paths.database.files.dest + '**/*.js']
                 baseDir: paths.database.files.dest
+
+        docUpload:
+            options:
+                url: paths.database.host
+                src: paths.database.fixtures
+            statement:  {}
+            feedback:   {}
+            user:       {}
 
         watch:
             options:
@@ -285,6 +299,54 @@ module.exports = (grunt) ->
                 to:   replacer
             ]
 
+    # TODO: extract to its own repo/task
+    #
+    # A task which uploads files containing couchdb documents to a couch server
+    #
+    grunt.registerMultiTask 'docUpload', ->
+        _           = grunt.util._
+        request     = require 'request'
+        util        = require 'util'
+
+        options     = @options()
+        done        = @async()
+
+        database    = options.dbName || @target
+        url         = "#{options.url}/#{database}/_bulk_docs"
+        files       = grunt.file.expand("#{options.src}/#{database}/*")
+
+        readFile = (filename) ->
+            if _.endsWith(filename, 'yaml')
+                grunt.file.readYAML(filename)
+            else
+                grunt.file.readJSON(filename)
+
+        logResponse = (response) ->
+            if response.error
+                grunt.log.write(
+                    "#{response.id}: "
+                    "#{response.error} - #{response.reason} ... ")
+                grunt.log.error()
+            else
+                grunt.log.write("#{response.id}: #{response.rev} ... ")
+                grunt.log.ok()
+
+
+        handleResponse = (error, response, body) ->
+            logResponse(doc) for doc in body
+
+            if error || _.any(doc.error for doc in body)
+                done(error || false)
+            done()
+
+        options =
+            url:    url
+            method: 'POST'
+            json:
+                docs: (readFile(filename) for filename in files)
+        request options, handleResponse
+
+
     grunt.registerTask 'buildFrontend', [
         'copy'
         'coffeelint:app'
@@ -307,6 +369,8 @@ module.exports = (grunt) ->
         'jasmine_node'
         'couch'
     ]
+
+    grunt.registerTask 'loadDatabaseFixtures', ['docUpload']
 
     grunt.registerTask 'default', ['buildFrontend']
 

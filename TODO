@@ -2,7 +2,6 @@
 Phase 2 - Cleanup
 
 Task 1 - Database cleanup
-- grunt task for uploading fixtures
 - add fixtures for user, and update statement fixtures to match
 
 Task 2 - Upgrades
