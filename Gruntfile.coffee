@@ -1,212 +1,356 @@
 #
-# Gruntfile for web_frontend and database src
+# Gruntfile for web_frontend and database
 #
 
+#
+# Constants for file paths
+#
+paths =
+    gruntfile:  'Gruntfile.coffee'
 
-# TODO: better way to alias all the paths, there is lots of duplication
-# web_frontend coffeescript src is referenced in a few places
-coffee_src = 'web_frontend/src/coffee/**/*.coffee'
+    web_frontend:
 
-web_dist = 'dist/web'
+        coffee:
+            src:    'web_frontend/src/coffee/**/*.coffee'
+            dest:   'dist/web/js/quill.js'
 
-buildCouch = (name) ->
-    couchdb_url = 'http://localhost:5984'
+        specs:
+            src:    'web_frontend/spec/coffee/*.coffee'
+            dest:   'web_frontend/spec/js/quillSpec.js'
 
-    db: "#{couchdb_url}/#{name}"
-    app: "dist/database/#{name}/app.js"
-    options:
-        okay_if_exists: true
-        okay_is_missing: true
+        less:
+            src:    'web_frontend/src/less/*.less'
+            dest:   'dist/web/css/quill.css'
 
+        static:
+            cwd:    'web_frontend/static/'
+            src:    ['**']
+            dest:   'dist/web'
+            filter: 'isFile'
+            expand: true
 
-databases =
-    statement: buildCouch('statement')
-    label: buildCouch('label')
-    user: buildCouch('user')
-    feedback: buildCouch('feedback')
+        handlebars:
+            basePath:   'web_frontend/src/handlebars/'
+            files:
+                src:    'web_frontend/src/handlebars/**/*.hbs'
+                dest:   'dist/web/js/templates.js'
+
+        bower:
+            js:
+                src: [
+                    'web_frontend/bower/jquery/jquery.js'
+                    'web_frontend/bower/bootstrap/dist/js/bootstrap.js'
+                    'web_frontend/bower/handlebars/handlebars.js'
+                    'web_frontend/bower/ember/ember.js'
+                    'web_frontend/bower/ember-data-shim/ember-data.js'
+                ]
+                dest: 'dist/web/js/'
+                expand: true
+                flatten: true
+            css:
+                src: [
+                    'web_frontend/bower/bootstrap/dist/css/bootstrap.css'
+                    'web_frontend/bower/bootstrap/dist/css/' +
+                        'bootstrap-theme.css'
+                ]
+                dest: 'dist/web/css/'
+                expand: true
+                flatten: true
+
+    database:
+        host: 'http://localhost:5984'
+        names:
+            statement:  ['app', 'label']
+            user:       ['app']
+            feedback:   ['app']
+
+        files:
+            cwd:        'database/src/'
+            src:        ['**/*.coffee']
+            dest:       'dist/database/'
+            expand:     true
+            ext:        '.js'
+
+        specs:
+            cwd:        'database/spec/'
+            src:        ['**/*.coffee']
+            dest:       'dist/database/spec/'
+            expand:     true
+            ext:        '.js'
+
+        fixtures:       'database/fixtures/'
+
+#
+# Return a list of file paths from a file options mapping
+#
+pathsFromOpts = (opts) ->
+    opts.cwd + src for src in opts.src
+
+#
+# Build a mapping for couch-compile from a list of databases
+#
+buildCouchCompile = (grunt, databases) ->
+    _ = grunt.util._
+
+    buildFiles = (db, docs) ->
+        files: [
+            src: ("#{paths.database.files.dest}#{db}/#{doc}.js" for doc in docs)
+            dest: "#{paths.database.files.dest}#{db}/ddocs.json"
+        ]
+
+    _.object([db, buildFiles(db, docs)] for db, docs of databases)
+
+#
+# Return the url for a database
+#
+databaseUrl = (database) ->
+    "#{paths.database.host}/#{database}"
+
+#
+# Build a mapping for couch-push from a list of databases
+#
+buildCouchPushFiles = (grunt, databases) ->
+
+    buildFiles = (db) ->
+        src:  "#{paths.database.files.dest}#{db}/ddocs.json"
+        dest: databaseUrl(db)
+
+    buildFiles(db) for db of databases
 
 
 module.exports = (grunt) ->
+
+    require('jit-grunt') grunt,
+        "couch-compile":    'grunt-couch'
+        "couch-push":       'grunt-couch'
+        emberTemplates:     'grunt-ember-templates'
+        jasmine_node:       'grunt-jasmine-node'
+        replace:            'grunt-text-replace'
 
     grunt.option 'stack', true
 
     grunt.initConfig
         coffee:
-            compile:
-                files: [
-                    src: coffee_src
-                    dest: "#{web_dist}/js/quill.js"
-                ]
-            compileSpec:
+            app:
+                files: [paths.web_frontend.coffee]
+            appSpec:
                 options:
                     bare: true
-                files: [
-                    src: 'web_frontend/spec/coffee/*.coffee'
-                    dest: 'web_frontend/spec/js/quillSpec.js'
-                ]
+                files: [paths.web_frontend.specs]
             database:
                 options:
                     bare: true
-                files: [
-                    cwd: 'database/src/'
-                    src: ['**']
-                    dest: 'dist/database/'
-                    filter: 'isFile'
-                    expand: true
-                    ext: '.js'
-                ]
+                files: [paths.database.files]
             databaseSpec:
                 options:
                     bare: true
-                files: [
-                    src: 'database/spec/coffee/**/*.coffee'
-                    dest: 'database/spec/js/databaseSpec.js'
-                ]
+                files: [paths.database.specs]
 
         coffeelint:
             options:
                 arrow_spacing: 'error'
                 cyclomatic_complexity:
                     level: 'error'
-                    value: 9 # This may need to increase to 11
+                    value: 8 # This may need to increase to 10
                 line_endings: 'error'
                 space_operators: 'error'
                 indentation:
                     level: 'error'
                     value: 4
-
-            app: [coffee_src, 'web_frontend/spec/coffee/*.coffee']
-            build: 'Gruntfile.coffee'
-            database: [
-                'database/src/**/*.coffee'
-                'database/spec/coffee/**/*.coffee'
+            app: [
+                paths.web_frontend.coffee.src
+                paths.web_frontend.specs.src
             ]
+            build:
+                options:
+                    cyclomatic_complexity:
+                        level: 'error'
+                        value: 12
+                files:
+                    src: paths.gruntfile
+            database: [].concat(
+                pathsFromOpts(paths.database.files),
+                pathsFromOpts(paths.database.specs))
 
         jasmine:
-            coffeeTest:
-                src: "#{web_dist}/js/quill/js"
+            appTest:
+                src: paths.web_frontend.coffee.dest
                 options:
-                    specs: 'web_frontend/spec/js/*.js'
-            databaseTest:
-                src: 'dist/database/**/*.js'
-                options:
-                    specs: 'database/spec/js/*.js'
+                    vendor: paths.web_frontend.bower.js.src
+                    specs: paths.web_frontend.specs.dest
+
+        jasmine_node:
+            databaseSpec:
+                projectRoot: '/dev/null'
+                specFolders: [paths.database.specs.dest]
+                colors:      true
+                forceExit:   true
 
         copy:
             static:
-                files: [
-                    cwd: 'web_frontend/static/'
-                    src: ['**']
-                    dest: web_dist
-                    filter: 'isFile'
-                    expand: true
-                ]
+                files: [paths.web_frontend.static]
             bower:
                 files: [
-                    { src: [
-                        'web_frontend/bower/bootstrap/dist/js/bootstrap.js'
-                        'web_frontend/bower/ember/ember.js'
-                        'web_frontend/bower/ember-data-shim/ember-data.js'
-                        'web_frontend/bower/jquery/jquery.js'
-                        'web_frontend/bower/handlebars/handlebars.js'
-                    ]
-                    dest: "#{web_dist}/js/"
-                    expand: true
-                    flatten: true }
-                    { src: [
-                        'web_frontend/bower/bootstrap/dist/css/bootstrap.css'
-                        'web_frontend/bower/bootstrap/dist/css/' +
-                            'bootstrap-theme.css'
-                    ]
-                    dest: "#{web_dist}/css/"
-                    expand: true
-                    flatten: true }
-                ]
-        less:
-            dev:
-                options:
-                    paths: ['web_frontend/src/less']
-                files: [
-                    src: 'web_frontend/src/less/*.less'
-                    dest: "#{web_dist}/css/quill.css"
+                    paths.web_frontend.bower.js
+                    paths.web_frontend.bower.css
                 ]
 
-        # TODO: compare this to grunt-ember-handlebars
+        less:
+            app:
+                files: [paths.web_frontend.less]
+
         emberTemplates:
             compile:
                 options:
-                    templateBasePath: 'web_frontend/src/handlebars/'
-                files: [
-                    src: 'web_frontend/src/handlebars/**/*.hbs'
-                    dest: "#{web_dist}/js/templates.js"
-                ]
+                    templateBasePath: paths.web_frontend.handlebars.basePath
+                files: [paths.web_frontend.handlebars.files]
 
-        mkcouchdb: databases
+        "couch-compile": buildCouchCompile(grunt, paths.database.names)
 
-        couchapp: databases
+        "couch-push":
+            localhost:
+                files: buildCouchPushFiles(grunt, paths.database.names)
+
+        couchMacro:
+            database:
+                src: [paths.database.files.dest + '**/*.js']
+                baseDir: paths.database.files.dest
+
+        docUpload:
+            options:
+                url: paths.database.host
+                src: paths.database.fixtures
+            statement:  {}
+            feedback:   {}
+            user:       {}
 
         watch:
             options:
-                spawn: false
+                # TODO: why does jasmine run the wrong source when this is true
+                spawn: true
                 livereload: true
 
-            coffee:
-                files: coffee_src
+            appCoffee:
+                files: paths.web_frontend.coffee.src
                 tasks: [
                     'coffeelint:app'
-                    'coffee:compile'
-                    'coffee:compileSpec'
-                    'jasmine:coffeeTest'
+                    'coffee:app'
+                    'coffee:appSpec'
+                    'jasmine:appTest'
                 ]
 
-            self:
-                files: 'Gruntfile.coffee'
+            gruntfile:
+                files: paths.gruntfile
                 tasks: ['coffeelint:build']
 
             database:
-                files: [
-                    'database/src/**/*.coffee'
-                    'database/spec/**/*.coffee'
-                ]
-                tasks: [
-                    'coffeelint:database'
-                    'coffee:database'
-                    'coffee:databaseSpec'
-                    'jasmine:databaseTest'
-                    'couchapp'
-                ]
+                files: [].concat(
+                    pathsFromOpts(paths.database.files),
+                    pathsFromOpts(paths.database.specs))
+                tasks: ['buildDatabase']
 
             less:
-                files: 'web_frontend/src/less/*.less'
+                files: paths.web_frontend.less.src
                 tasks: ['less']
 
             static:
-                files: 'web_frontend/static/**'
-                tasks: ['copy']
+                files: pathsFromOpts(paths.web_frontend.static)
+                tasks: ['copy:static']
 
             handlebars:
-                files: ['web_frontend/src/handlebars/**/*.hbs']
+                files: [paths.web_frontend.handlebars.files.src]
                 tasks: ['emberTemplates']
 
         clean:
             dist: ['dist/*']
-            spec: ['database/spec/js/*', 'web_frontend/spec/js/*']
+            spec: [paths.web_frontend.specs.dest]
 
 
-    grunt.loadNpmTasks 'grunt-contrib-clean'
-    grunt.loadNpmTasks 'grunt-contrib-coffee'
-    grunt.loadNpmTasks 'grunt-contrib-copy'
-    grunt.loadNpmTasks 'grunt-contrib-jasmine'
-    grunt.loadNpmTasks 'grunt-contrib-less'
-    grunt.loadNpmTasks 'grunt-contrib-watch'
-    grunt.loadNpmTasks 'grunt-ember-templates'
-    grunt.loadNpmTasks 'grunt-coffeelint'
-    grunt.loadNpmTasks 'grunt-couchapp'
+    # TODO: publish as own repo
+    #
+    # A task which uses grunt-text-replace to include common code in couch
+    # design documents.
+    #
+    grunt.registerMultiTask 'couchMacro', ->
+        path        = require 'path'
+        textReplace = require 'grunt-text-replace/lib/grunt-text-replace'
+
+        baseDir     = @data.baseDir
+        cache       = {}
+
+        replacer = (_word, _idx, _text, matches) ->
+            filename = path.join(baseDir, matches[0])
+            grunt.log.writeln("Using macro #{filename}")
+
+            if cache[filename]?
+                cache[filename]
+            else
+                try
+                    cache[filename] = grunt.file.read(filename)
+                catch error
+                    grunt.log.error "Failed to read #{filename}"
+                    throw grunt.util.error "Missing file", error
+
+        textReplace.replace
+            src:            @data.src
+            overwrite:      true
+            replacements:   [
+                from: /^\s+\/\* \!code (.+?\.js)\*\/\s*$/mg
+                to:   replacer
+            ]
+
+    # TODO: extract to its own repo/task
+    #
+    # A task which uploads files containing couchdb documents to a couch server
+    #
+    grunt.registerMultiTask 'docUpload', ->
+        _           = grunt.util._
+        request     = require 'request'
+        util        = require 'util'
+
+        options     = @options()
+        done        = @async()
+
+        database    = options.dbName || @target
+        url         = "#{options.url}/#{database}/_bulk_docs"
+        files       = grunt.file.expand("#{options.src}/#{database}/*")
+
+        readFile = (filename) ->
+            if _.endsWith(filename, 'yaml')
+                grunt.file.readYAML(filename)
+            else
+                grunt.file.readJSON(filename)
+
+        logResponse = (response) ->
+            if response.error
+                grunt.log.write(
+                    "#{response.id}: "
+                    "#{response.error} - #{response.reason} ... ")
+                grunt.log.error()
+            else
+                grunt.log.write("#{response.id}: #{response.rev} ... ")
+                grunt.log.ok()
+
+
+        handleResponse = (error, response, body) ->
+            logResponse(doc) for doc in body
+
+            if error || _.any(doc.error for doc in body)
+                done(error || false)
+            done()
+
+        options =
+            url:    url
+            method: 'POST'
+            json:
+                docs: (readFile(filename) for filename in files)
+        request options, handleResponse
+
 
     grunt.registerTask 'buildFrontend', [
         'copy'
         'coffeelint:app'
-        'coffee:compile'
+        'coffee:app'
         'less'
         'emberTemplates'
     ]
@@ -217,18 +361,20 @@ module.exports = (grunt) ->
         'jasmine'
     ]
 
-    grunt.registerTask 'buildCouchdb', [
+    grunt.registerTask 'buildDatabase', [
         'coffeelint:database'
         'coffee:database'
         'coffee:databaseSpec'
-        'jasmine:databaseTest'
-        'mkcouchdb'
-        'couchapp'
+        'couchMacro:database'
+        'jasmine_node'
+        'couch'
     ]
+
+    grunt.registerTask 'loadDatabaseFixtures', ['docUpload']
 
     grunt.registerTask 'default', ['buildFrontend']
 
     grunt.registerTask 'build', [
         'buildFrontend'
-        'buildCouchdb'
+        'buildDatabase'
     ]

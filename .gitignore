@@ -28,8 +28,3 @@ node_modules/
 _SpecRunner.html
 web_frontend/spec/js/
 web_frontend/bower/
-
-# Database
-database/spec/js
-
-

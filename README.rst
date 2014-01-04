@@ -31,6 +31,7 @@ To get started follow these steps:
 
     .. code-block:: bash
 
+        vagrant plugin install vagrant-vbguest
         vagrant up
 
     TODO: debugging problems with vagrant up, and /etc/hosts problem

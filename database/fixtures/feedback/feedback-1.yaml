@@ -1,0 +1,15 @@
+
+position: "support"
+editor:
+    id:     "example_two"
+    bio:    "Political critic"
+
+fullText: "I support this initiative, it is long overdue."
+
+anchor:
+    statementLabel: "us-declaration-of-independence"
+    parentId:       "us-declaration-of-independence-1.0.0"
+    content:        "He has refused to pass other Laws for the
+                     accommodation of large districts of people"
+
+active: true

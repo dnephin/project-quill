@@ -1,14 +1,22 @@
 
 Phase 2 - Cleanup
 
-- add edit link to statement summary view
-- fixtures for user, and update Statement fixtures to match
-- add display name to user maybe? or just use fullName
-- include label in statement db
-    - friendly label on add
-    - update handler for add
-- composite action for ApiAction, UserApiAction, etc
-- remove lookup user from Statement Controller actions
-- SubCut for testing
-- version selections for new post
+Task 2 - Upgrades
+- upgrade couchdb
+    - use statement.add update handler to add statements
+    - use X-Couch-Id header returned by update handlers
+
+Task 3 - Web Backend cleanup
+- secure-social login failure
 - secure-social refactor
+- set a friendly user.id, and set a Full Name (if blank)
+- persona authentication
+- remove lookup user from Statement Controller actions
+- composite action for ApiAction, UserApiAction, etc
+- SubCut for testing
+- lint for coffee/scala
+
+Misc - Unsorted
+- add edit link to statement summary view
+- version selections for new post
+

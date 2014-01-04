@@ -5,7 +5,7 @@ import org.joda.time.DateTime
 
 
 case class Anchor(
-    statementId: String,
+    statementLabel: String,
     parentId: String,
     // TODO: stricter context?
     context: String

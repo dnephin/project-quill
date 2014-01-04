@@ -56,6 +56,7 @@ object FeedbackData {
             .get().map { response =>
                 viewRows.reads(response.json) match {
                     case JsSuccess(responses, _)    => responses.map(_.doc)
+                    // TODO: limit characters in error string, better error
                     case e: JsError                 =>
                         throw UnexpectedResponseFormat(e.toString)
                 }

@@ -1,0 +1,18 @@
+
+
+_id: example_two
+
+identityId:
+    userId:     user_two@example.com
+    providerId: github
+
+links: []
+
+firstName: Second
+lastName: User
+fullName: Second User
+email: user_two@example.com
+avatarUrl: "http://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Statue-Augustus.jpg/200px-Statue-Augustus.jpg"
+
+authMethod:
+    method: oauth2
