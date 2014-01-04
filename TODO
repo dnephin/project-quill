@@ -1,10 +1,6 @@
 
 Phase 2 - Cleanup
 
-Task 1 - Database cleanup
-- add fixtures for statement
-- add fixtures for feedback
-
 Task 2 - Upgrades
 - upgrade couchdb
     - use statement.add update handler to add statements
