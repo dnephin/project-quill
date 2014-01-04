@@ -14,9 +14,6 @@ locale-gen en_US.UTF-8
 
 apt-get -y install git tree
 
-# FIXME: This is a temporary fix for https://bugs.launchpad.net/ubuntu/+bug/1239417
-# TODO: https://github.com/dotless-de/vagrant-vbguest
-
 # Node
 add-apt-repository -y ppa:chris-lea/node.js
 apt-get update -qq
