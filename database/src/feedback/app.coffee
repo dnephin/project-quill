@@ -24,6 +24,21 @@ ddoc.views.by_editor =
         emit([doc.editor.id, doc.anchor.statementLabel], null)
 
 #
+# Add a new feedback item with a date
+#
+ddoc.updates.add = (doc, req) ->
+    if doc
+        return [null, "document with this id already exists"]
+
+    doc = JSON.parse(req.body)
+    doc.date = new Date().toISOString()
+    return [doc, "added"]
+
+
+# TODO: add a deactivate updates once backend is flushed out
+
+
+#
 # Validate the document
 #
 ddoc.validate_doc_update = (newDoc, oldDoc, userCtx, secObj) ->

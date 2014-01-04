@@ -61,3 +61,16 @@ describe "feedback app design document", ->
         it "fails when editorId is missing", ->
             delete newDoc.editor
             expect( -> ddoc.validate_doc_update(newDoc)).toThrow()
+
+
+    describe "add new feedback", ->
+
+        it "saves and adds a date", ->
+            req =
+                body: JSON.stringify
+                    editor: { id: "abe" }
+
+            [doc, msg] = ddoc.updates.add(null, req)
+            expect(msg).toBe("added")
+            expect(doc.date).toEqual(jasmine.any(String))
+
