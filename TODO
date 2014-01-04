@@ -12,14 +12,15 @@ Task 2 - Upgrades
     - use X-Couch-Id header returned by update handlers
 
 Task 3 - Web Backend cleanup
+- secure-social refactor
+- set a friendly user.id, and set a Full Name (if blank)
+- persona authentication
+- remove lookup user from Statement Controller actions
+- composite action for ApiAction, UserApiAction, etc
+- SubCut for testing
+- lint for coffee/scala
 
 Misc - Unsorted
 - add edit link to statement summary view
-- add display name to user maybe? or just use fullName
-- composite action for ApiAction, UserApiAction, etc
-- remove lookup user from Statement Controller actions
-- SubCut for testing
 - version selections for new post
-- secure-social refactor
-- lint for coffee/scala
 
