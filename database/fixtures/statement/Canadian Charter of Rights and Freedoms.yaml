@@ -1,6 +1,7 @@
 
 _id:    "cdn-charter-of-rights-and-freedoms-1.0.0"
 label:  "cdn-charter-of-rights-and-freedoms"
+type: "statement"
 version:
     major: 1
     minor: 0
