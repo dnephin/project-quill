@@ -3,7 +3,7 @@ Phase 2 - Cleanup
 
 Task 2 - Upgrades
 - upgrade couchdb
-    - use statement.add update handler to add statements
+    - use statement.add update handler to add statement/feedback
     - use X-Couch-Id header returned by update handlers
 
 Task 3 - Web Backend cleanup

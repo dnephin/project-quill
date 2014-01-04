@@ -13,10 +13,10 @@ module.exports = ddoc =
 #
 ddoc.views.current_published =
     map: (doc) ->
+        ### !code statement/build-version-macro.js ###
         return if ! doc.version.published
         return if doc.type != 'statement'
 
-        ### !code statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
 
     reduce: (_, values) ->
@@ -29,9 +29,9 @@ ddoc.views.current_published =
 #
 ddoc.views.current =
     map: (doc) ->
+        ### !code statement/build-version-macro.js ###
         return if doc.type != 'statement'
 
-        ### !code statement/build-version-macro.js ###
         emit(doc.label, [doc._id, buildVersion(doc.version)])
 
     reduce: (_, values) ->
@@ -42,20 +42,23 @@ ddoc.views.current =
 # Add a new statement document
 #
 ddoc.updates.add = (doc, req) ->
+    ### !code common/dates.js ###
+    ### !code statement/build-version-string-macro.js ###
     if doc
         return [null, "document with this id already exists"]
 
-    ### !code statement/build-version-macro.js ###
 
     doc = JSON.parse(req.body)
     doc._id = "#{doc.label}-#{buildVersionString(doc.version)}"
-    doc.version.date = new Date().toISOString()
+    doc.version.date = getDateTime()
+    doc.version.published ?= false
     return [doc, "added"]
 
 #
 # Update a document to be published
 #
 ddoc.updates.publish = (doc, req) ->
+    ### !code common/dates.js ###
     # TODO: error codes
     if !doc
         return [null, "document not found"]
@@ -66,13 +69,16 @@ ddoc.updates.publish = (doc, req) ->
 
 
     doc.version.published = true
-    doc.version.date = new Date().toISOString()
+    doc.version.date = getDateTime()
     return [doc, "published"]
 
 #
 # Update a document to a new version or save an existing unpublished version
 #
 ddoc.updates.update = (doc, req) ->
+    ### !code common/dates.js ###
+    ### !code statement/build-version-macro.js ###
+    ### !code statement/build-version-string-macro.js ###
     if !doc
         return [null, "document not found"]
 
@@ -85,16 +91,12 @@ ddoc.updates.update = (doc, req) ->
         newDoc._rev = doc._rev
         return [newDoc, "updated document"]
 
-    ### !code statement/build-version-macro.js ###
-
-    buildVersionString = (version) ->
-        "#{version.major}.#{version.minor}.#{version.patch}"
 
     if buildVersion(newDoc.version) <= buildVersion(doc.version)
         return [null, "version was not incremented"]
 
     newDoc._id = "#{doc.label}-#{buildVersionString(newDoc.version)}"
-    newDoc.version.date = new Date().toISOString()
+    newDoc.version.date = getDateTime()
     newDoc.version.published = false
     return [newDoc, "new document version"]
 

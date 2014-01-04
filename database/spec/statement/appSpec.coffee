@@ -126,13 +126,29 @@ describe "statement app design document", ->
                     version: { major: 3, minor: 3, patch: 0 }
                     title: "The title"
 
-            result = ddoc.updates.update(source, req)
-            [newDoc, msg] = result
+            [newDoc, msg] = ddoc.updates.update(source, req)
             expect(msg).toBe("new document version")
             expect(newDoc.version.date).toEqual(jasmine.any(String))
             expect(newDoc._id).toBe("#{source.label}-3.3.0")
             expect(newDoc.title).toBe("The title")
             expect(newDoc.version.published).toBe(false)
+
+
+    describe "add a new statement", ->
+
+        it "adds date and label", ->
+            req =
+                body: JSON.stringify
+                    version: { major: 6, minor: 3, patch: 1 }
+                    title: "The title"
+                    label: "the-label"
+
+            [doc, msg] = ddoc.updates.add(null, req)
+            expect(msg).toBe("added")
+            expect(doc.version.date).toEqual(jasmine.any(String))
+            expect(doc._id).toBe("the-label-6.3.1")
+            expect(doc.title).toBe("The title")
+            expect(doc.version.published).toBe(false)
 
 
     describe "validate document on update", ->
