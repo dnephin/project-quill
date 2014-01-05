@@ -31,12 +31,23 @@ object StatementData {
 
     val updateUrl = s"$url/_design/app/_update/update"
 
+    val addUrl = s"$url/_design/app/_upadte/add"
+
     // TODO: do this with a handler and update the id to a friendly id
     // and push label at the same time
     def add(stmt: Statement): Future[String] = {
-        WS.url(url).post(Json.toJson(stmt)).map {
+        WS.url(addUrl).post(Json.toJson(stmt)).map {
+            // TODO: dry with publish()
             response => response.status match {
-                case 201 => (response.json \ "id").as[String]
+                case 201 => {
+                    Logger.info(response.body)
+                    response.header("X-Couch-Id").getOrElse("Unknown")
+                 }
+                case _ => {
+                    val msg = response.body
+                    Logger.warn(msg)
+                    throw UpdateFailedError(msg)
+                }
             }
         }
     }

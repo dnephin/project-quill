@@ -28,6 +28,20 @@ describe "user design document", ->
             expect(emit).toHaveBeenCalledWith(["provider", "the_user"], null)
 
 
+    describe "add new user", ->
+
+        it "creates a new document with an id", ->
+            req =
+                body: JSON.stringify
+                    identityId:
+                        providerId: "provider"
+                        userId: "the_user"
+            [doc, msg] = ddoc.updates.add(null, req)
+            expect(msg).toBe("added")
+            expect(doc._id).toBe("provider-the_user")
+            expect(doc.identityId.userId).toBe("the_user")
+
+
     describe "document validation", ->
         newDoc = null
 

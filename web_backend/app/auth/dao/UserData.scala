@@ -1,6 +1,7 @@
 package auth.dao
 
 import auth.models._
+import play.api.Logger
 import play.api.libs.ws.WS
 import play.api.libs.json._
 import play.api.libs.concurrent.Execution.Implicits._
@@ -12,6 +13,7 @@ case class UserNotFoundException(msg: String) extends Exception
 
 // TODO: move to couchdb client lib
 case class Conflict() extends Exception
+case class UnknownError() extends Exception
 
 
 /** Data access for User identities
@@ -23,12 +25,18 @@ object UserData {
 
     val identityIdViewUrl = s"$url/_design/app/_view/identity_id"
 
+    val addUserUrl = s"$url/_design/app/_update/add"
+
     // TODO: error handling and logging
     // TODO: move to couch client lib
     def add(user: User): Future[String] = {
-        WS.url(url).post(Json.toJson(user)).map {
+        WS.url(addUserUrl).post(Json.toJson(user)).map {
             response => response.status match {
-                case 201 => (response.json \ "id").as[String]
+                case 201 => response.header("X-Couch-Id").getOrElse("Unknown")
+                case 400 => {
+                    Logger.warn(response.body)
+                    throw UnknownError()
+                }
                 case 409 => throw Conflict()
             }
         }

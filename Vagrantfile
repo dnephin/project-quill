@@ -35,6 +35,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # See http://www.virtualbox.org/manual/ch08.html#vboxmanage-modifyvm
     vbox.customize ["modifyvm", :id, "--cpus", "2"]
     vbox.customize ["modifyvm", :id, "--memory", "2048"]
+    # Set DNS host resolver enabled
+    vbox.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
 
   end
 
