@@ -1,13 +1,13 @@
 package quill.dao
 
 import play.api.Logger
-
 import quill.models.Statement
 import play.api.libs.ws._
 import play.api.libs.json._
 import scala.concurrent.Future
 import play.api.libs.ws.Response
 import play.api.libs.concurrent.Execution.Implicits._
+import components.couch.CouchClientConfig
 
 
 case class UpdateFailedError(msg: String) extends Exception
@@ -17,7 +17,7 @@ case class StatementNotFound() extends Exception
 
 /** Data access operations for the statement databases
   */
-object StatementData {
+class StatementData(config: CouchClientConfig) {
 
     // TODO: config
     val url = "http://localhost:5984/statement"

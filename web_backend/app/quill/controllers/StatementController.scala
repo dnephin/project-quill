@@ -14,7 +14,7 @@ import play.api.mvc.SimpleResult
 import play.api.libs.json.Reads
 import quill.models.Statement
 import quill.dao.StatementData
-import quill.logic.StatementAddLogic
+import quill.logic.StatementLogic
 import quill.logic.LabelNotUniqueError
 import quill.logic.BadVersionError
 import securesocial.core.SecureSocial
@@ -25,12 +25,19 @@ import components.ApiBodyParser
 import auth.logic.UserPublicGetLogic
 import auth.models.UserPublic
 import components.ApiController
+import com.escalatesoft.subcut.inject.Injectable
+import com.escalatesoft.subcut.inject.BindingModule
 
 
 // TODO: remove ajaxCall=true with an abstraction
 /** Statement controller
   */
-object StatementController extends ApiController with SecureSocial {
+class StatementController(implicit val bindingModule: BindingModule)
+        extends ApiController
+        with SecureSocial
+        with Injectable {
+
+    implicit val statementLogic = inject [StatementLogic]
 
     // TODO: where does this belong?
     def userMatches(user: Option[User], other: UserPublic): Boolean = {
@@ -46,7 +53,7 @@ object StatementController extends ApiController with SecureSocial {
         }
 
         for {
-            stmt <- StatementData.getCurrentPublished(id)
+            stmt <- statementLogic.getPublished(id)
             // TODO: remove get
             stmtUser <- UserPublicGetLogic(stmt.editor.id.get)
         } yield {
@@ -67,7 +74,7 @@ object StatementController extends ApiController with SecureSocial {
         }
 
         for {
-            stmt <- StatementData.getCurrent(id)
+            stmt <- statementLogic.getCurrent(id)
             // TODO: remove get
             stmtUser <- UserPublicGetLogic(stmt.editor.id.get)
         } yield {
@@ -93,7 +100,7 @@ object StatementController extends ApiController with SecureSocial {
             }
 
             val response = for {
-                statementId <- StatementUpdateLogic(
+                statementId <- statementLogic.update(
                         stmt.copy(_id=Some(id)), user._id)
             } yield Ok(jsonId("statement", statementId))
 
@@ -121,9 +128,7 @@ object StatementController extends ApiController with SecureSocial {
         }
 
         Logger.warn(s"Saving $id with user $user._id")
-
-        // TODO: move to logic
-        StatementData.publish(id, user._id).map {
+        statementLogic.publish(id, user._id).map {
             statementId => Ok(jsonId("statement", statementId))
         }
     }
@@ -138,7 +143,7 @@ object StatementController extends ApiController with SecureSocial {
             }
 
             val response = for {
-                statementId <- StatementAddLogic(stmt, user._id)
+                statementId <- statementLogic.add(stmt, user._id)
             } yield Ok(jsonId("statement", statementId))
 
             response recover {
