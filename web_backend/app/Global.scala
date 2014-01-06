@@ -6,7 +6,7 @@ import scala.reflect._
 
 class Global extends GlobalSettings {
 
-    // TODO: default to injected controller
+    // TODO: default to injected controller, use match case
     /**
      * Customise instantiating controller so that they support SubCut injection.
      */

@@ -14,11 +14,11 @@ GET     /api/logout                     securesocial.controllers.LoginPage.logou
 
 
 # Statement routes
-POST    /api/statement              quill.controllers.StatementController.add
-GET     /api/statement/:id          quill.controllers.StatementController.getPublished(id)
-GET     /api/statement/:id/edit     quill.controllers.StatementController.getForEdit(id)
-POST    /api/statement/:id/publish  quill.controllers.StatementController.publish(id)
-PUT     /api/statement/:id          quill.controllers.StatementController.update(id: String)
+POST    /api/statement              @quill.controllers.StatementController.add
+GET     /api/statement/:id          @quill.controllers.StatementController.getPublished(id)
+GET     /api/statement/:id/edit     @quill.controllers.StatementController.getForEdit(id)
+POST    /api/statement/:id/publish  @quill.controllers.StatementController.publish(id)
+PUT     /api/statement/:id          @quill.controllers.StatementController.update(id: String)
 
 
 # Feedback routes

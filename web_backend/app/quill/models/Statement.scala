@@ -38,6 +38,9 @@ case class Statement(
     summary: String,
     full: String
 ) extends Editable {
+
+    def id = _id.get
+
     def setEditorId(editorId: String) = {
         copy(editor=editor.setId(editorId))
     }

@@ -27,6 +27,7 @@ import auth.models.UserPublic
 import components.ApiController
 import com.escalatesoft.subcut.inject.Injectable
 import com.escalatesoft.subcut.inject.BindingModule
+import play.api.mvc.Controller
 
 
 // TODO: remove ajaxCall=true with an abstraction
