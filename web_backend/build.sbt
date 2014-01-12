@@ -15,10 +15,12 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   cache,
   "securesocial" %% "securesocial" % "2.1.2",
-  "org.scalatest" % "scalatest_2.10" % "1.9.2" % "test",
   "com.escalatesoft.subcut" %% "subcut" % "2.0",
   // NOTE: required to persist dev session between server restarts
-  "com.github.mumoshu" %% "play2-memcached" % "0.5.0-RC1"
+  "com.github.mumoshu" %% "play2-memcached" % "0.5.0-RC1",
+  // Testing
+  "org.scalatest" % "scalatest_2.10" % "1.9.2" % "test",
+  "org.mockito" % "mockito-all" % "1.9.5"
 )
 
 play.Project.playScalaSettings

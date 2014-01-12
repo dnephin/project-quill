@@ -35,7 +35,7 @@ case class NotFound() extends Exception
  */
 case class CouchClientUrl(hostUrl: String, name: String) {
 
-    def url: String = hostUrl + "/" + name
+    val url = hostUrl + "/" + name
 
     def view(designDocName: String, viewName: String) = {
         s"${url}/_design/${designDocName}/_view/${viewName}"

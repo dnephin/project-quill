@@ -1,16 +1,17 @@
 
 package auth.services
 
-
 import scala.concurrent.Await
-import scala.concurrent.duration._
-import play.api.Application
-import play.api.libs.concurrent.Execution.Implicits._
-import securesocial.core.{Identity, IdentityId, UserServicePlugin}
-import securesocial.core.providers.Token
+import scala.concurrent.duration.DurationInt
+
 import auth.dao.UserData
-import auth.models.User
 import auth.logic.UserSaveLogic
+import play.api.Application
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import securesocial.core.Identity
+import securesocial.core.IdentityId
+import securesocial.core.UserServicePlugin
+import securesocial.core.providers.Token
 
 
 class AuthUserService(application: Application)

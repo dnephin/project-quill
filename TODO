@@ -3,7 +3,6 @@ Phase 2 - Cleanup
 
 Task 3 - Web Backend cleanup
 - couch client
-    - add scalamock for testing logic
     - test coverage for statement logic and data
     -  current and current_published in same view? using composite key
 - set a friendly user.id, and set a Full Name (if blank)
