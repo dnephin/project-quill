@@ -52,6 +52,7 @@ ddoc.updates.add = (doc, req) ->
     doc._id = "#{doc.label}-#{buildVersionString(doc.version)}"
     doc.version.date = getDateTime()
     doc.version.published ?= false
+    doc.type = "statement"
     return [doc, "added"]
 
 #

@@ -19,7 +19,7 @@ libraryDependencies ++= Seq(
   // NOTE: required to persist dev session between server restarts
   "com.github.mumoshu" %% "play2-memcached" % "0.5.0-RC1",
   // Testing
-  "org.scalatest" % "scalatest_2.10" % "1.9.2" % "test",
+  "org.scalatest" % "scalatest_2.10" % "2.0" % "test",
   "org.mockito" % "mockito-all" % "1.9.5"
 )
 

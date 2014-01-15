@@ -9,30 +9,25 @@ import play.api.libs.json.JsSuccess
 import play.api.libs.json.JsError
 import play.api.libs.json.JsString
 
-/**
- * Thrown when a document update conflicts with another document (409)
- */
+/** Thrown when a document update conflicts with another document (409)
+  */
 case class Conflict() extends Exception
 
-/**
- * Thrown when the server returns 500
- */
+/** Thrown when the server returns 500
+  */
 case class ServerError(msg: String) extends Exception
 
-/**
- * Thrown when the server responses with an unexpected response code
- */
-case class UnknownResponseCode(code: Int, msg: String) extends Exception
+/** Thrown when the server responses with an unexpected response code
+  */
+case class UnknownResponseCode(msg: String) extends Exception(msg)
 
-/**
- * Thrown when the server response with a NotFound (404)
- */
+/** Thrown when the server response with a NotFound (404)
+  */
 case class NotFound() extends Exception
 
-/**
- * A CouchClientConfig consists of a url to the couchDB server and a database
- * name.
- */
+/** A CouchClientConfig consists of a url to the couchDB server and a database
+  * name.
+  */
 case class CouchClientUrl(hostUrl: String, name: String) {
 
     val url = hostUrl + "/" + name
@@ -42,11 +37,11 @@ case class CouchClientUrl(hostUrl: String, name: String) {
     }
 
     def update(designDocName: String, updateName: String) = {
-        s"${url}/_design/${designDocName}/_upadte/${updateName}"
+        s"${url}/_design/${designDocName}/_update/${updateName}"
     }
 
     def updateWithId(designDocName: String, updateName: String, id: String) = {
-        s"${url}/_design/${designDocName}/_upadte/${updateName}/${id}"
+        s"${url}/_design/${designDocName}/_update/${updateName}/${id}"
     }
 
     def withId(id: String) = {
@@ -54,9 +49,7 @@ case class CouchClientUrl(hostUrl: String, name: String) {
     }
 }
 
-
 object CouchClient {
-
 
     def update(url: String, body: JsValue): Future[String] = {
         WS.url(url).post(body).map { response =>
@@ -64,8 +57,8 @@ object CouchClient {
                 case 201 => response.header("X-Couch-Id").get
                 case 500 => throw ServerError(response.body)
                 case 409 => throw Conflict()
-                case _ =>   throw UnknownResponseCode(response.status,
-                                                      response.body)
+                case _ => throw UnknownResponseCode(
+                                s"${response.status} ${response.body}")
             }
         }
     }
@@ -76,11 +69,11 @@ object CouchClient {
                 case 200 => response.json.validate[T] match {
                     case JsSuccess(obj, path) => obj
                     // TODO: log validation error
-                    case JsError(error) => throw ServerError(error.toString())
+                    case JsError(error)       => throw ServerError(error.toString())
                 }
                 case 404 => throw NotFound()
-                case _ =>   throw UnknownResponseCode(response.status,
-                                                      response.body)
+                case _ => throw UnknownResponseCode(
+                                s"${response.status} ${response.body}")
             }
         }
     }
@@ -94,10 +87,10 @@ object CouchClient {
 
         WS.url(url)
             .withQueryString("group" -> "true",
-                             "key" -> JsString(key).toString())
+                "key" -> JsString(key).toString())
             .get()
             .map { response =>
-                 idFromViewResponse(response.json)
+                idFromViewResponse(response.json)
             }
     }
 

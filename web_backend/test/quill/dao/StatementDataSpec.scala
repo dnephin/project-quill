@@ -3,20 +3,18 @@ package test.quill.dao
 import java.io.File
 import java.io.PrintWriter
 import java.net.ServerSocket
-
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 import scala.sys.process.Process
 import scala.util.Random
-
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.FunSuite
 import org.scalatest.Suite
-
 import components.couch.CouchClientUrl
 import play.api.libs.ws.WS
 import scala.io.Source
 import quill.dao.StatementData
+import test.testing.models.StatementModelFactory
 
 
 // TODO: move to another file
@@ -28,11 +26,8 @@ class CouchDBSandbox(path: String, port: Int) {
 
     val host = s"http://localhost:${port}"
 
-    var process: Option[Process] = None
-
-    def writeConfig = {
-        // TODO: move to a file
-        val config = s"""
+    // TODO: move to a file
+    val config = s"""
 [couchdb]
 database_dir = ${path}
 view_index_dir = ${path}
@@ -48,8 +43,12 @@ port = ${port + 1}
 
 [log]
 file = ${path}/couch.log
-level = debug
+level = warn
 """
+
+    var process: Option[Process] = None
+
+    def writeConfig = {
         new PrintWriter(configFilename) {
             print(config)
             close()
@@ -59,6 +58,8 @@ level = debug
     def start = {
         // TODO: send stdout to a buffer
         process = Some(Process(command).run())
+        // TODO: wait on startup function
+        Thread.sleep(1000)
     }
 
     def stop = process.map(_.destroy)
@@ -71,7 +72,9 @@ level = debug
     def uploadDesignDoc(filename: String, dbname: String) = {
         val source = Source.fromFile(filename).mkString
         val url = CouchClientUrl(host, dbname)
-        val future = WS.url(url.withId("_bulk_docs")).put(source)
+        val future = WS.url(url.withId("_bulk_docs"))
+            .withHeaders("Content-Type" -> "application/json")
+            .post(source)
         Await.result(future, 2 seconds)
     }
 }
@@ -96,17 +99,23 @@ trait CouchDBSandboxFixture {
         }.getPath
     }
 
-    def randomName = "n" + Random.alphanumeric.take(10).mkString
+    def randomName = {
+        val characters = "abcdefghijklmnopqrstuwxyz"
+        (for (n <- 0 to 10)
+            yield characters(Random.nextInt(characters.length))).mkString
+    }
 
     def startSandbox(name: String) = {
         val filename = s"../dist/database/${name}/ddocs.json"
         sandbox = Some(new CouchDBSandbox(createTempDir, getPort) {
+            writeConfig
             start
             createDatabase(dbname)
             uploadDesignDoc(filename, dbname)
         })
     }
 
+    // TODO: remove temporary dir
     def stopSandbox = sandbox.map(_.stop)
 
     // TODO: don't use get
@@ -125,7 +134,9 @@ class StatementDataSpec extends FunSuite
 
     test("Adding a document returns the id on success") {
         val data = new StatementData(couchUrl)
-        val future = data.add()
+        val future = data.add(StatementModelFactory(label="add-test"))
+        val stmtId = Await.result(future, 2 seconds)
+        assert(stmtId === "add-test-4.2.10")
     }
 
 }

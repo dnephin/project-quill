@@ -1,13 +1,13 @@
 package test.quill.logic
 
+import org.mockito.Mockito.verify
 import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
+
 import quill.dao.StatementData
 import quill.logic.StatementAddLogic
-import quill.models.Version
-import org.scalatest.matchers.ClassicMatchers
-import org.mockito.Mockito._
 import quill.logic.StatementLogic
+import quill.models.Version
 
 
 class StatementAddLogicSpec extends FunSuite with MockitoSugar {
@@ -20,18 +20,6 @@ class StatementAddLogicSpec extends FunSuite with MockitoSugar {
     def versionNum(major: Int, minor: Int, patch: Int) = {
         Version(major, minor, patch, false, None)
     }
-
-//    def buildStatement(version: Version) = {
-//        Statement(
-//                Some("abab3a3"),
-//                "example-statement",
-//                version,
-//                Editor(Some("ad2dffa23"), "I worked on it"),
-//                "Example Statement",
-//                "It needs to change",
-//                "...",
-//                "Change it like this")
-//    }
 
     test("isAcceptedVersion should accept 1.0.0") {
         assert(fixture.logic.isAcceptedVersion(versionNum(1, 0, 0)))

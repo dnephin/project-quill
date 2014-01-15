@@ -17,6 +17,9 @@ class StatementData(url: CouchClientUrl) {
 
     def client = CouchClient
 
+    /**
+     * Add a statement and return the new _id
+     */
     def add(statement: Statement): Future[String] = {
         client.update(url.update("app", "add"), Json.toJson(statement))
     }

@@ -149,6 +149,7 @@ describe "statement app design document", ->
             expect(doc._id).toBe("the-label-6.3.1")
             expect(doc.title).toBe("The title")
             expect(doc.version.published).toBe(false)
+            expect(doc.type).toBe("statement")
 
 
     describe "validate document on update", ->
