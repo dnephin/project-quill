@@ -6,7 +6,6 @@ import components.couch.CouchClient
 import components.couch.CouchClientUrl
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
-import play.api.libs.json.Json.toJsFieldJsValueWrapper
 import quill.models.Statement
 
 

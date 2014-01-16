@@ -5,29 +5,29 @@ import play.api.libs.ws.WS
 import play.api.libs.json.Json
 import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.Future
+import components.couch.CouchClientUrl
+import components.couch.CouchClient
 
 /**
   * Data access for Label model
   */
-object LabelData {
+class LabelData(url: CouchClientUrl) {
     
-    // TODO: config
-    val url = "http://localhost:5984/statement"
-    
-    // TODO: DRY boilerplate, better response
-    def add(label: Label): Future[Boolean] = {
-        WS.url(url).post(Json.toJson(label)).map {
-            // TODO: log unexpected codes (not 409)
-            response => response.status == 201
-        }
+    def client = CouchClient
+
+    // TODO add type = label or a view
+    /**
+     * Add a new unique label
+     */
+    def add(label: Label): Future[String] = {
+        client.add(url.url, Json.toJson(label))
     }
    
-    // TODO: helper  got getById
+    /**
+     * Get a label by Id
+     */
     def getById(id: String) = {
-        WS.url(s"$url/$id").get().map {
-             response =>
-                response.json.validate[Label]
-        }
+        client.getById[Label](url.withId(id))
    }
 
 }

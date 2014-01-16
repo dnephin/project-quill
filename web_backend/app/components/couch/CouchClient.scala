@@ -51,6 +51,21 @@ case class CouchClientUrl(hostUrl: String, name: String) {
 
 object CouchClient {
 
+    /**
+     * Add a document given a url, and return the id
+     */
+    def add[T](url: String, body: JsValue): Future[String] = {
+        WS.url(url).post(body).map {response =>
+            response.status match {
+                case 201 => (response.json \ "id").as[String]
+                case 409 => throw Conflict()
+            }
+        }
+    }
+
+    /**
+     * Make a request to an update function
+     */
     def update(url: String, body: JsValue): Future[String] = {
         WS.url(url).post(body).map { response =>
             response.status match {

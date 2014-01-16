@@ -6,6 +6,7 @@ import play.api.Play
 import components.couch.CouchClientUrl
 import quill.logic.StatementLogic
 import quill.dao.StatementData
+import quill.dao.LabelData
 
 
 
@@ -17,9 +18,8 @@ object Binding extends NewBindingModule (module => {
 
 
     bind [StatementLogic] toSingle {
-        new StatementLogic(
-            new StatementData(
-                CouchClientUrl(config.getString("couch.url"), "statement")))
+        val url = CouchClientUrl(config.getString("couch.url"), "statement")
+        new StatementLogic(new StatementData(url), new LabelData(url))
     }
 
 })
