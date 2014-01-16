@@ -132,6 +132,7 @@ describe "statement app design document", ->
             expect(newDoc._id).toBe("#{source.label}-3.3.0")
             expect(newDoc.title).toBe("The title")
             expect(newDoc.version.published).toBe(false)
+            expect(newDoc.type).toBe("statement")
 
 
     describe "add a new statement", ->

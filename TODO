@@ -6,8 +6,8 @@ Task 3 - Web Backend cleanup
     - test coverage for statement logic and data
     -  current and current_published in same view? using composite key
 - set a friendly user.id, and set a Full Name (if blank)
-- secure-social refactor
 - persona authentication
+- secure-social refactor
 - remove lookup user from Statement Controller actions
 - composite action for ApiAction, UserApiAction, etc
 - SubCut for testing

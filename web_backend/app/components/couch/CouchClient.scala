@@ -54,6 +54,7 @@ object CouchClient {
     def update(url: String, body: JsValue): Future[String] = {
         WS.url(url).post(body).map { response =>
             response.status match {
+                // TODO: 200 on return null
                 case 201 => response.header("X-Couch-Id").get
                 case 500 => throw ServerError(response.body)
                 case 409 => throw Conflict()

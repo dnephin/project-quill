@@ -99,6 +99,7 @@ ddoc.updates.update = (doc, req) ->
     newDoc._id = "#{doc.label}-#{buildVersionString(newDoc.version)}"
     newDoc.version.date = getDateTime()
     newDoc.version.published = false
+    newDoc.type = "statement"
     return [newDoc, "new document version"]
 
 #

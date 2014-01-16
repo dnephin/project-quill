@@ -24,6 +24,9 @@ class StatementData(url: CouchClientUrl) {
         client.update(url.update("app", "add"), Json.toJson(statement))
     }
 
+    /**
+     * Get the currently published statement for a label
+     */
     def getCurrentPublished(label: String): Future[Statement] = {
         client.getIdFromView(url.view("app", "current_published"), label)
             .flatMap(getById(_))
