@@ -2,18 +2,19 @@
 Phase 2 - Cleanup
 
 Task 3 - Web Backend cleanup
-- couch client
-    - test coverage for statement logic and data
-    -  current and current_published in same view? using composite key
-- set a friendly user.id, and set a Full Name (if blank)
 - persona authentication
 - secure-social refactor
+- set a friendly user.id, and set a Full Name (if blank)
 - remove lookup user from Statement Controller actions
 - composite action for ApiAction, UserApiAction, etc
-- SubCut for testing
 - lint for coffee/scala
+
+Task 4 - Frontend
+- unit tests
+- choose an editor/document format
 
 Misc - Unsorted
 - add edit link to statement summary view
 - version selections for new post
+- current and current_published in same couch view? using composite key
 

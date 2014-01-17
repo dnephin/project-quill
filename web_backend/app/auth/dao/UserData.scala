@@ -23,10 +23,6 @@ object UserData {
 
     def client = CouchClient
 
-    val identityIdViewUrl = s"$url/_design/app/_view/identity_id"
-
-    val addUserUrl = s"$url/_design/app/_update/add"
-
     def add(user: User): Future[String] = {
         client.update(url.update("app", "add"), Json.toJson(user))
     }
