@@ -1,12 +1,12 @@
 package quill.dao
 
-import quill.models.Label
-import play.api.libs.ws.WS
-import play.api.libs.json.Json
-import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.Future
-import components.couch.CouchClientUrl
+
 import components.couch.CouchClient
+import components.couch.CouchClientUrl
+import play.api.libs.json.Json
+import quill.models.Label
+
 
 /**
   * Data access for Label model

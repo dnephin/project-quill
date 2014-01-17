@@ -94,6 +94,9 @@ object CouchClient {
         }
     }
 
+    /**
+     * Get a document id from a view identified by a key, and grouped.
+     */
     def getIdFromView(url: String, key: String): Future[String] = {
 
         def idFromViewResponse(json: JsValue) = {
@@ -109,5 +112,26 @@ object CouchClient {
                 idFromViewResponse(response.json)
             }
     }
+
+    /**
+     * Get a sequence of documents from a view identified by a key.
+     */
+    def getFromViewByKey[T](url: String, key: String)
+                           (implicit rds: Reads[T]): Future[Seq[T]] = {
+
+        def viewRows(json: JsValue) = {
+            (json \ "rows" \\ "doc").map(_.as[T])
+        }
+
+        WS.url(url)
+            .withQueryString("key" -> key, "include_docs" -> "true")
+            .get()
+            .map { response =>
+                // TODO: 404 on missing
+                // TODO: error handling
+                viewRows(response.json)
+            }
+    }
+
 
 }

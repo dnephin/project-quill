@@ -3,18 +3,19 @@ package test.quill.logic
 import org.mockito.Mockito.verify
 import org.scalatest.FunSuite
 import org.scalatest.mock.MockitoSugar
-
 import quill.dao.StatementData
 import quill.logic.StatementAddLogic
 import quill.logic.StatementLogic
 import quill.models.Version
+import quill.dao.LabelData
 
 
 class StatementAddLogicSpec extends FunSuite with MockitoSugar {
 
     def fixture = new {
         val statementDAO = mock[StatementData]
-        val logic = new StatementAddLogic(statementDAO)
+        val labelDAO     = mock[LabelData]
+        val logic        = new StatementAddLogic(statementDAO, labelDAO)
     }
 
     def versionNum(major: Int, minor: Int, patch: Int) = {
@@ -42,7 +43,8 @@ class StatementLogicSpec extends FunSuite with MockitoSugar {
 
     def fixture = new {
         val statementDAO = mock[StatementData]
-        val logic = new StatementLogic(statementDAO)
+        val labelDAO     = mock[LabelData]
+        val logic        = new StatementLogic(statementDAO, labelDAO)
     }
 
     test("getPublished calls dao") {

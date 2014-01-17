@@ -5,7 +5,7 @@ import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
 import auth.models.User
 import auth.dao.UserData
-import auth.dao.UserNotFoundException
+import auth.dao.UserNotFoundError
 import auth.models.UserPublic
 
 /**
@@ -28,7 +28,7 @@ object UserSaveLogic {
         UserData.getByIdentityId(identity.identityId).map {
             user => user
         } recoverWith {
-            case UserNotFoundException(_) => createNewUser(identity)
+            case UserNotFoundError(_) => createNewUser(identity)
         }
     }
 

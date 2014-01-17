@@ -2,32 +2,24 @@
   */
 package quill.controllers
 
-import play.api.Logger
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
-import play.api.libs.json._
-import play.api.libs.json.Json.toJsFieldJsValueWrapper
-import play.api.mvc.Action
-import play.api.mvc.ActionBuilder
-import play.api.mvc.Request
-import play.api.mvc.SimpleResult
-import play.api.libs.json.Reads
-import quill.models.Statement
-import quill.dao.StatementData
-import quill.logic.StatementLogic
-import quill.logic.LabelNotUniqueError
-import quill.logic.BadVersionError
-import securesocial.core.SecureSocial
-import auth.dao.UserData
-import quill.logic.StatementUpdateLogic
-import auth.models.User
-import components.ApiBodyParser
-import auth.logic.UserPublicGetLogic
-import auth.models.UserPublic
-import components.ApiController
-import com.escalatesoft.subcut.inject.Injectable
+
 import com.escalatesoft.subcut.inject.BindingModule
-import play.api.mvc.Controller
+import com.escalatesoft.subcut.inject.Injectable
+
+import auth.logic.UserPublicGetLogic
+import auth.models.User
+import auth.models.UserPublic
+import components.ApiBodyParser
+import components.ApiController
+import play.api.Logger
+import play.api.libs.json.Json
+import play.api.libs.json.Json.toJsFieldJsValueWrapper
+import quill.logic.BadVersionError
+import quill.logic.LabelNotUniqueError
+import quill.logic.StatementLogic
+import quill.models.Statement
+import securesocial.core.SecureSocial
 
 
 // TODO: remove ajaxCall=true with an abstraction

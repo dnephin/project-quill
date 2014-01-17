@@ -7,13 +7,19 @@ import quill.dao.FeedbackData
 
 
 /**
- * Add a new feedback to a response
+ * Logic for performing actions on Feedback objects.
  */
-object FeedbackAddLogic {
+class FeedbackLogic(dao: FeedbackData) {
 
-    // TODO: validate position
-    def apply(feedback: Feedback, userId: String): Future[String] = {
-        FeedbackData.add(feedback.setEditorId(userId))
+    // TODO: validate position field
+    def add(feedback: Feedback, userId: String): Future[String] = {
+        dao.add(feedback.setEditorId(userId))
     }
+
+    def getByStatementLabel(label: String): Future[Seq[Feedback]] = {
+        dao.getByStatementLabel(label)
+    }
+
+    def getById(id: String): Future[Feedback] = dao.getById(id)
 
 }

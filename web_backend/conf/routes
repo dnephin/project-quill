@@ -22,9 +22,9 @@ PUT     /api/statement/:id          @quill.controllers.StatementController.updat
 
 
 # Feedback routes
-POST    /api/feedback               quill.controllers.FeedbackController.add
-GET     /api/feedback               quill.controllers.FeedbackController.list
-GET     /api/feedback/:id           quill.controllers.FeedbackController.view(id: String)
+POST    /api/feedback               @quill.controllers.FeedbackController.add
+GET     /api/feedback               @quill.controllers.FeedbackController.list
+GET     /api/feedback/:id           @quill.controllers.FeedbackController.view(id: String)
 
 
 # TODO: remove, used so securesocial assets use the correct url

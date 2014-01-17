@@ -1,22 +1,30 @@
 package quill.controllers
 
+import com.escalatesoft.subcut.inject.BindingModule
+import com.escalatesoft.subcut.inject.Injectable
+
+import auth.models.User
 import components.ApiBodyParser
+import components.ApiController
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.libs.json.Json
 import play.api.libs.json.Json.toJsFieldJsValueWrapper
-import quill.dao.FeedbackData
+import play.api.mvc.Action
+import quill.logic.FeedbackLogic
 import quill.models.Feedback
 import securesocial.core.SecureSocial
-import play.api.mvc.Action
-import auth.models.User
-import quill.logic.FeedbackAddLogic
-import components.ApiController
 
 
 /**
- * REST API controller are statement responses
+ * REST API controller are statement feedback
  */
-object FeedbackController extends ApiController with SecureSocial {
+class FeedbackController(implicit val bindingModule: BindingModule)
+        extends ApiController
+        with SecureSocial
+        with Injectable {
+
+    implicit val feedbackLogic = inject [FeedbackLogic]
+
 
     def add() = SecuredAction(ajaxCall=true).async(
             ApiBodyParser[Feedback]("feedback")) { request =>
@@ -26,23 +34,22 @@ object FeedbackController extends ApiController with SecureSocial {
             case user: User => user
         }
 
-        FeedbackAddLogic(request.body, user._id).map { feedbackId =>
+        feedbackLogic.add(request.body, user._id).map { feedbackId =>
             Ok(jsonId("feedback", feedbackId))
         }
     }
 
 
     def list() = Action.async(parse.empty) { request =>
-        // TODO: logic
         // TODO: raise on missing
         val statementLabel = request.getQueryString("statement").get
-        FeedbackData.getByStatementId(statementLabel).map { feedback =>
+        feedbackLogic.getByStatementLabel(statementLabel).map { feedback =>
             Ok(Json.obj("feedback" -> feedback))
         }
     }
 
     def view(id: String) = Action.async(parse.empty) { request =>
-        FeedbackData.getById(id).map { feedback =>
+        feedbackLogic.getById(id).map { feedback =>
             Ok(Json.obj("feedback" -> feedback))
         }
     }
