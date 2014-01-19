@@ -52,7 +52,7 @@ To get started follow these steps:
     .. code-block:: bash
 
         cd web_backend
-        play run
+        sbt run
 
 
 

@@ -8,6 +8,7 @@ Task 3 - Web Backend cleanup
 - remove lookup user from Statement Controller actions
 - composite action for ApiAction, UserApiAction, etc
 - lint for coffee/scala
+- cleanup sandbox
 
 Task 4 - Frontend
 - unit tests

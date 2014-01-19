@@ -43,22 +43,17 @@ add-apt-repository -y ppa:webupd8team/java
 apt-get update -qq
 apt-get install -y oracle-java6-installer
 
-# Scala and Play
-if [[ ! -d scala-2.10.3 ]]; then
-    curl http://www.scala-lang.org/files/archive/scala-2.10.3.tgz | \
-    sudo -u vagrant tar -xz
-fi
+# Scala
+apt-get install -y libjansi-java
+scala_version="scala-2.10.3"
+wget -q http://www.scala-lang.org/files/archive/$scala_version.deb
+dpkg -i $scala_version.deb
 
-apt-get install -y unzip
+# sbt
+apt-add-repository -y "deb http://dl.bintray.com/sbt/debian /"
+apt-get update
+apt-get install -y --force-yes sbt
 
-play_version="play-2.2.1"
-if [[ ! -d $play_version ]]; then
-    echo "Downloading $play_version"
-    wget -q http://downloads.typesafe.com/play/2.2.1/$play_version.zip
-    sudo -u vagrant unzip -q $play_version.zip
-fi
-
-# TODO: install sbt
 
 echo "Installing global npm packages"
 npm install -g -q grunt-cli coffee-script bower
