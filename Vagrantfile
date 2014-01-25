@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "project-quill"
-  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/20140101/" +
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/current/" +
                       "saucy-server-cloudimg-amd64-vagrant-disk1.box"
 
   # Install project dependencies

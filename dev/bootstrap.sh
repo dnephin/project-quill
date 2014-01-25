@@ -5,6 +5,25 @@
 
 set -e
 
+echo "
+Checking for https://bugs.launchpad.net/ubuntu/+source/virtualbox/+bug/1252872
+
+If your provision freezes here:
+
+ 1. Ctrl-C this setup
+ 2. Install the latest virtualbox ( >= 4.3.6 ) on the host
+ 3. Download http://download.virtualbox.org/virtualbox/4.3.6/VBoxGuestAdditions_4.3.6.iso
+ 4. Mount the image on the guest (sudo mount /vagrant/VBoxGuestAdditions_4.3.6.iso /mnt)
+ 5. Remove the old guest additions
+    (sudo apt-get purge virtualbox-guest-dkms virtualbox-guest-utils virtualbox-guest-x11)
+ 6. Install the guest additions (sudo /mnt/VBoxLinuxAdditions.run)
+ 7. Shutdown (vagrant halt) and  re-provision (vagrant up --provision)
+"
+ls /vagrant > /dev/null
+
+
+# TODO: add a check for virtualbox shared fs bug
+
 # Update apt cache
 apt-get update -qq
 
