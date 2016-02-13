@@ -13,13 +13,19 @@ Decisions are formed around a problem statement. The goal of a decision is to
 solve the problem. The original problem is recorded with the decision
 making process.
 
+Actionable
+----------
+
+When a decision is reached it is clear to all parties and provides the outline
+of a plan to practice the decision.
 
 Transparent
 -----------
 
 A record of facts and edits to the decision are tracked by versions. Each
 time the document changes, the arguments and feedback behind that change
-are preserved.
+are preserved. All feedback that caused the document to change is recorded
+with the document.
 
 Inclusive
 ---------
